@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+
+
+
+<div class="min-h-screen bg-background text-primary-foreground flex flex-col items-center justify-center">
+    <h1 class="text-3xl font-bold my-8">Student Information Form</h1>
+    <form action="{% url 'add_student' user_id=user.id %}" method="post" enctype="multipart/form-data" class="bg-card p-8 rounded-lg shadow-lg w-full max-w-md">
+        {% if form.non_field_errors %}
+            <h3 class="text-2xl font-semibold text-primary text-center mb-6">{{ form.non_field_errors }}</h3>
+        {% endif %}
+        {% csrf_token %}
+      <div class="mb-4">
+        {{ form.profile_photo.label_tag }}
+        {{ form.profile_photo }}
+      </div>
+
+      <div class="mb-4">
+        {{ form.student_class.label_tag }}
+        {{ form.student_class }}
+      </div>
+  
+      <div class="mb-6">
+        {{ form.phone_number.label_tag }}
+        {{ form.phone_number }}
+      </div>
+      <div class="mb-6">
+        {{ form.home_address.label_tag }}
+        {{form.home_address}}
+      </div>
+  
+      <div class="mb-4">
+        {{ form.parent_or_guildiance_name.label_tag }}
+        {{form.parent_or_guildiance_name}}
+      </div>
+  
+      <div class="mb-4">
+        {{ form.parent_or_guildiance_phone_number.label_tag }}
+        {{form.parent_or_guildiance_phone_number}}
+      </div>
+  
+      <div class="mb-4">
+        {{ form.parent_email.label_tag }}
+        {{form.parent_email}}
+      </div>
+  
+      <button type="submit" class="bg-primary text-primary-foreground hover:bg-primary/80 mt-4 px-4 py-2 rounded-md">Submit</button>
+    </form>
+  </div>
+
+{%endblock content%}

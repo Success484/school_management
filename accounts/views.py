@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from accounts.forms import CustomUserRegisterForm, EmailAuthenticationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -33,7 +33,7 @@ def user_login(request):  # LOGIN VIEW FUNCTION
                 if user.is_approved:
                     login(request, user)
                     messages.success(request, 'You are now logged in.')
-                    return redirect('home_page')
+                    return redirect(reverse('add_student', args=[user.id]))
                 else:
                     messages.warning(request, 'Your account is not yet approved.')
             else:

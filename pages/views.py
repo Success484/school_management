@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -37,6 +38,7 @@ def dashboard(request):
 def teacher_dashboard(request):
     return render(request, 'dashboards/teachers.html')
 
-
+@login_required
 def student_dashboard(request):
-    return render(request, 'dashboards/students.html')
+    user = request.user
+    return render(request, 'dashboards/students.html', {'user': user})

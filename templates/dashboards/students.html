@@ -70,9 +70,9 @@
                 <span class="num">8</span>
             </a>
             <a href="#" class="profile">
-                <img src="{%static 'img/449181880_1484650349104562_652231313086318225_n.jpg'%}" alt="">
+                <img src="{{ request.user.student_profile.profile_photo.url }}" alt="Profile Photo">
             </a>
-         </nav>
+        </nav>
         <!-- END OF NAVBAR -->
         <!-- MAIN -->
         <main>
@@ -113,10 +113,10 @@
             
             <div class="table-data">
                 <div class="order">
-                    <h2 id="welcome">WELCOME</h2>
+                    <h2 id="welcome">WELCOME {{ user.first_name|upper }}</h2>
                     <div id="welcome">
                         <div>
-                            <h1>HELLO JEREMY WELCOME TO YOUR SCHOOL DASHBOARD</h1>
+                            <h1>HELLO {{ user.first_name|upper }} WELCOME TO YOUR SCHOOL DASHBOARD</h1>
                         </div>
                     </div>
             </div>

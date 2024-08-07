@@ -3,8 +3,11 @@ from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from administration.forms import TeacherForm, StudentForm
+from administration.models import Student
+from django.contrib.auth import get_user_model
 
 # Create your views here.
+User = get_user_model()
 
 
 @login_required
@@ -30,7 +33,7 @@ def approve_users(request, user_id):
 
 
 
-@login_required
+# @login_required
 def add_teacher(request):
     if not request.user.is_approved:
         messages.error(request, 'Your Account Is Not Yet Approved')
@@ -49,18 +52,21 @@ def add_teacher(request):
 
 
 
-@login_required
-def add_student(request):
-    if not request.user.is_approved:
-        messages.error(request, 'Your Account Is Not Yet Approved')
-        return redirect('home')
+# @login_required
+def add_student(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    
+    # Try to get or create the Student profile for the user
+    student, created = Student.objects.get_or_create(user=user)
     
     if request.method == 'POST':
-        form = StudentForm(request.POST, request.FILES)
+        form = StudentForm(request.POST, request.FILES, instance=request.user.student_profile)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Student added successfully.')
-            return redirect('student_details')
+            student = form.save(commit=False)
+            student.user = user
+            student.save()
+            messages.success(request, 'Student profile created successfully')
+            return redirect('student_dashboard')
     else:
-        form = StudentForm()
+        form = StudentForm(instance=student)
     return render(request, 'administration/add_student.html', {'form': form})
