@@ -1,18 +1,8 @@
-// const active_link = document.querySelectorAll('.navbar-light .navbar-nav .nav-link.active ')
-//     active_link.forEach(item => {
-//         const li = item.parentElement;
 
-//         item.addEventListener('click', function(){
-//             active_link.forEach(i => {
-//                 i.parentElement.classList.remove('active')
-//             })
-
-//             li.classList.add('active');
-//         })
-//     });
-
-
-
+// select2
+$(document).ready(function() {
+    $('.select2-multiple').select2();
+  });
 
 
 (function ($) {

@@ -29,5 +29,7 @@ urlpatterns = [
     path('', include('pages.urls'))
 ]
 
+handler404 = 'pages.views.page_404'
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

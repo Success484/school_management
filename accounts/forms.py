@@ -3,27 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 from accounts.models import CustomUser
-User = get_user_model()
-
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
-class CustomAuthenticationForm(AuthenticationForm):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'autofocus': True}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}))
-
-    def confirm_login_allowed(self, user):
-        if not user.is_active:
-            raise forms.ValidationError(
-                "This account is inactive.",
-                code='inactive',
-            )
-        if not user.is_approved:
-            raise forms.ValidationError(
-                "Your account has not been approved yet.",
-                code='not_approved',
-            )
-        
+from django.contrib.auth.forms import UserCreationForm        
 
 
 class CustomUserRegisterForm(UserCreationForm):
@@ -39,7 +20,7 @@ class CustomUserRegisterForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('full_name', 'email', 'password1', 'password2', 'role')
+        fields = ['full_name', 'email', 'password1', 'password2', 'role']
 
     def __init__(self, *args, **kwargs):
         super(CustomUserRegisterForm, self).__init__(*args, **kwargs)

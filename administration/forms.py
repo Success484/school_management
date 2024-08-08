@@ -16,8 +16,8 @@ class TeacherForm(forms.ModelForm):
             'profile_photo': forms.FileInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'home_address': forms.TextInput(attrs={'class': 'form-control'}),
-            'subject': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'classes': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'subject': forms.SelectMultiple(attrs={'class': 'form-control select2-multiple'}),
+            'classes': forms.SelectMultiple(attrs={'class': 'form-control select2-multiple'}),
             'emergency_contact': forms.TextInput(attrs={'class': 'form-control'}),
         }
 

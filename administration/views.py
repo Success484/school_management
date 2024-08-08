@@ -1,20 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseForbidden
 from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from administration.forms import TeacherForm, StudentForm
-from administration.models import Student
+from administration.models import Student, Teacher
 from django.contrib.auth import get_user_model
-
 # Create your views here.
-User = get_user_model()
 
 
 @login_required
 def admin_dashboard(request):
     if not request.user.is_superuser:
         return redirect('home')
-    
     pending_users = CustomUser.objects.filter(is_approved=False)
     return render(request, 'administration/admin_dashboard.html', {'pending_users': pending_users})
 
@@ -23,7 +21,6 @@ def admin_dashboard(request):
 def approve_users(request, user_id):
     if not request.user.is_superuser:
         return redirect('home')
-    
     user = get_object_or_404(CustomUser, id=user_id)
     user.is_approved = True
     user.save()
@@ -32,19 +29,23 @@ def approve_users(request, user_id):
 
 
 
-
-# @login_required
-def add_teacher(request):
-    if not request.user.is_approved:
-        messages.error(request, 'Your Account Is Not Yet Approved')
-        return redirect('home')
-    
+@login_required
+def add_teacher(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    if not request.user.is_teacher:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    existing_teacher = Teacher.objects.filter(user=user).first()
+    if existing_teacher:
+        return redirect('teacher_dashboard')
     if request.method == 'POST':
         form = TeacherForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Teacher added successfully.')
-            return redirect('teacher_details')
+            teacher = form.save(commit=False)
+            teacher.user = user
+            teacher.save()
+            return redirect('teacher_dashboard') 
+        else:
+            print(form.errors)
     else:
         form = TeacherForm()
     return render(request, 'administration/add_teacher.html', {'form': form})
@@ -52,21 +53,22 @@ def add_teacher(request):
 
 
 
-# @login_required
+
+@login_required
 def add_student(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
-    
-    # Try to get or create the Student profile for the user
-    student, created = Student.objects.get_or_create(user=user)
-    
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    existing_student = Student.objects.filter(user=user).first()
+    if existing_student:
+        return redirect('student_dashboard')
     if request.method == 'POST':
-        form = StudentForm(request.POST, request.FILES, instance=request.user.student_profile)
+        form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
             student = form.save(commit=False)
             student.user = user
             student.save()
-            messages.success(request, 'Student profile created successfully')
             return redirect('student_dashboard')
     else:
-        form = StudentForm(instance=student)
+        form = StudentForm()
     return render(request, 'administration/add_student.html', {'form': form})
