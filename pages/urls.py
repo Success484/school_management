@@ -2,7 +2,7 @@ from django.urls import path
 from pages.views import (homePage, aboutPage, 
                          course_Page, page_404, team, 
                          testimonial, contact, teacher_dashboard, 
-                         student_dashboard)
+                         student_dashboard, myTeacher)
 
 urlpatterns = [
     path('', homePage, name='home_page'),
@@ -14,4 +14,6 @@ urlpatterns = [
     path('contact/', contact, name='contact_page'),
     path('teacher/dashboard/', teacher_dashboard, name='teacher_dashboard'),
     path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    # All admin pages
+    path('admin_dashboard/myteachers/', myTeacher, name='my_teacher'),
 ]

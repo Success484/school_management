@@ -1,210 +1,129 @@
-{%extends 'dashboards/base.html'%}
+{%extends 'dashboards/all_admin_pages/base.html'%}
 {%load static%}
-{%block content%}
-
-<!-- SIDEBAR -->
-<section id="sidebar">
-        <a href="" class="brand">
-            <i class='bx bxs-smile' ></i>
-            <span class="text">Admin</span>
-        </a>
-        <ul class="side-menu top">
-            <li class="active">
-                <a href="#">
-                    <i class='bx bxs-dashboard' ></i>
-                    <span class="text">Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-group' ></i>
-                    <span class="text">My Students</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-user-rectangle'></i>
-                    <span class="text">My Teachers</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-building-house' ></i>
-                    <span class="text">All Classes</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-time'></i>
-                    <span class="text">Pending Users</span>
-                </a>
-            </li>
-        </ul>
-        <!--  -->
-        <ul class="side-menu">
-        <li>
-            <a href="#">
-                <i class='bx bxs-book-reader' ></i>
-                <span class="text">Announcements</span>
-            </a>
-        </li>
-        <li>
-            <a href="{%url 'logout'%}" class="logout">
-                <i class='bx bxs-log-out-circle' ></i>
-                <span class="text">Logout</span>
-            </a>
-        </li>
-    </ul>
-</section>
-<!-- END OF SIDEBAR -->
-
-
-<!-- CONTENT -->
-<section id="content">
-        <!-- NAVBAR -->
-         <nav>
-            <i class='bx bx-menu'></i>
-            <a href="#" class="nav-link">Categories</a>
-            <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-                </div>
-            </form>
-            <a href="#" class="notification">
-                <i class='bx bxs-bell' ></i>
-                <span class="num">8</span>
-            </a>
-            <a href="#" class="profile">
-                <img src="{%static 'img/449181880_1484650349104562_652231313086318225_n.jpg'%}" alt="">
-            </a>
-        </nav>
-        <!-- END OF NAVBAR -->
-        <!-- MAIN -->
-        <main>
-            <div class="head-title">
-                <div class="left">
-                    <h1>Dashboard</h1>
-                    <ul class="breadcrumb">
-                        <li>
-                            <a href="#">Dashboard</a>
-                        </li>
-                        <li><i class='bx bx-chevron-right'></i></li>
-                        <li>
-                            <a class="active" href="#">Home</a>
-                        </li>
-                    </ul>
-                </div>
-                <a href="#" class="btn-download">
-                    <i class='bx bxs-cloud-download'></i>
-                    <span class="text">Download PDF</span>
-                </a>
-            </div>
-            <ul class="box-info">
+{%block section%}
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
                 <li>
-                    <i class='bx bxs-calendar-check'></i>
-                    <span class="text">
-                        <h3>1020</h3>
-                        <p>Total Teachers</p>
-                    </span>
+                    <a href="#">Dashboard</a>
                 </li>
+                <li><i class='bx bx-chevron-right'></i></li>
                 <li>
-                    <i class='bx bxs-group'></i>
-                    <span class="text">
-                        <h3>2837</h3>
-                        <p>Total Students</p>
-                    </span>
-                </li>
-                <li>
-                    <i class='bx bxs-dollar-circle'></i>
-                    <span class="text">
-                        <h3>2543</h3>
-                        <p>Total Users</p>
-                    </span>
+                    <a class="active" href="#">Home</a>
                 </li>
             </ul>
+        </div>
+        <a href="#" class="btn-download">
+            <i class='bx bxs-cloud-download'></i>
+            <span class="text">Download PDF</span>
+        </a>
+    </div>
+    <ul class="box-info">
+        <li>
+            <i class='bx bxs-calendar-check'></i>
+            <span class="text">
+                <h3>1020</h3>
+                <p>Total Teachers</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-group'></i>
+            <span class="text">
+                <h3>2837</h3>
+                <p>Total Students</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-dollar-circle'></i>
+            <span class="text">
+                <h3>2543</h3>
+                <p>Total Users</p>
+            </span>
+        </li>
+    </ul>
+    
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Recent Users</h3>
+                <i class='bx bx-search'></i>
+                <i class='bx bx-filter'></i>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Users</th>
+                        <th class="pr-2">Role</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pending_user in pending_users %}
+                    <tr>
+                        <td>
+                            <a href="{{ pending_user.profile_photo.url }}" data-lightbox="user-image" data-title="{{ pending_user.first_name }}">
+                                <img src="{{ pending_user.profile_photo.url }}" alt="{{ pending_user.first_name }}" class="thumbnail">
+                            </a>                                    
+                            
+                            <p class="pl-5">{{ pending_user.first_name }} {{ pending_user.last_name }}</p>
+                        </td>
+                        <td>
+                            <p class="pr-2">{{ pending_user.role }}</p>
+                        </td>
+                        <td>
+                            <a href="{%url 'approve_user' user_id=pending_user.id%}" class="status completed">Approve</a>
+                        </td>
+                        <td>
+                            <div class="px-3">
+
+                                <a href="{%url 'decline_users' user_id=pending_user.id%}" class="status bg-red-500">Decline</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No pending users.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             
-            <div class="table-data">
-                <div class="order">
-                    <div class="head">
-                        <h3>Recent Users</h3>
-                        <i class='bx bx-search'></i>
-                        <i class='bx bx-filter'></i>
-                    </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Users</th>
-                                <th class="pr-2">Role</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for pending_user in pending_users %}
-                            <tr>
-                                <td>
-                                    <a href="{{ pending_user.profile_photo.url }}" data-lightbox="user-image" data-title="{{ pending_user.first_name }}">
-                                        <img src="{{ pending_user.profile_photo.url }}" alt="{{ pending_user.first_name }}" class="thumbnail">
-                                    </a>                                    
-                                    
-                                    <p class="pl-5">{{ pending_user.first_name }} {{ pending_user.last_name }}</p>
-                                </td>
-                                <td>
-                                    <p class="pr-2">{{ pending_user.role }}</p>
-                                </td>
-                                <td>
-                                    <a href="{%url 'approve_user' user_id=pending_user.id%}" class="status completed">Approve</a>
-                                </td>
-                                <td>
-                                    <div class="px-3">
-
-                                        <a href="{%url 'decline_users' user_id=pending_user.id%}" class="status bg-red-500">Decline</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="3">No pending users.</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    
-                    
+            
+    </div>
+        <div class="todo">
+            <div class="head">
+                <h3>Todos</h3>
+                <i class='bx bx-plus'></i>
+                <i class='bx bx-filter'></i>
             </div>
-                <div class="todo">
-                    <div class="head">
-                        <h3>Todos</h3>
-                        <i class='bx bx-plus'></i>
-                        <i class='bx bx-filter'></i>
-                    </div>
-                    <ul class="todo-list">
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </main>
-        <!-- END OF MAIN -->
-    </section>
-    <!-- END OF CONTENT -->
+            <ul class="todo-list">
+                <li class="completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+                <li class="completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+                <li class="not-completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+                <li class="completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+                <li class="not-completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<!-- END OF MAIN -->
+<!-- END OF CONTENT -->
 
-{%endblock content%}
+{%endblock section%}

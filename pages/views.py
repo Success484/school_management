@@ -45,3 +45,9 @@ def student_dashboard(request):
         return HttpResponseForbidden("You do not have permission to access this page.")
     user = request.user
     return render(request, 'dashboards/students.html', {'user': user})
+
+
+# All admin pages
+
+def myTeacher(request):
+    return render(request, 'dashboards/all_admin_pages/myTeachers.html')
