@@ -12,9 +12,11 @@ from django.contrib.auth import get_user_model
 @login_required
 def admin_dashboard(request):
     if not request.user.is_superuser:
-        return redirect('home')
+        return HttpResponseForbidden("You do not have permission to access this page.")
     pending_users = CustomUser.objects.filter(is_approved=False)
-    return render(request, 'administration/admin_dashboard.html', {'pending_users': pending_users})
+    return render(request, 'administration/dashboard.html', {'pending_users': pending_users})
+
+
 
 
 @login_required
@@ -25,6 +27,15 @@ def approve_users(request, user_id):
     user.is_approved = True
     user.save()
     messages.success(request, 'User has been approved.')
+    return redirect('admin_dashboard')
+
+@login_required
+def decline_users(request, user_id):
+    if not request.user.is_superuser:
+        return redirect('home')
+    user = get_object_or_404(CustomUser, id=user_id)
+    user.delete()
+    messages.success(request, 'User has been decline.')
     return redirect('admin_dashboard')
 
 

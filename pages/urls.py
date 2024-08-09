@@ -1,8 +1,8 @@
 from django.urls import path
 from pages.views import (homePage, aboutPage, 
                          course_Page, page_404, team, 
-                         testimonial, contact, dashboard,
-                         teacher_dashboard, student_dashboard)
+                         testimonial, contact, teacher_dashboard, 
+                         student_dashboard)
 
 urlpatterns = [
     path('', homePage, name='home_page'),
@@ -12,7 +12,6 @@ urlpatterns = [
     path('teams/', team, name='team_Page'),
     path('testimonial/', testimonial, name='testimonial_Page'),
     path('contact/', contact, name='contact_page'),
-    path('dashboard/', dashboard, name='dashboard_page'),
     path('teacher/dashboard/', teacher_dashboard, name='teacher_dashboard'),
     path('student/dashboard/', student_dashboard, name='student_dashboard'),
 ]

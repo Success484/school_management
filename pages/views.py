@@ -32,11 +32,6 @@ def contact(request):
     return render(request, 'main/contact.html')
 
 
-def dashboard(request):
-    if not request.user.is_superuser:
-        return HttpResponseForbidden("You do not have permission to access this page.")
-    return render(request, 'dashboards/dashboard.html')
-
 @login_required
 def teacher_dashboard(request):
     if not request.user.is_teacher:

@@ -20,7 +20,8 @@ class CustomUserRegisterForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['full_name', 'email', 'password1', 'password2', 'role']
+        fields = ['full_name', 'email', 'profile_photo', 'role', 'password1', 'password2',]
+        
 
     def __init__(self, *args, **kwargs):
         super(CustomUserRegisterForm, self).__init__(*args, **kwargs)
@@ -32,6 +33,12 @@ class CustomUserRegisterForm(UserCreationForm):
             'class': 'form-control',
             'placeholder': 'Confirm your password'
         })
+        self.fields['profile_photo'].required = True
+        self.fields['profile_photo'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Upload your profile picture'
+        })
+        
 
 
 

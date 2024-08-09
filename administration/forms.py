@@ -5,7 +5,6 @@ class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
         fields = [
-            'profile_photo', 
             'phone_number', 
             'home_address', 
             'subject',
@@ -13,7 +12,6 @@ class TeacherForm(forms.ModelForm):
             'emergency_contact'
         ]
         widgets = {
-            'profile_photo': forms.FileInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'home_address': forms.TextInput(attrs={'class': 'form-control'}),
             'subject': forms.SelectMultiple(attrs={'class': 'form-control select2-multiple'}),
@@ -26,7 +24,6 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = [
-            'profile_photo',
             'student_class',
             'phone_number',  
             'home_address', 
@@ -35,7 +32,6 @@ class StudentForm(forms.ModelForm):
             'parent_email'
         ]
         widgets = {
-            'profile_photo': forms.FileInput(attrs={'class': 'form-control'}),
             'student_class': forms.Select(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'home_address': forms.TextInput(attrs={'class': 'form-control'}),

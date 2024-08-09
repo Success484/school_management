@@ -33,11 +33,22 @@ class CustomUser(AbstractUser):
     is_approved = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
+    profile_photo = models.ImageField(upload_to='profile_photo/', default='default.jpg', blank=False, null=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = CustomUserManager()
+
+    @property
+    def role(self):
+        if self.is_teacher:
+            return "Teacher"
+        elif self.is_student:
+            return "Student"
+        else:
+            return "Unassigned"
+
 
     def save(self, *args, **kwargs):
         if not self.username:

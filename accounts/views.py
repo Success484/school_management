@@ -7,7 +7,7 @@ from django.urls import reverse
 
 def register(request):      # REGISTER VIEW FUNCTION
     if request.method == 'POST':
-        form = CustomUserRegisterForm(request.POST)
+        form = CustomUserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.is_approved = False
@@ -41,7 +41,7 @@ def user_login(request):  # LOGIN VIEW FUNCTION
                         return redirect(reverse('teacher_dashboard'))
                     # Redirect to appropriate add form based on user role
                     elif user.is_superuser:
-                        return redirect('dashboard_page')
+                        return redirect('admin_dashboard')
                     elif user.is_student:
                         return redirect(reverse('add_student', args=[user.id]))
                     elif user.is_teacher:

@@ -448,7 +448,7 @@ body {
 #content main .table-data .order table tr td:first-child {
     display: flex;
     align-items: center;
-    grid-gap: 16px;
+    grid-gap: 20px;
     padding-left: 6px;
 }
 
