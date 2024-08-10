@@ -27,16 +27,16 @@ class StudentForm(forms.ModelForm):
             'student_class',
             'phone_number',  
             'home_address', 
-            'parent_or_guildiance_name', 
-            'parent_or_guildiance_phone_number', 
+            'parent_or_guardian_name', 
+            'parent_or_guardian_phone_number', 
             'parent_email'
         ]
         widgets = {
             'student_class': forms.Select(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'home_address': forms.TextInput(attrs={'class': 'form-control'}),
-            'parent_or_guildiance_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'parent_or_guildiance_phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'parent_or_guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'parent_or_guardian_phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'parent_email': forms.TextInput(attrs={'class': 'form-control'}),
         }
         

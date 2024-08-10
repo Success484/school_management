@@ -35,7 +35,7 @@ html {
 
 body {
     background: var(--grey);
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 
@@ -395,16 +395,16 @@ body {
 #content main .table-data > div {
     border-radius: 20px;
     background: var(--light);
-    padding: 24px;
+    padding: 16px;
     overflow-x: auto;
 }
 
 .table-data > div {
     border-radius: 20px;
     background: var(--light);
-    padding: 24px;
+    padding: 16px;
     overflow-x: auto;
-    margin: 24px;
+    margin: 16px;
 }
 
 #content main .table-data .head {

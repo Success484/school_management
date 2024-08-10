@@ -20,8 +20,8 @@ class Student(models.Model):
     student_class = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, related_name='students')
     phone_number = models.CharField(max_length=15)
     home_address = models.TextField()
-    parent_or_guildiance_name = models.CharField(max_length=100)
-    parent_or_guildiance_phone_number = models.CharField(max_length=15)
+    parent_or_guardian_name = models.CharField(max_length=100)
+    parent_or_guardian_phone_number = models.CharField(max_length=15)
     parent_email = models.EmailField(blank=True, null=True, default=None)
 
 

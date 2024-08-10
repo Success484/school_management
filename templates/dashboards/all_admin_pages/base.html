@@ -4,6 +4,8 @@
 
 {%url 'admin_dashboard' as admin_dashboard%}
 {%url 'my_teacher' as my_teacher%}
+{%url 'my_student' as my_student%}
+
 
 <!-- SIDEBAR -->
 <section id="sidebar">
@@ -18,14 +20,14 @@
                     <span class="text">Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{% if request.path == my_student %}active{% endif %}">
+                <a href="{{my_student}}">
                     <i class='bx bxs-group' ></i>
                     <span class="text">My Students</span>
                 </a>
             </li>
             <li class="{% if request.path == my_teacher %}active{% endif %}">
-                <a href="{%url 'my_teacher'%}">
+                <a href="{{my_teacher}}">
                     <i class='bx bxs-user-rectangle'></i>
                     <span class="text">My Teachers</span>
                 </a>

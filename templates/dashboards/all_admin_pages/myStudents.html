@@ -2,16 +2,16 @@
 {% load static %}
 {% block section %}
 <div class="m-3 rounded-lg">
-    <p class="text-center p-5 mb-3 rounded-lg font-medium" style="background-color: #F9F9F9;">ALL TEACHERS</p>
+    <p class="text-center p-5 mb-3 rounded-lg font-medium" style="background-color: #F9F9F9;">ALL STUDENT</p>
     <div class="order flex">
         <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {%if teacher%}
-            {%for teachers in teacher%}
-            <a href="{% url 'teacher_detail' user_id=teachers.user.id %}">
+            {%if student%}
+            {%for students in student%}
+            <a href="{% url 'student_detail' user_id=students.user.id %}">
                 <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{teachers.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
+                    <img src="{{students.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{students.user.first_name}} {{students.user.last_name}}">
                     <div class="text-center font-medium p-2">
-                        <p>{{teachers.user.first_name}} {{teachers.user.last_name}}</p>
+                        <p>{{students.user.first_name}} {{students.user.last_name}}</p>
                     </div>
                 </div>
             </a>
