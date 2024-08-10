@@ -1,129 +1,132 @@
 {%extends 'dashboards/all_admin_pages/base.html'%}
 {%load static%}
 {%block section%}
-<main>
-    <div class="head-title">
-        <div class="left">
-            <h1>Dashboard</h1>
-            <ul class="breadcrumb">
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li><i class='bx bx-chevron-right'></i></li>
-                <li>
-                    <a class="active" href="#">Home</a>
-                </li>
-            </ul>
-        </div>
-        <a href="#" class="btn-download">
-            <i class='bx bxs-cloud-download'></i>
-            <span class="text">Download PDF</span>
-        </a>
-    </div>
-    <ul class="box-info">
-        <li>
-            <i class='bx bxs-calendar-check'></i>
-            <span class="text">
-                <h3>1020</h3>
-                <p>Total Teachers</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-group'></i>
-            <span class="text">
-                <h3>2837</h3>
-                <p>Total Students</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-dollar-circle'></i>
-            <span class="text">
-                <h3>2543</h3>
-                <p>Total Users</p>
-            </span>
-        </li>
-    </ul>
-    
-    <div class="table-data">
-        <div class="order">
-            <div class="head">
-                <h3>Recent Users</h3>
-                <i class='bx bx-search'></i>
-                <i class='bx bx-filter'></i>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Users</th>
-                        <th class="pr-2">Role</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pending_user in pending_users %}
-                    <tr>
-                        <td>
-                            <a href="{{ pending_user.profile_photo.url }}" data-lightbox="user-image" data-title="{{ pending_user.first_name }}">
-                                <img src="{{ pending_user.profile_photo.url }}" alt="{{ pending_user.first_name }}" class="thumbnail">
-                            </a>                                    
-                            
-                            <p class="pl-5">{{ pending_user.first_name }} {{ pending_user.last_name }}</p>
-                        </td>
-                        <td>
-                            <p class="pr-2">{{ pending_user.role }}</p>
-                        </td>
-                        <td>
-                            <a href="{%url 'approve_user' user_id=pending_user.id%}" class="status completed">Approve</a>
-                        </td>
-                        <td>
-                            <div class="px-3">
 
-                                <a href="{%url 'decline_users' user_id=pending_user.id%}" class="status bg-red-500">Decline</a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="3">No pending users.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
-            
-    </div>
-        <div class="todo">
-            <div class="head">
-                <h3>Todos</h3>
-                <i class='bx bx-plus'></i>
-                <i class='bx bx-filter'></i>
+<!-- CONTENT -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li>
+                            <a class="active" href="#">Home</a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="#" class="btn-download">
+                    <i class='bx bxs-cloud-download'></i>
+                    <span class="text">Download PDF</span>
+                </a>
             </div>
-            <ul class="todo-list">
-                <li class="completed">
-                    <p>Todo List</p>
-                    <i class='bx bx-dots-vertical-rounded'></i>
+            <ul class="box-info">
+                <li>
+                    <i class='bx bxs-calendar-check'></i>
+                    <span class="text">
+                        <h3>1020</h3>
+                        <p>Total Teachers</p>
+                    </span>
                 </li>
-                <li class="completed">
-                    <p>Todo List</p>
-                    <i class='bx bx-dots-vertical-rounded'></i>
+                <li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>2837</h3>
+                        <p>Total Students</p>
+                    </span>
                 </li>
-                <li class="not-completed">
-                    <p>Todo List</p>
-                    <i class='bx bx-dots-vertical-rounded'></i>
-                </li>
-                <li class="completed">
-                    <p>Todo List</p>
-                    <i class='bx bx-dots-vertical-rounded'></i>
-                </li>
-                <li class="not-completed">
-                    <p>Todo List</p>
-                    <i class='bx bx-dots-vertical-rounded'></i>
+                <li>
+                    <i class='bx bxs-dollar-circle'></i>
+                    <span class="text">
+                        <h3>2543</h3>
+                        <p>Total Users</p>
+                    </span>
                 </li>
             </ul>
-        </div>
-    </div>
-</main>
-<!-- END OF MAIN -->
-<!-- END OF CONTENT -->
+            
+            <div class="table-data">
+                <div class="order">
+                    <div class="head">
+                        <h3>Recent Users</h3>
+                        <i class='bx bx-search'></i>
+                        <i class='bx bx-filter'></i>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Users</th>
+                                <th class="pr-2">Role</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pending_user in pending_users %}
+                            <tr>
+                                <td>
+                                    <a href="{{ pending_user.profile_photo.url }}" data-lightbox="user-image" data-title="{{ pending_user.first_name }}">
+                                        <img src="{{ pending_user.profile_photo.url }}" alt="{{ pending_user.first_name }}" class="thumbnail">
+                                    </a>                                    
+                                    
+                                    <p class="pl-5">{{ pending_user.first_name }} {{ pending_user.last_name }}</p>
+                                </td>
+                                <td>
+                                    <p class="pr-2">{{ pending_user.role }}</p>
+                                </td>
+                                <td>
+                                    <a href="{%url 'approve_user' user_id=pending_user.id%}" class="status completed">Approve</a>
+                                </td>
+                                <td>
+                                    <div class="px-3">
+
+                                        <a href="{%url 'decline_users' user_id=pending_user.id%}" class="status bg-red-500">Decline</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3">No pending users.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    
+            </div>
+                <div class="todo">
+                    <div class="head">
+                        <h3>Todos</h3>
+                        <i class='bx bx-plus'></i>
+                        <i class='bx bx-filter'></i>
+                    </div>
+                    <ul class="todo-list">
+                        <li class="completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                        <li class="completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                        <li class="not-completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                        <li class="completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                        <li class="not-completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded'></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <!-- END OF MAIN -->
+    </section>
+    <!-- END OF CONTENT -->
 
 {%endblock section%}

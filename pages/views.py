@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from administration.models import Teacher
 
 # Create your views here.
 
@@ -50,4 +51,5 @@ def student_dashboard(request):
 # All admin pages
 
 def myTeacher(request):
-    return render(request, 'dashboards/all_admin_pages/myTeachers.html')
+    teacher = Teacher.objects.all()
+    return render(request, 'dashboards/all_admin_pages/myTeachers.html', {'teacher': teacher})

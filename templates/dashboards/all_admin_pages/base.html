@@ -2,8 +2,8 @@
 {%load static%}
 {%block content%}
 
-{% url 'admin_dashboard' as admin_dashboard%}
-{% url 'my_teacher' as my_teacher%}
+{%url 'admin_dashboard' as admin_dashboard%}
+{%url 'my_teacher' as my_teacher%}
 
 <!-- SIDEBAR -->
 <section id="sidebar">
@@ -80,13 +80,11 @@
         <!-- MAIN -->
         
 
-            {%block section%}
-            {%endblock section%}
-                </div>
-            </div>
-        </main>
-        <!-- END OF MAIN -->
-    </section>
-    <!-- END OF CONTENT -->
+        {%block section%}
+        {%endblock section%}
+</main>
+<!-- END OF MAIN -->
+</section>
+<!-- END OF CONTENT -->
 
 {%endblock content%}

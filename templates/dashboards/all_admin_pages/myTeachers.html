@@ -1,9 +1,28 @@
-{%extends 'dashboards/all_admin_pages/base.html'%}
-{%load static%}
-{%block section%}
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+
+{% block section %}
 <div class="table-data">
     <div class="order">
-        my name odin
+        {% if teacher %}
+            <ul>
+                {% for teacher in teacher %}
+                    <li>
+                        {{ teacher.user.first_name }} {{ teacher.user.last_name }} -
+                        {% if teacher.classes.all %}
+                            {{ teacher.classes.all|join:", " }}
+                        {% else %}
+                            No classes assigned
+                        {% endif %}
+                    </li>
+                    <li>
+                        {{ teacher.subject.all|join:", " }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No teachers found.</p>
+        {% endif %}
     </div>
 </div>
-{%endblock section%}
+{% endblock %}

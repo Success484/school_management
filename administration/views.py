@@ -49,11 +49,12 @@ def add_teacher(request, user_id):
     if existing_teacher:
         return redirect('teacher_dashboard')
     if request.method == 'POST':
-        form = TeacherForm(request.POST, request.FILES)
+        form = TeacherForm(request.POST)
         if form.is_valid():
             teacher = form.save(commit=False)
             teacher.user = user
             teacher.save()
+            form.save_m2m()
             return redirect('teacher_dashboard') 
         else:
             print(form.errors)
@@ -74,7 +75,7 @@ def add_student(request, user_id):
     if existing_student:
         return redirect('student_dashboard')
     if request.method == 'POST':
-        form = StudentForm(request.POST, request.FILES)
+        form = StudentForm(request.POST)
         if form.is_valid():
             student = form.save(commit=False)
             student.user = user
