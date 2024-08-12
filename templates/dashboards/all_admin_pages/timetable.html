@@ -1,0 +1,35 @@
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+{% block section %}
+
+<!-- Form for Timetable Creation or Editing -->
+<form action="{%url 'create_timetable'%}" enctype="multipart/form-data">
+    {%csrf_token%}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+<!-- Timetable Display Table -->
+<table class="table-auto w-full text-left mt-6">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">Class</th>
+            <th class="px-4 py-2">Subject</th>
+            <th class="px-4 py-2">Day of Week</th>
+            <th class="px-4 py-2">Start Time</th>
+            <th class="px-4 py-2">End Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for timetable in timetables %}
+        <tr>
+            <td class="border px-4 py-2">{{ timetable.class_info.name }}</td>
+            <td class="border px-4 py-2">{{ timetable.subject_one.name }}</td>
+            <td class="border px-4 py-2">{{ timetable.day_of_week }}</td>
+            <td class="border px-4 py-2">{{ timetable.subject_one_start_time }}</td>
+            <td class="border px-4 py-2">{{ timetable.subject_one_end_time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock section %}

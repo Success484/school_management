@@ -1,0 +1,18 @@
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+{% block section %}
+
+<div class="m-3 text-black rounded-lg">
+    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">ALL Classes</p>
+    <ul class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-center" >
+        {%if class%}
+        {%for classes in class%}
+        <a href="{%url 'class_details' user_id=classes.id%}">
+            <li class="p-5 rounded-lg font-medium text-gray-700" style="background-color: #F9F9F9;">{{classes.name}}</li>
+        </a>
+        {%endfor%}
+        {%endif%}
+    </ul>
+</div>
+
+{%endblock section%}

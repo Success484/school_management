@@ -5,11 +5,13 @@
 {%url 'admin_dashboard' as admin_dashboard%}
 {%url 'my_teacher' as my_teacher%}
 {%url 'my_student' as my_student%}
+{%url 'my_class' as my_class%}
+{%url 'create_timetable' as create_timetable%}
 
 
 <!-- SIDEBAR -->
 <section id="sidebar">
-        <a href="" class="brand">
+        <a href="{%url 'admin_dashboard'%}" class="brand">
             <i class='bx bxs-smile' ></i>
             <span class="text">Admin</span>
         </a>
@@ -32,10 +34,16 @@
                     <span class="text">My Teachers</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{% if request.path == my_class %}active{% endif %}">
+                <a href="{{my_class}}">
                     <i class='bx bxs-building-house' ></i>
                     <span class="text">All Classes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{{create_timetable}}">
+                    <i class='bx bxs-building-house' ></i>
+                    <span class="text">Timetable</span>
                 </a>
             </li>
         </ul>

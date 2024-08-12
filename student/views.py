@@ -10,17 +10,21 @@ def create_timetable(request):
         form = TimetableForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('timetable_list')
+            return redirect('create_timetable')
     else:
         form = TimetableForm()
-    return render(request, 'class/create_timetable.html', {'form': form})
+    timetables = Timetable.objects.all()
+    context={
+        'form':form,
+        'timetables':timetables
+    }
+    return render(request, 'dashboards/all_admin_pages/timetable.html',context )
 
 
 
 def view_timetable(request):
-    student = request.user.student 
-    timetables = Timetable.objects.filter(class_info__students=student)
-    return render(request, 'student/timetable_list.html', {'timetables': timetables})
+    timetables = Timetable.objects.all()
+    return render(request, 'dashboards/all_admin_pages/timetable.html', {'timetables': timetables})
 
 
 def view_attendance(request):
