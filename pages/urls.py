@@ -3,7 +3,7 @@ from pages.views import (homePage, aboutPage,
                          course_Page, page_404, team, 
                          testimonial, contact, teacher_dashboard, 
                          student_dashboard, myTeacher, teacherDetails,
-                         myStudent, studentDetails)
+                         myStudent, studentDetails, )
 
 urlpatterns = [
     path('', homePage, name='home_page'),
@@ -20,5 +20,4 @@ urlpatterns = [
     path('admin_dashboard/myteachers/<int:user_id>/', teacherDetails, name='teacher_detail'),
     path('admin_dashboard/mystudents/', myStudent, name='my_student'),
     path('admin_dashboard/mystudents/<int:user_id>/', studentDetails, name='student_detail'),
-
 ]

@@ -1,0 +1,27 @@
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+{% block section %}
+
+<div class="m-3 text-black rounded-lg">
+    <p class="text-right p-3 mb-3 font-normal text-white"><a href="{%url 'create_subject'%}" class="bg-blue-500 p-3 rounded-lg">+ Create Subjects</a></p>
+    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Class Subjects</p>
+        
+    <div id="accordion">
+        {% for class in classes %}
+            <h3>{{ class.name }}</h3>
+            <div>
+                <ul>
+                    {% for subject in class.subjects.all %}
+                        <li>{{ subject.name }}</li>
+                    {% empty %}
+                        <li>No subjects available for this class.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+{%endblock section%}

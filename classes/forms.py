@@ -6,8 +6,8 @@ class ClassForm(forms.ModelForm):
         model = Class
         fields = ['name', 'subjects']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'subjects': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'class-form', 'placeholder':'Enter class name'}),
+            'subjects': forms.SelectMultiple(attrs={'class': 'class-form select2-multiple'}),
         }
 
 
@@ -17,5 +17,5 @@ class SubjectForm(forms.ModelForm):
         model = Subject
         fields = ['name']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'})
+            'name': forms.TextInput(attrs={'class': 'form-control class-form', 'placeholder':'Enter subject name'})
         }

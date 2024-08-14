@@ -404,7 +404,7 @@ body {
     background: var(--light);
     padding: 16px;
     overflow-x: auto;
-    margin: 16px;
+    /* margin: 16px; */
 }
 
 #content main .table-data .head {
@@ -526,8 +526,15 @@ body {
 
 #content main .table-data .todo .todo-list li:last-child {
     margin-bottom: 0;
-
 }
+
+.class-form{
+    width: 100%;
+    border: red;
+}
+
+
+
 
 /* END OF MAIN */
 /* END CONTENT */

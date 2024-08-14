@@ -11,14 +11,14 @@ def create_timetable(request):
         if form.is_valid():
             form.save()
             return redirect('create_timetable')
+        else:
+            print(form.errors)
     else:
         form = TimetableForm()
-    timetables = Timetable.objects.all()
-    context={
-        'form':form,
-        'timetables':timetables
+    context = {
+        'form': form,
     }
-    return render(request, 'dashboards/all_admin_pages/timetable.html',context )
+    return render(request, 'dashboards/all_admin_pages/timetable.html', context)
 
 
 

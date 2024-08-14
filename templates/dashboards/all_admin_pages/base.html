@@ -7,6 +7,7 @@
 {%url 'my_student' as my_student%}
 {%url 'my_class' as my_class%}
 {%url 'create_timetable' as create_timetable%}
+{%url 'subject_list' as subject_list%}
 
 
 <!-- SIDEBAR -->
@@ -40,10 +41,16 @@
                     <span class="text">All Classes</span>
                 </a>
             </li>
-            <li class="">
+            <li class="{% if request.path == create_timetable %}active{% endif %}">
                 <a href="{{create_timetable}}">
                     <i class='bx bxs-building-house' ></i>
-                    <span class="text">Timetable</span>
+                    <span class="text">Create Timetable</span>
+                </a>
+            </li>
+            <li class="{% if request.path == subject_list %}active{% endif %}">
+                <a href="{{subject_list}}">
+                    <i class='bx bxs-book-reader' ></i>
+                    <span class="text">Subject</span>
                 </a>
             </li>
         </ul>
