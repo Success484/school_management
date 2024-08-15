@@ -1,0 +1,46 @@
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+{% block section %}
+
+
+
+<div class="text-black flex flex-col items-center justify-center m-3 rounded-lg p-3" style="background-color: #F9F9F9;">
+    <h1 class="text-3xl font-bold my-8">Edit Teacher Information</h1>
+    <form action="{% url 'edit_teacher' teacher_id=teacher.id %}" method="post" enctype="multipart/form-data" class="rounded-lg w-full max-w-md">
+        {% if form.non_field_errors %}
+            <h3 class="text-2xl font-semibold text-primary text-center mb-6">{{ form.non_field_errors }}</h3>
+        {% endif %}
+        {% csrf_token %}
+
+      <div class="mb-4">
+        {{ form.phone_number.label_tag }}
+        {{ form.phone_number }}
+      </div>
+  
+      <div class="mb-6">
+        {{ form.home_address.label_tag }}
+        {{ form.home_address }}
+      </div>
+      <div class="mb-6">
+        {{ form.subject.label_tag }}
+        {{form.subject}}
+        {% for error in form.subject.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+      </div>
+  
+      <div class="mb-4">
+        {{ form.classes.label_tag }}
+        {{form.classes}}
+      </div>
+
+      <div class="mb-4">
+        {{ form.emergency_contact.label_tag }}
+        {{form.emergency_contact}}
+      </div>
+  
+      <button class="bg-blue-500 text-white py-2 px-4 rounded-md mb-3">Edit</button>
+    </form>
+  </div>
+
+{%endblock section%}

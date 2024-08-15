@@ -1,0 +1,137 @@
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+{% block section %}
+
+
+
+<p class="m-3 p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">EDIT TIMETABLE</p>
+<div class="text-black flex flex-col items-center justify-center m-3 rounded-lg p-3" style="background-color: #F9F9F9;">
+    <form action="{%url 'edit_timetable' table_id=table.id%}" method="post">
+        {% csrf_token %}
+        <div class="mb-6">
+            {{ table_form.class_info.label_tag }}
+            {{ table_form.class_info }}
+        </div>
+        <div class="mb-6">
+            {{ table_form.day_of_week.label_tag }}
+            {{ table_form.day_of_week }}
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-1">
+            <div class="border-2 border-gray-300 rounded-lg p-1">
+                <div class="mb-2">
+                    <span>First subject <br></span>
+                    {{ table_form.subject_one }}
+                </div>
+        
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{ table_form.subject_one_start_time }}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{ table_form.subject_one_end_time }}
+                </div>
+            </div>
+            
+            <div class="border-2 border-gray-300 rounded-lg p-1">
+                <div class="mb-2">
+                    <span>Second subject <br></span>
+                    {{ table_form.subject_two }}
+                </div>
+        
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{ table_form.subject_two_start_time }}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{ table_form.subject_two_end_time }}
+                </div>
+            </div>
+
+            <div class="border-2 border-gray-300 rounded-lg p-1">
+                <div class="mb-2">
+                    <span>Third subject <br></span>
+                    {{ table_form.subject_three }}
+                </div>
+                
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{ table_form.subject_three_start_time }}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{ table_form.subject_three_end_time }}
+                </div>
+            </div>
+
+            <div class="border-2 border-gray-300 rounded-lg p-1">
+                <div class="mb-2">
+                    <span>Fourth subject <br></span>
+                    {{ table_form.subject_four }}
+                </div>
+                
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{ table_form.subject_four_start_time }}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{ table_form.subject_four_end_time }}
+                </div>
+            </div>
+
+            <div class="border-2 border-gray-300 rounded-lg p-1">
+                <div class="mb-2">
+                    <span>Fifth subject <br></span>
+                    {{ table_form.subject_five }}
+                </div>
+        
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{ table_form.subject_five_start_time }}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{ table_form.subject_five_end_time }}
+                </div>
+            </div>
+
+            <div class="border-2 border-gray-300 rounded-lg p-1">
+                <div class="mb-2">
+                    <span>Sixth subject <br></span>
+                    {{ table_form.subject_six }}
+                </div>
+                
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{ table_form.subject_six_start_time }}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{ table_form.subject_six_end_time }}
+                </div>
+            </div>
+            
+            <div class="border-2 border-gray-300 rounded-lg p-1">
+                <div class="mb-2">
+                    <span>Seventh subject <br></span>
+                    {{ table_form.subject_seven }}
+                </div>
+        
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{ table_form.subject_seven_start_time }}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{ table_form.subject_seven_end_time }}
+                </div>
+            </div>
+        </div>
+        <a href="{% url 'class_details' user_id=table.class_info.id %}" class="bg-blue-500 text-white m-3 py-2 p-4 rounded-md mb-3">Go Back</a>
+        <button type="submit" class="bg-gray-300 p-3 rounded-lg mt-2 text-gray-600 hover:text-gray-800">update</button>
+        </form>
+  </div>
+  
+{%endblock section%}

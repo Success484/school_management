@@ -1,9 +1,14 @@
 from django.db import models
 from accounts.models import CustomUser
 from classes.models import Class, Subject
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
 # Create your models here.
 class Teacher(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='teacher_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher_profile')
     phone_number = models.CharField(max_length=15)
     subject = models.ManyToManyField(Subject, max_length=100)
     home_address = models.TextField()

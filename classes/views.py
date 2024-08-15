@@ -4,6 +4,8 @@ from .forms import ClassForm, SubjectForm
 from .models import Class, Subject
 from administration.models import Student, Teacher
 from student.models import Timetable
+from django.contrib import messages
+
 
 def create_class(request):
     if request.method == 'POST':
@@ -14,6 +16,15 @@ def create_class(request):
     else:
         form = ClassForm()
     return render(request, 'dashboards/all_admin_pages/create_class.html', {'form': form})
+
+def delete_class(request, class_id):
+    classes = get_object_or_404(Class, id=class_id)
+    if request.method=='POST':
+        classes.delete()
+        messages.success(request, "Class have been deleted successfully.")
+        return redirect('my_class')
+    return render(request, 'dashboards/all_admin_pages/delete_class.html', {'classes': classes})
+
 
 def class_list(request):
     classes = Class.objects.all()

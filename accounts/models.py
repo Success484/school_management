@@ -33,7 +33,7 @@ class CustomUser(AbstractUser):
     is_approved = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
-    profile_photo = models.ImageField(upload_to='profile_photo/', default='default.jpg', blank=False, null=False)
+    profile_photo = models.ImageField(upload_to='profile_photo/', default='default.jpg', blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
