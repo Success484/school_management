@@ -6,7 +6,7 @@
 
 <div class="text-black flex flex-col items-center justify-center m-3 rounded-lg p-3" style="background-color: #F9F9F9;">
     <h1 class="text-3xl font-bold my-8">Edit Students Information</h1>
-    <form action="{% url 'edit_student' user.id %}" method="post" enctype="multipart/form-data" class="rounded-lg w-full max-w-md">
+    <form action="{% url 'edit_student' student_id=student.id %}" method="post" enctype="multipart/form-data" class="rounded-lg w-full max-w-md">
         {% if form.non_field_errors %}
             <h3 class="text-2xl font-semibold text-primary text-center mb-6">{{ form.non_field_errors }}</h3>
         {% endif %}

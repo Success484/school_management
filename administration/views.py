@@ -3,9 +3,8 @@ from django.http import HttpResponseForbidden
 from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from administration.forms import TeacherForm, StudentForm
-from administration.models import Student, Teacher
-from django.contrib.auth import get_user_model
+from administration.forms import TeacherForm, StudentForm, AnnoucementForm
+from administration.models import Student, Teacher, Annoucement
 # Create your views here.
 
 
@@ -68,6 +67,7 @@ def edit_teacher(request, teacher_id):
         form = TeacherForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
+            messages.success(request, 'teacher details successfully updated')
             return redirect('teacher_detail', user_id=teacher.user.id)
     else:
         form = TeacherForm(instance=teacher)
@@ -88,9 +88,10 @@ def delete_teacher(request, teacher_id):
         user = teacher.user
         teacher.delete()
         user.delete()
-        messages.success(request, "Teacher and associated user have been deleted successfully.")
+        messages.success(request, "Teacher have been deleted successfully.")
         return redirect('my_teacher')
     return render(request, 'dashboards/all_admin_pages/delete_teacher.html',{'teacher': teacher})
+
 
 @login_required
 def add_student(request, user_id):
@@ -121,6 +122,7 @@ def edit_student(request, student_id):
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Student details successfully updated')
             return redirect('student_detail', user_id=student.user.id)
     else:
         form = StudentForm(instance=student)
@@ -138,5 +140,47 @@ def delete_student(request, student_id):
         user = student.user
         student.delete()
         user.delete()
+        messages.success(request, "Student have been deleted successfully.")
         return redirect('my_student')
     return render(request, 'dashboards/all_admin_pages/delete_student.html', {'student':student})
+
+
+@login_required
+def annoucement(request):
+    post = Annoucement.objects.all()
+    return render(request, 'dashboards/all_admin_pages/Annoucement.html', {'posts':post})
+
+
+@login_required
+def create_annoucement(request):
+    if request.method == 'POST':
+        form = AnnoucementForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Annoucement created successfully')
+            return redirect('annoucement')
+    else:
+        form = AnnoucementForm()
+    return render(request, 'dashboards/all_admin_pages/create_annoucement.html', {'form':form})
+
+
+@login_required
+def edit_annoucement(request, post_id):
+    post = get_object_or_404(Annoucement, id=post_id)
+    if request.method == 'POST':
+        form = AnnoucementForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Annoucement updated successfully')
+            return redirect('annoucement')
+    else:
+        form = AnnoucementForm(instance=post)
+    return render(request, 'dashboards/all_admin_pages/create_annoucement.html', {'form':form})
+
+
+@login_required
+def delete_annoucement(request, post_id):
+    post = get_object_or_404(Annoucement, id=post_id)
+    post.delete()
+    messages.success(request, 'Announcement delete successfully')
+    return redirect('annoucement')

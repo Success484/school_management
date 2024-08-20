@@ -5,6 +5,11 @@
 <div class="m-3 text-black rounded-lg">
     <p class="text-right p-3 mb-3 font-normal text-white"><a href="{%url 'create_class'%}" class="bg-blue-500 p-3 rounded-lg">+ Create Class</a></p>
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">ALL Classes</p>
+    {% if messages %}
+    {% for message in messages %}
+    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+    {% endfor %}
+    {% endif %}
     <ul class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-center" >
         {%if class%}
         {%for classes in class%}

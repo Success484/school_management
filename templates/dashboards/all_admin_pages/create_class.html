@@ -4,7 +4,8 @@
 
 <div class="m-3 text-black rounded-lg">
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Create Class</p>
-    <form action="{%url 'create_class'%}" method="post">
+    <div class="flex justify-center">
+    <form action="" method="post">
         {%csrf_token%}
         <div class="mb-3">
             {{form.name.label_tag}}
@@ -20,6 +21,7 @@
 
         <button class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-primary/80 transition-colors">Create</button>    
     </form>
+    </div>
 </div>
 
 {%endblock section%}

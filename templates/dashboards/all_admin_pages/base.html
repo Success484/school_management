@@ -8,6 +8,8 @@
 {%url 'my_class' as my_class%}
 {%url 'create_timetable' as create_timetable%}
 {%url 'subject_list' as subject_list%}
+{%url 'annoucement' as annoucement%}
+
 
 
 <!-- SIDEBAR -->
@@ -56,8 +58,8 @@
         </ul>
         <!--  -->
         <ul class="side-menu">
-        <li>
-            <a href="#">
+        <li class="{% if request.path == annoucement %}active{% endif %}">
+            <a href="{{annoucement}}">
                 <i class='bx bxs-book-reader' ></i>
                 <span class="text">Announcements</span>
             </a>

@@ -2,23 +2,37 @@
 {% load static %}
 {% block section %}
 
-<div class="m-3 text-black rounded-lg">
+<div class="m-3 text-black">
     <p class="text-right p-3 mb-3 font-normal text-white"><a href="{%url 'create_subject'%}" class="bg-blue-500 p-3 rounded-lg">+ Create Subjects</a></p>
+    {% if messages %}
+    {% for message in messages %}
+    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+    {% endfor %}
+    {% endif %}
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Class Subjects</p>
         
     <div id="accordion">
         {% for class in classes %}
-            <h3>{{ class.name }}</h3>
+            <h3>{{ class.name }} SUBJECTS</h3>
             <div>
                 <ul>
                     {% for subject in class.subjects.all %}
-                        <li>{{ subject.name }}</li>
+                        <li style="list-style: decimal-leading-zero;">{{ subject.name }}</li>
                     {% empty %}
                         <li>No subjects available for this class.</li>
                     {% endfor %}
                 </ul>
             </div>
         {% endfor %}
+    </div>
+    <p class="text-center p-5 mt-6 rounded-t-lg font-medium text-gray-600" style="background-color: #F9F9F9;">All Subjects</p>
+    <div style="background-color: #F9F9F9;" class="p-10">
+            {%for subjects in all_subjects%}
+            <ul class="border-b-2 border-gray-500 flex justify-between">
+                <li>{{subjects}}</li>
+                <li class="text-red-500"><a href="{%url 'remove_subject' sub_id=subjects.id%}">remove subject</a></li>
+            </ul>
+            {%endfor%}
     </div>
 
 

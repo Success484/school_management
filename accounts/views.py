@@ -59,7 +59,7 @@ def user_login(request):  # LOGIN VIEW FUNCTION
 
 
 
-def user_logout(request):       #LOGOUT VIEW FUNCTION
+def user_logout(request):
     logout(request)
     messages.success(request, 'You have been logged out successfully.')
     return redirect('login') 

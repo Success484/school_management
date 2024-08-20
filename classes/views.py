@@ -12,9 +12,22 @@ def create_class(request):
         form = ClassForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('my_class')  # Redirect to the list of classes after saving
+            messages.success(request, 'Class created successfully')
+            return redirect('my_class')
     else:
         form = ClassForm()
+    return render(request, 'dashboards/all_admin_pages/create_class.html', {'form': form})
+
+def edit_class(request, class_id):
+    classes = get_object_or_404(Class, id=class_id)
+    if request.method == 'POST':
+        form = ClassForm(request.POST, instance=classes)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Class updated successfully')
+            return redirect('my_class')
+    else:
+        form = ClassForm(instance=classes)
     return render(request, 'dashboards/all_admin_pages/create_class.html', {'form': form})
 
 def delete_class(request, class_id):
@@ -36,26 +49,36 @@ def create_subject(request):
         form = SubjectForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('subject_list')  # Redirect to the list of subjects after saving
+            messages.success(request, 'Subject created successfully')
+            return redirect('subject_list')
     else:
         form = SubjectForm()
     return render(request, 'dashboards/all_admin_pages/subjects.html', {'form': form})
 
 
 def subject_list(request):
+    all_subject = Subject.objects.all()
     classes = Class.objects.all()
-    subject = Subject.objects.filter(subjects__in = classes)
+    subject = Subject.objects.filter(classes__in = classes)
     context={
         'classes':classes,
-        'subject': subject
+        'subject': subject,
+        'all_subjects':all_subject
     }
     return render(request, 'dashboards/all_admin_pages/subject_list.html', context)
 
 
-# Admin pages ( All classes )
+def remove_subject(request, sub_id):
+    subject = get_object_or_404(Subject, id=sub_id)
+    subject.delete()
+    messages.success(request, 'Subject successfully removed')
+    return redirect('subject_list')
+
+
 def myClass(request):
     classes = Class.objects.all()
     return render(request, 'dashboards/all_admin_pages/myClass.html', {'class': classes})
+
 
 def classDetail(request, user_id):
     classes = get_object_or_404(Class, id=user_id)

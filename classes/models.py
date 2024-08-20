@@ -8,7 +8,7 @@ class Subject(models.Model):
 
 class Class(models.Model):
     name = models.CharField(max_length=100)
-    subjects = models.ManyToManyField(Subject, related_name='subjects')
+    subjects = models.ManyToManyField(Subject, related_name='classes')
 
     def __str__(self):
         return self.name

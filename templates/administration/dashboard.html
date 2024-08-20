@@ -53,6 +53,11 @@
                         <i class='bx bx-search'></i>
                         <i class='bx bx-filter'></i>
                     </div>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+                    {% endfor %}
+                    {% endif %}
                     <table class="table">
                         <thead>
                             <tr>

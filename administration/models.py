@@ -5,8 +5,8 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-
 # Create your models here.
+
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher_profile')
     phone_number = models.CharField(max_length=15)
@@ -32,3 +32,13 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
+
+
+class Annoucement(models.Model):
+    title = models.CharField(max_length=300)
+    subject = models.CharField(max_length=300, null=False)
+    description = models.CharField(max_length=1000)
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.title} - {self.date_posted}"

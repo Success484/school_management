@@ -1,11 +1,10 @@
 from django import forms
-from .models import Timetable
+from .models import Timetable, Subject
 
 class TimetableForm(forms.ModelForm):
     class Meta:
         model = Timetable
         fields = [
-            'class_info',
             'subject_one',
             'subject_two',
             'subject_three',
@@ -30,7 +29,6 @@ class TimetableForm(forms.ModelForm):
             'day_of_week'
         ]
         widgets = {
-            'class_info': forms.Select(attrs={'class': 'form-control'}),
             'subject_one': forms.Select(attrs={'class': 'form-control'}),
             'subject_two': forms.Select(attrs={'class': 'form-control'}),
             'subject_three': forms.Select(attrs={'class': 'form-control'}),

@@ -1,5 +1,5 @@
 from django import forms
-from administration.models import Teacher, Student
+from administration.models import Teacher, Student, Annoucement
 
 class TeacherForm(forms.ModelForm):
     class Meta:
@@ -40,3 +40,13 @@ class StudentForm(forms.ModelForm):
             'parent_email': forms.TextInput(attrs={'class': 'form-control'}),
         }
         
+
+class AnnoucementForm(forms.ModelForm):
+    class Meta:
+        model = Annoucement
+        fields = ['title', 'subject', 'description']
+        widgets = {
+            'title' : forms.TextInput(attrs={'class': 'annoucement-title'}),
+            'subject' : forms.TextInput(attrs={'class': 'annoucement-suject'}),
+            'description' : forms.Textarea(attrs={'class': 'annoucement-decription'}),
+        }

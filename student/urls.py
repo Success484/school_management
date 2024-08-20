@@ -5,6 +5,7 @@ from student import views
 
 urlpatterns = [
     path('timetable/create/', views.create_timetable, name='create_timetable'),
+    path('timetable/create/class_timetable/<int:class_id>/', views.create_class_timetable, name='create_class_timetable'),
     path('timetable/create/', views.view_timetable, name='view_timetable'),
     path('timetable/edit/<int:table_id>/', views.edit_timetable, name='edit_timetable'),
     path('attendance/', views.view_attendance, name='view_attendance'),
