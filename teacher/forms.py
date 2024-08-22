@@ -1,5 +1,7 @@
 from django import forms
-from teacher.models import TeacherClass, Attendance, Grade
+from .models import TeacherClass, Attendance, Grade
+
+
 
 class TeacherClassForm(forms.ModelForm):
     class Meta:
@@ -16,13 +18,11 @@ class TeacherClassForm(forms.ModelForm):
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attendance
-        fields = ['student', 'class_info', 'status', 'day_of_week']
+        fields = ['student', 'status']
         widgets = {
             'student': forms.Select(attrs={'class': 'form-control'}),
-            'class_info': forms.Select(attrs={'class': 'form-control'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'status': forms.Select(attrs={'class': 'form-control'}),
-            'day_of_week': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.CheckboxInput(),
         }
 
 

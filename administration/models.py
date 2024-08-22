@@ -10,7 +10,7 @@ User = get_user_model()
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher_profile')
     phone_number = models.CharField(max_length=15)
-    subject = models.ManyToManyField(Subject, max_length=100)
+    subject = models.ManyToManyField(Subject, related_name='teachers')
     home_address = models.TextField()
     classes = models.ManyToManyField(Class, related_name='teacher_classes')
     emergency_contact = models.CharField(max_length=100)

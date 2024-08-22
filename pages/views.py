@@ -39,7 +39,8 @@ def teacher_dashboard(request):
     if not request.user.is_teacher:
         return HttpResponseForbidden("You do not have permission to access this page.")
     user = request.user
-    return render(request, 'dashboards/teachers.html', {'user':user})
+    return render(request, 'dashboards/all_teacher_pages/teachers.html', {'user':user})
+
 
 @login_required
 def student_dashboard(request):

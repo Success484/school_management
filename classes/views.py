@@ -5,6 +5,7 @@ from .models import Class, Subject
 from administration.models import Student, Teacher
 from student.models import Timetable
 from django.contrib import messages
+from teacher.models import Attendance
 
 
 def create_class(request):
@@ -18,6 +19,7 @@ def create_class(request):
         form = ClassForm()
     return render(request, 'dashboards/all_admin_pages/create_class.html', {'form': form})
 
+
 def edit_class(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
     if request.method == 'POST':
@@ -29,6 +31,7 @@ def edit_class(request, class_id):
     else:
         form = ClassForm(instance=classes)
     return render(request, 'dashboards/all_admin_pages/create_class.html', {'form': form})
+
 
 def delete_class(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
@@ -85,10 +88,12 @@ def classDetail(request, user_id):
     student = Student.objects.filter(student_class =  classes)
     teacher = Teacher.objects.filter(classes = classes)
     timetable = Timetable.objects.filter(class_info = classes)
+    class_attendance_records = Attendance.objects.filter(class_info=classes)
     context = {
         'class': classes,
         'student': student,
         'teacher': teacher,
-        'timetables': timetable
+        'timetables': timetable,
+        'class_attendance_records':class_attendance_records
     }
     return render(request, 'dashboards/all_admin_pages/classDetail.html', context)
