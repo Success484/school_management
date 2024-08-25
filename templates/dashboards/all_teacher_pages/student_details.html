@@ -23,7 +23,7 @@
                         <li>Class: {{ student.student_class }}</li>
                     </ul>
                 </div>
-                {%if request.user is superuser%}
+                {%if request.user.is_superuser%}
                 <div class="bg-card p-4 rounded-lg my-4">
                     <h2 class="text-lg font-bold">Contact</h2>
                     <ul class="text-sm mt-2">
@@ -36,7 +36,7 @@
                 </div>
                 {%else%}
                 {%endif%}
-                {%if request.user is superuser%}
+                {%if request.user.is_superuser%}
                 <div class="flex">
                     <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'edit_student' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg">Edit Student</a></div>
                     <div class="text-left p-3 mb-3 font-normal text-white text-right"><a href="{%url 'delete_student' student_id=student.id%}" class="bg-red-500 p-3 rounded-lg">Delete Student</a></div>

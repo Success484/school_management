@@ -3,80 +3,39 @@
 {% block section %}
 
 <div class="m-3 text-black rounded-lg">
+  <form action="" method="post">
+    {%csrf_token%}
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Mark Attendance Record for {{classes.name}}</p>
     
     <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
         <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE SHEET</h1>
-        <form action="" method="post">
-          {%csrf_token%}
-          <table class="min-w-full border-collapse border border-zinc-400">
+        <table>
             <thead>
-            <tr>
-              <th class="border border-zinc-400 bg-blue-200 p-2">STUDENT NAME</th>
-              <th class="border border-zinc-400 bg-pink-200 p-2">M</th>
-              <th class="border border-zinc-400 bg-pink-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-pink-200 p-2">W</th>
-              <th class="border border-zinc-400 bg-pink-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-pink-200 p-2">F</th>
-              <th class="border border-zinc-400 bg-yellow-200 p-2">M</th>
-              <th class="border border-zinc-400 bg-yellow-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-yellow-200 p-2">W</th>
-              <th class="border border-zinc-400 bg-yellow-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-yellow-200 p-2">F</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">M</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">W</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">F</th>
-              <th class="border border-zinc-400 bg-blue-200 p-2">M</th>
-              <th class="border border-zinc-400 bg-blue-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-blue-200 p-2">W</th>
-              <th class="border border-zinc-400 bg-blue-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-blue-200 p-2">F</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">M</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">W</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">T</th>
-              <th class="border border-zinc-400 bg-green-200 p-2">F</th>
-            </tr>
-          </thead>
-          <tbody>
-            {%for student, form in forms%}
-            <tr>
-              <td class="border border-zinc-400 p-2">
-                {{student.user.first_name}} {{student.user.last_name}}
-                <input type="hidden" name="{{ form.prefix }}-student" value="{{ student.id }}">
-                <input type="hidden" name="{{ form.prefix }}-class_info" value="{{ classes.id }}">
-            </td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-              <td class="border border-zinc-400 p-2">{{form.status}}</td>
-            </tr>
-            {%endfor%}
-          </tbody>
+                <tr>
+                    <th>Student Name</th>
+                    {% for day in weekdays_in_month %}
+                        <th>Day {{ day }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                        {% for day in weekdays_in_month %}
+                            <td>
+                                <select name="status{{ forloop.counter }}_{{ student.id }}">
+                                    <option value="D" {% if 'D' in 'status' %}selected{% endif %}>Default</option>
+                                    <option value="P" {% if 'P' in 'status' %}selected{% endif %}>Present</option>
+                                    <option value="A" {% if 'A' in 'status' %}selected{% endif %}>Absent</option>
+                                </select>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
+      
         <button type="submit" class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg">Save Attendance</a></button>
       </form>
       </div>

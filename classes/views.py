@@ -85,15 +85,13 @@ def myClass(request):
 
 def classDetail(request, user_id):
     classes = get_object_or_404(Class, id=user_id)
-    student = Student.objects.filter(student_class =  classes)
-    teacher = Teacher.objects.filter(classes = classes)
-    timetable = Timetable.objects.filter(class_info = classes)
-    class_attendance_records = Attendance.objects.filter(class_info=classes)
+    student = Student.objects.filter(student_class=classes)
+    teacher = Teacher.objects.filter(classes=classes)
+    timetable = Timetable.objects.filter(class_info=classes)
     context = {
         'class': classes,
         'student': student,
         'teacher': teacher,
         'timetables': timetable,
-        'class_attendance_records':class_attendance_records
     }
     return render(request, 'dashboards/all_admin_pages/classDetail.html', context)

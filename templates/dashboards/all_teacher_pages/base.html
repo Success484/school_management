@@ -27,7 +27,7 @@
                 </a>
             </li>
             <li class="{%if request.path == select_class_attendance%}active{%else%}{%endif%}">
-                <a href="{{select_class_attendance}}">
+                <a href="{% url 'select_class_attendance'%}">
                     <i class='bx bxs-book-open' ></i>
                     <span class="text">Attendance Record</span>
                 </a>

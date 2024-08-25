@@ -13,7 +13,6 @@ def create_timetable(request):
 
 def create_class_timetable(request, class_id):
     selected_class = get_object_or_404(Class, id=class_id)
-    
     if request.method == 'POST':
         form = TimetableForm(request.POST)
         if form.is_valid():
@@ -26,7 +25,7 @@ def create_class_timetable(request, class_id):
             print(form.errors)
     else:
         form = TimetableForm()
-    
+        
     form.fields['subject_one'].queryset = selected_class.subjects.all()
     form.fields['subject_two'].queryset = selected_class.subjects.all()
     form.fields['subject_three'].queryset = selected_class.subjects.all()

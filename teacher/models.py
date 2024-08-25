@@ -12,12 +12,40 @@ class TeacherClass(models.Model):
 
 
 class Attendance(models.Model):
+    STATUS_CHOICES = [
+        ('P', 'Present'),
+        ('A', 'Absent'),
+        ('D', 'Default'),
+    ]
+    
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='attendance', null=True, blank=True,)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='attendance_records', null=True, blank=True)
-    date = models.DateField(auto_now_add=True)
-    status = models.BooleanField(default=False)
+    status1 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status2 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status3 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status4 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status5 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status6 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status7 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status8 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status9 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status10 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status11 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status12 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status13 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status14 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status15 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status16 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status17 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status18 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status19 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status20 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status21 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+    status22 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
+ 
 
     def __str__(self):
-        return f"{self.student} - {self.date} - {self.status}"
+        return f"{self.student}"
 
 
 class Grade(models.Model):

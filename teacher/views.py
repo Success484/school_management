@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from calendar import monthrange, weekday
+from datetime import date
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from teacher.forms import TeacherClassForm, AttendanceForm, GradeForm
@@ -34,14 +36,51 @@ def teacher_class_list(request):
 
 def teacher_class_details(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
-    student = Student.objects.filter(student_class =  classes)
-    teacher = Teacher.objects.filter(classes = classes)
-    timetable = Timetable.objects.filter(class_info = classes)
+    students = Student.objects.filter(student_class=classes)
+    teachers = Teacher.objects.filter(classes=classes)
+    timetables = Timetable.objects.filter(class_info=classes)
+    
+    # Get the current year and month
+    current_year = date.today().year
+    current_month = date.today().month
+    days_in_month = monthrange(current_year, current_month)[1]
+    
+    # List to store the weekdays (Monday to Friday) with corresponding day numbers
+    weekdays_in_month = []
+    
+    # Weekday labels
+    weekday_labels = ['M', 'T', 'W', 'T', 'F']
+
+    # Iterate through all days of the month
+    for day in range(1, days_in_month + 1):
+        day_date = date(current_year, current_month, day)
+        if day_date.weekday() < 5:  # Exclude Saturdays (5) and Sundays (6)
+            weekdays_in_month.append((day, weekday_labels[day_date.weekday()]))
+    
+    # Build a dictionary to store attendance for each student by weekday
+    attendance_data = {}
+    for student in students:
+        attendance_data[student] = []
+        for day, label in weekdays_in_month:
+            attendance_record = Attendance.objects.filter(
+                student=student,
+                class_info=classes,
+                date__year=current_year,
+                date__month=current_month,
+                date__day=day
+            ).first()
+            if attendance_record:
+                attendance_data[student].append(attendance_record.status)
+            else:
+                attendance_data[student].append(None)  # No record, set to None
+
     context = {
         'class': classes,
-        'student': student,
-        'teacher': teacher,
-        'timetables': timetable
+        'students': students,
+        'teachers': teachers,
+        'timetables': timetables,
+        'attendance_data': attendance_data,
+        'weekdays_in_month': weekdays_in_month,
     }
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
 
@@ -59,31 +98,87 @@ def select_class_attendance(request):
 
 def create_attendance(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
-    students = Student.objects.filter(student_class =  classes)
-    forms = []
+    students = Student.objects.filter(student_class=classes)
+    
+    current_year = date.today().year
+    current_month = date.today().month
+    days_in_month = monthrange(current_year, current_month)[1]
+    
+    weekdays_in_month = []
+    for day in range(1, days_in_month + 1):
+        day_date = date(current_year, current_month, day)
+        if day_date.weekday() < 5:  # Monday to Friday
+            weekdays_in_month.append(day)
+
     if request.method == 'POST':
         for student in students:
-            form = AttendanceForm(request.POST)
-            if form.is_valid():
-                attendance = form.save(commit=False)
-                attendance.student = student 
-                attendance.class_info = classes  
-                attendance.save()
-                messages.success(request, f'Attendance record for {attendance.class_info} marked successfully')
-                return redirect('teacher_class_list')
-            else:
-                print(form.errors)
+            # Retrieve each status from the POST data
+            status1 = request.POST.get(f'status1_{student.id}', 'D')
+            status2 = request.POST.get(f'status2_{student.id}', 'D')
+            status3 = request.POST.get(f'status3_{student.id}', 'D')
+            status4 = request.POST.get(f'status4_{student.id}', 'D')
+            status5 = request.POST.get(f'status5_{student.id}', 'D')
+            status6 = request.POST.get(f'status6_{student.id}', 'D')
+            status7 = request.POST.get(f'status7_{student.id}', 'D')
+            status8 = request.POST.get(f'status8_{student.id}', 'D')
+            status9 = request.POST.get(f'status9_{student.id}', 'D')
+            status10 = request.POST.get(f'status10_{student.id}', 'D')
+            status11 = request.POST.get(f'status11_{student.id}', 'D')
+            status12 = request.POST.get(f'status12_{student.id}', 'D')
+            status13 = request.POST.get(f'status13_{student.id}', 'D')
+            status14 = request.POST.get(f'status14_{student.id}', 'D')
+            status15 = request.POST.get(f'status15_{student.id}', 'D')
+            status16 = request.POST.get(f'status16_{student.id}', 'D')
+            status17 = request.POST.get(f'status17_{student.id}', 'D')
+            status18 = request.POST.get(f'status18_{student.id}', 'D')
+            status19 = request.POST.get(f'status19_{student.id}', 'D')
+            status20 = request.POST.get(f'status20_{student.id}', 'D')
+            status21 = request.POST.get(f'status21_{student.id}', 'D')
+            status22 = request.POST.get(f'status22_{student.id}', 'D')
+            
+            # Create or update attendance for each student
+            attendance, created = Attendance.objects.update_or_create(
+                student=student,
+                class_info=classes,
+                defaults={
+                    'status1': status1,
+                    'status2': status2,
+                    'status3': status3,
+                    'status4': status4,
+                    'status5': status5,
+                    'status6': status6,
+                    'status7': status7,
+                    'status8': status8,
+                    'status9': status9,
+                    'status10': status10,
+                    'status11': status11,
+                    'status12': status12,
+                    'status13': status13,
+                    'status14': status14,
+                    'status15': status15,
+                    'status16': status16,
+                    'status17': status17,
+                    'status18': status18,
+                    'status19': status19,
+                    'status20': status20,
+                    'status21': status21,
+                    'status22': status22,
+                }
+            )
+        return redirect('teacher_class_list')
     else:
-        forms = []
-        for student in students:
-            form = AttendanceForm(initial={'student': student}, prefix=str(student.id))
-            forms.append((student, form))
+        form = AttendanceForm()
     
     context = {
-        'forms': forms,
         'classes': classes,
+        'weekdays_in_month': weekdays_in_month,
+        'students': students,
+        'form': form
     }
     return render(request, 'dashboards/all_teacher_pages/attendance_record.html', context)
+
+
+
 
 
 
