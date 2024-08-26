@@ -5,13 +5,13 @@
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">{{class.name}} STUDENTS</p>
     <div class="order flex">
         <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {%if student%}
-            {%for students in student%}
-            <a href="{% url 'teacher_class_student_details' student_id=students.user.id %}">
+            {%if students%}
+            {%for student in students%}
+            <a href="{% url 'teacher_class_student_details' student_id=student.user.id %}">
                 <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{students.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{students.user.first_name}} {{students.user.last_name}}">
+                    <img src="{{student.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{student.user.first_name}} {{student.user.last_name}}">
                     <div class="text-center font-medium p-2">
-                        <p>{{students.user.first_name}} {{students.user.last_name}}</p>
+                        <p>{{student.user.first_name}} {{student.user.last_name}}</p>
                     </div>
                 </div>
             </a>
@@ -23,13 +23,13 @@
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 mt-3" style="background-color: #F9F9F9;">{{class.name}} TEACHERS</p>
     <div class="order flex">
         <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {%if teacher%}
-            {%for teachers in teacher%}
-            <a href="{% url 'teacher_details_page' teacher_id=teachers.user.id %}">
+            {%if teachers%}
+            {%for teacher in teachers%}
+            <a href="{% url 'teacher_details_page' teacher_id=teacher.user.id %}">
                 <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{teachers.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
+                    <img src="{{teacher.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
                     <div class="text-center font-medium p-2">
-                        <p>{{teachers.user.first_name}} {{teachers.user.last_name}}</p>
+                        <p>{{teacher.user.first_name}} {{teacher.user.last_name}}</p>
                     </div>
                 </div>
             </a>
@@ -83,7 +83,7 @@
     </table>
 </div>
     </div>
-    {%if request.user is superuser%}
+    {%if request.user.is_superuser%}
     <p class="text-right p-3 mt-3  font-normal text-white"><a href="{%url 'edit_class' class_id=class.id%}" class="bg-blue-500 p-3 rounded-lg">Edit Class</a></p>
     <p class="text-right p-3 mt-3  font-normal text-white"><a href="{%url 'delete_class' class_id=class.id%}" class="bg-red-500 p-3 rounded-lg">Delete Class</a></p>
     {%else%}
@@ -93,40 +93,41 @@
 
     <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
         <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE SHEET</h1>
-          <table class="min-w-full border-collapse border border-zinc-400">
+        <table class="min-w-full border-collapse border border-zinc-400">
             <thead>
-            <tr>
-              <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME </th>
-              {% for day, label in weekdays_in_month %}
-            <th class="border border-zinc-400 bg-{{ label|lower }}-200 p-1 bg-gray-200">
-                {{ day }}<br>{{ label }}
-            </th>
-            {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for student, attendance in attendance_data.items %}
-            <tr>
-                <td class="border border-zinc-400 p-2">
-                    {{ student }}
-                </td>
-                {% for status in attendance %}
-            <td class="border border-zinc-400 p-2">
-                {% if status is True %}
-                    <i class="fa fa-check text-green-500"></i>
-                {% elif status is False %}
-                    <i class="fa fa-times text-red-500"></i>
-                {% else %}
-                    <i class="fa fa-minus text-gray-500"></i> <!-- No record -->
-                {% endif %}
-            </td>
-            {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
+                <tr>
+                    <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME </th>
+                    {% for day, label, weekday_count in weekdays_in_month %}
+                    <th class="border border-zinc-400 bg-{{ label|lower }}-200 p-1 bg-gray-200">
+                        {{ day }}<br>{{ label }}
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student, attendance in attendance_data.items %}
+                <tr>
+                    <td class="border border-zinc-400 p-2">
+                        {{ student.user.get_full_name }}
+                    </td>
+                    {% for status in attendance %}
+                    <td class="border border-zinc-400 p-2">
+                        {% if status == 'P' %}
+                            <i class="fa fa-check text-green-500"></i>
+                        {% elif status == 'A' %}
+                            <i class="fa fa-times text-red-500"></i>
+                        {% else %}
+                            <i class="fa fa-minus text-gray-500"></i> <!-- No record -->
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-        <a href="#" type="submit" class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg">Save Attendance</a></button>
-      </div>
+        <p>Class ID: {{ class.id }}</p>
+        <a href="{% url 'edit_attendance' class_id=class.id %}" class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg">Mark Attendance</a>
+    </div>
 
 
 

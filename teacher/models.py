@@ -19,7 +19,6 @@ class Attendance(models.Model):
     ]
     
     class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='attendance', null=True, blank=True,)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='attendance_records', null=True, blank=True)
     status1 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status2 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status3 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')

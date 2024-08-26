@@ -18,13 +18,12 @@ class TeacherClassForm(forms.ModelForm):
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attendance
-        fields = ['student', 'class_info', 'status1', 'status2', 
+        fields = ['class_info', 'status1', 'status2', 
                   'status3', 'status4', 'status5', 'status6', 'status7', 
                   'status8', 'status9', 'status10', 'status11', 'status12', 
                   'status13', 'status14', 'status15', 'status16', 'status17', 
                   'status18', 'status19', 'status20', 'status21', 'status22',]
         widgets = {
-            'student': forms.Select(attrs={'class': 'form-control'}),
             'status1': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
             'status2': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
             'status3': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
