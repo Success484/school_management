@@ -3,7 +3,7 @@
 {% block section %}
 
 <div class="m-3 text-black rounded-lg">
-    <form method="post" action="{% url 'edit_attendance' class_id=classes.id %}">
+    <form method="post" action="">
         {% csrf_token %}
         <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
             <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE SHEET</h1>
@@ -11,26 +11,38 @@
                 <thead>
                     <tr>
                         <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME</th>
-                        {% for day in weekdays_in_month %}
-                        <th class="border border-zinc-400 bg-gray-200 p-1">{{ day }}</th>
-                        {% endfor %}
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     {% for student in students %}
                     <tr>
-                        <td class="border border-zinc-400 p-2">
-                            {{ student.user.get_full_name }}
-                        </td>
-                        {% for day in weekdays_in_month %}
-                        <td class="border border-zinc-400 p-2">
-                            <select name="status{{ day }}_{{ student.id }}">
-                                <option value="P" {% if attendance_data|dict:"student.id"|default_if_none:"D"|slice:":status{{ day }}" == 'P' %}selected{% endif %}>Present</option>
-                                <option value="A" {% if attendance_data|dict:"student.id"|default_if_none:"D"|slice:":status{{ day }}" == 'A' %}selected{% endif %}>Absent</option>
-                                <option value="D" {% if attendance_data|dict:"student.id"|default_if_none:"D"|slice:":status{{ day }}" == 'D' %}selected{% endif %}>Default</option>
-                            </select>
-                        </td>
-                        {% endfor %}
+                        <td>{{ student }}</td>
+                        <td>{{ form.status1 }}</td>
+                        <td>{{ form.status2 }}</td>
+                        <!-- Add other status fields as needed -->
                     </tr>
                     {% endfor %}
                 </tbody>

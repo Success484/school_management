@@ -17,8 +17,10 @@ class Attendance(models.Model):
         ('A', 'Absent'),
         ('D', 'Default'),
     ]
-    
-    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='attendance', null=True, blank=True,)
+    class_info =models.ForeignKey(Class, on_delete=models.CASCADE, related_name='classes', null=True, blank=True, default=False )
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='attendance', null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='attendance', null=True, blank=True)
     status1 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status2 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status3 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
@@ -41,10 +43,9 @@ class Attendance(models.Model):
     status20 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status21 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status22 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
- 
 
     def __str__(self):
-        return f"{self.student}"
+        return f" {self.class_info}"
 
 
 class Grade(models.Model):

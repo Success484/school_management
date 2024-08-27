@@ -40,48 +40,28 @@ def teacher_class_details(request, class_id):
     teachers = Teacher.objects.filter(classes=classes)
     timetables = Timetable.objects.filter(class_info=classes)
     
-    # Get the current year and month
     current_year = date.today().year
     current_month = date.today().month
     days_in_month = monthrange(current_year, current_month)[1]
     
-    # List to store the weekdays (Monday to Friday) with corresponding day numbers
     weekdays_in_month = []
     
-    # Weekday labels
     weekday_labels = ['M', 'T', 'W', 'T', 'F']
 
-    # Iterate through all days of the month
-    weekday_count = 0  # Counter to track the number of weekdays
+    weekday_count = 0  
     for day in range(1, days_in_month + 1):
         day_date = date(current_year, current_month, day)
-        if day_date.weekday() < 5:  # Exclude Saturdays (5) and Sundays (6)
+        if day_date.weekday() < 5:  
             weekday_count += 1
             weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
     
-    # Build a dictionary to store attendance for each student by weekday
-    attendance_data = {}
-    for student in students:
-        attendance_data[student] = []
-        for day, label, weekday_count in weekdays_in_month:
-            attendance_record = Attendance.objects.filter(
-                student=student,
-                class_info=classes
-            ).first()
-            if attendance_record:
-                # Get the status for the specific weekday count (1-22)
-                status_field = f'status{weekday_count}'
-                status = getattr(attendance_record, status_field, None)
-                attendance_data[student].append(status)
-            else:
-                attendance_data[student].append(None)  # No record, set to None
+    
 
     context = {
         'class': classes,
         'students': students,
         'teachers': teachers,
         'timetables': timetables,
-        'attendance_data': attendance_data,
         'weekdays_in_month': weekdays_in_month,
     }
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
@@ -106,7 +86,29 @@ def select_class_attendance(request):
 
 
 def create_attendance(request, class_id):
-    
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+
+    if request.method == "POST":
+        for student in students:
+            form = AttendanceForm(request.POST)
+            if form.is_valid():
+                record = form.save(commit=False)
+                record.student = student
+                record.class_info = classes
+                record.save()
+            else:
+                print(form.errors)
+        return redirect('teacher_class_list')
+    else:
+        form = AttendanceForm()
+
+    context = {
+        'form': form,
+        'students': students,
+        'class': classes
+    }
+
     return render(request, 'dashboards/all_teacher_pages/attendance_record.html', context)
 
 
