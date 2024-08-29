@@ -1,6 +1,8 @@
 {% extends 'dashboards/all_teacher_pages/base.html' %}
 {% load static %}
 {% block section %}
+{% load custom_filters %}
+
 <div class="m-3 rounded-lg mb-3">
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">{{class.name}} STUDENTS</p>
     <div class="order flex">
@@ -96,45 +98,108 @@
         <table class="min-w-full border-collapse border border-zinc-400">
             <thead>
                 <tr>
-                    <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME </th>
+                    <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME</th>
                     {% for day, label, weekday_count in weekdays_in_month %}
-                    <th class="border border-zinc-400 bg-{{ label|lower }}-200 p-1 bg-gray-200">
-                        {{ day }}<br>{{ label }}
-                    </th>
+                        <th class="border border-zinc-400 bg-{{ label|lower }}-200 p-1">
+                            {{ day }}<br>{{ label }}
+                        </th>
                     {% endfor %}
                 </tr>
             </thead>
             <tbody>
-                {% for student, attendance in attendance_data.items %}
-                <tr>
-                    <td class="border border-zinc-400 p-2">
-                        {{ student.user.get_full_name }}
-                    </td>
-                    {% for status in attendance %}
-                    <td class="border border-zinc-400 p-2">
-                        {% if status == 'P' %}
-                            <i class="fa fa-check text-green-500"></i>
-                        {% elif status == 'A' %}
-                            <i class="fa fa-times text-red-500"></i>
-                        {% else %}
-                            <i class="fa fa-minus text-gray-500"></i> <!-- No record -->
-                        {% endif %}
-                    </td>
-                    {% endfor %}
-                </tr>
+                {% for student in students %}
+                    <tr>
+                        <td class="border border-zinc-400 p-1">{{ student }}</td>
+                        {% for day, label, weekday_count in weekdays_in_month %}
+                            {% with records=attendance_records|get_item:student.id %}
+                                {% if records %}
+                                    {% for record in records %}
+                                        {% if record.date.day == day %}
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status1 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status2 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status3 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status4 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status5 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status6 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status7 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status8 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status9 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status10 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status11 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status12 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status13 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status14 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status15 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status16 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status17 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status18 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status19 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status20 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status21 }}
+                                            </td>
+                                            <td class="border border-zinc-400 p-2">
+                                                {{ record.status22 }}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <td class="border border-zinc-400 p-2">
+                                        <i class="fa fa-minus text-gray-500"></i> <!-- No record -->
+                                    </td>
+                                {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <p>Class ID: {{ class.id }}</p>
-        <a href="{% url 'edit_attendance' class_id=class.id %}" class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg">Mark Attendance</a>
+        
+        <a href="{% url 'update_attendance' class_id=class.id %}" class="btn btn-primary">
+            Update Attendance
+        </a>
+                    
     </div>
-
-
-
-      
-
-
-
-
+                
 </div>
 {%endblock section%}

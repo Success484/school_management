@@ -9,6 +9,8 @@ from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
 from django.template.loader import get_template
+from collections import defaultdict
+
 
 
 # Create your views here.
@@ -39,15 +41,18 @@ def teacher_class_details(request, class_id):
     students = Student.objects.filter(student_class=classes)
     teachers = Teacher.objects.filter(classes=classes)
     timetables = Timetable.objects.filter(class_info=classes)
-    
+
+    attendance_records = {}
+    for student in students:
+        records = Attendance.objects.filter(student=student, class_info=student.student_class)
+        attendance_records[student.id] = records
+
     current_year = date.today().year
     current_month = date.today().month
     days_in_month = monthrange(current_year, current_month)[1]
     
     weekdays_in_month = []
-    
     weekday_labels = ['M', 'T', 'W', 'T', 'F']
-
     weekday_count = 0  
     for day in range(1, days_in_month + 1):
         day_date = date(current_year, current_month, day)
@@ -55,21 +60,15 @@ def teacher_class_details(request, class_id):
             weekday_count += 1
             weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
     
-    
-
     context = {
         'class': classes,
         'students': students,
         'teachers': teachers,
         'timetables': timetables,
         'weekdays_in_month': weekdays_in_month,
+        'attendance_records': attendance_records,
     }
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
-
-
-
-
-
 
 
 
@@ -88,21 +87,20 @@ def select_class_attendance(request):
 def create_attendance(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
-
     if request.method == "POST":
         for student in students:
-            form = AttendanceForm(request.POST)
-            if form.is_valid():
-                record = form.save(commit=False)
-                record.student = student
-                record.class_info = classes
-                record.save()
-            else:
-                print(form.errors)
+            status1 = request.POST.get(f'status1_{student.id}')
+            status2 = request.POST.get(f'status2_{student.id}')
+            # Create a new attendance record for each student
+            Attendance.objects.create(
+                student=student,
+                class_info=classes,
+                status1=status1,
+                status2=status2
+            )
         return redirect('teacher_class_list')
     else:
         form = AttendanceForm()
-
     context = {
         'form': form,
         'students': students,
@@ -114,9 +112,32 @@ def create_attendance(request, class_id):
 
 
 
-def edit_attendance(request, class_id):
+def update_attendance(request, class_id):
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
     
-    return render(request, 'dashboards/all_teacher_pages/attendance_record.html', context)
+    if request.method == "POST":
+        for student in students:
+            record, created = Attendance.objects.get_or_create(
+                student=student,
+                class_info=classes
+            )
+            record.status1 = request.POST.get(f'status1_{student.id}', record.status1)
+            record.status2 = request.POST.get(f'status2_{student.id}', record.status2)
+            record.save()
+        
+        return redirect('teacher_class_list')
+    
+    attendance_records = Attendance.objects.filter(class_info=classes)
+
+    context = {
+        'students': students,
+        'class': classes,
+        'attendance_records': attendance_records
+    }
+    
+    return render(request, 'dashboards/all_teacher_pages/edit_record.html', context)
+
 
 
 

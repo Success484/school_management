@@ -40,8 +40,33 @@
                     {% for student in students %}
                     <tr>
                         <td>{{ student }}</td>
-                        <td>{{ form.status1 }}</td>
-                        <td>{{ form.status2 }}</td>
+                        <td>
+                            <select name="status1_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status1.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status1.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status1.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="status2_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status2.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status2.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status2.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <!-- <td>{{ form.status2 }}</td> -->
                         <!-- Add other status fields as needed -->
                     </tr>
                     {% endfor %}

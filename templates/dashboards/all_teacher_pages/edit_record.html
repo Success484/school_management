@@ -1,0 +1,63 @@
+{% extends 'dashboards/all_teacher_pages/base.html' %}
+{% load static %}
+{% block section %}
+{% load custom_filters %}
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Status 1</th>
+                <th>Status 2</th>
+                {%for record in attendance_records%}
+                {{record.status2}}
+                {%endfor%}
+                <!-- Add other status headers if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student }}</td>
+                <td>
+                    <select name="status1_{{ student.id }}" class="custom-select">
+                        <option value="P" {% if attendance_records|get_item:student.id.status1 == "P" %}selected{% endif %}>
+                            &#10003;
+                        </option>
+                        <option value="A" {% if attendance_records|get_item:student.id.status1 == "A" %}selected{% endif %}>
+                            X
+                        </option>
+                        <option value="D" {% if attendance_records|get_item:student.id.status1 == "D" %}selected{% endif %}>
+                            --
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select name="status2_{{ student.id }}" class="custom-select">
+                        <option value="P" {% if attendance_records|get_item:student.id.status2 == "P" %}selected{% endif %}>
+                            &#10003;
+                        </option>
+                        <option value="A" {% if attendance_records|get_item:student.id.status2 == "A" %}selected{% endif %}>
+                            X
+                        </option>
+                        <option value="D" {% if attendance_records|get_item:student.id.status2 == "D" %}selected{% endif %}>
+                            --
+                        </option>
+                    </select>
+                </td>
+                <!-- Add more status fields as needed -->
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <button type="submit">Update Attendance</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+{% endblock section %}
