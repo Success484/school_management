@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from calendar import monthrange, weekday
+from calendar import monthrange
 from datetime import date
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -8,8 +8,6 @@ from teacher.models import TeacherClass, Attendance, Grade
 from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
-from django.template.loader import get_template
-from collections import defaultdict
 
 
 
@@ -115,28 +113,36 @@ def create_attendance(request, class_id):
 def update_attendance(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
-    
+    attendance_records = Attendance.objects.filter(class_info=classes, student__in=students)
+
     if request.method == "POST":
-        for student in students:
-            record, created = Attendance.objects.get_or_create(
-                student=student,
-                class_info=classes
-            )
-            record.status1 = request.POST.get(f'status1_{student.id}', record.status1)
-            record.status2 = request.POST.get(f'status2_{student.id}', record.status2)
+        for record in attendance_records:
+            status1 = request.POST.get(f'status1_{record.student.id}', record.status1)
+            status2 = request.POST.get(f'status2_{record.student.id}', record.status2)
+            
+            # Update the record fields
+            record.status1 = status1
+            record.status2 = status2
+            
+            # Save the updated record
             record.save()
-        
+
         return redirect('teacher_class_list')
     
-    attendance_records = Attendance.objects.filter(class_info=classes)
+    # Create a dictionary of forms for each student
+    forms = {}
+    for record in attendance_records:
+        forms[record.student.id] = AttendanceForm(instance=record)
 
     context = {
         'students': students,
         'class': classes,
-        'attendance_records': attendance_records
+        'attendance_records': attendance_records,
+        'forms': forms
     }
-    
+
     return render(request, 'dashboards/all_teacher_pages/edit_record.html', context)
+
 
 
 

@@ -3,7 +3,8 @@
 {% block section %}
 {% load custom_filters %}
 
-<form method="post">
+
+<form method="POST">
     {% csrf_token %}
     <table>
         <thead>
@@ -11,53 +12,33 @@
                 <th>Student</th>
                 <th>Status 1</th>
                 <th>Status 2</th>
-                {%for record in attendance_records%}
-                {{record.status2}}
-                {%endfor%}
-                <!-- Add other status headers if needed -->
             </tr>
         </thead>
         <tbody>
-            {% for student in students %}
+            {% for record in attendance_records %}
             <tr>
-                <td>{{ student }}</td>
+                <td>{{ record.student }}</td>
                 <td>
-                    <select name="status1_{{ student.id }}" class="custom-select">
-                        <option value="P" {% if attendance_records|get_item:student.id.status1 == "P" %}selected{% endif %}>
-                            &#10003;
-                        </option>
-                        <option value="A" {% if attendance_records|get_item:student.id.status1 == "A" %}selected{% endif %}>
-                            X
-                        </option>
-                        <option value="D" {% if attendance_records|get_item:student.id.status1 == "D" %}selected{% endif %}>
-                            --
-                        </option>
+                    <select name="status1_{{ record.student.id }}" class="custom-select">
+                        <option value="P" {% if record.status1 == "P" %}selected{% endif %}>Present</option>
+                        <option value="A" {% if record.status1 == "A" %}selected{% endif %}>Absent</option>
+                        <option value="D" {% if record.status1 == "D" %}selected{% endif %}>Default</option>
                     </select>
                 </td>
                 <td>
-                    <select name="status2_{{ student.id }}" class="custom-select">
-                        <option value="P" {% if attendance_records|get_item:student.id.status2 == "P" %}selected{% endif %}>
-                            &#10003;
-                        </option>
-                        <option value="A" {% if attendance_records|get_item:student.id.status2 == "A" %}selected{% endif %}>
-                            X
-                        </option>
-                        <option value="D" {% if attendance_records|get_item:student.id.status2 == "D" %}selected{% endif %}>
-                            --
-                        </option>
+                    <select name="status2_{{ record.student.id }}" class="custom-select">
+                        <option value="P" {% if record.status2 == "P" %}selected{% endif %}>Present</option>
+                        <option value="A" {% if record.status2 == "A" %}selected{% endif %}>Absent</option>
+                        <option value="D" {% if record.status2 == "D" %}selected{% endif %}>Default</option>
                     </select>
                 </td>
-                <!-- Add more status fields as needed -->
             </tr>
             {% endfor %}
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3">
-                    <button type="submit">Update Attendance</button>
-                </td>
-            </tr>
-        </tfoot>
     </table>
+    <button type="submit">Save Attendance</button>
 </form>
+
+
+
 {% endblock section %}
