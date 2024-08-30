@@ -89,12 +89,52 @@ def create_attendance(request, class_id):
         for student in students:
             status1 = request.POST.get(f'status1_{student.id}')
             status2 = request.POST.get(f'status2_{student.id}')
+            status3 = request.POST.get(f'status2_{student.id}')
+            status4 = request.POST.get(f'status2_{student.id}')
+            status5 = request.POST.get(f'status2_{student.id}')
+            status6 = request.POST.get(f'status2_{student.id}')
+            status7 = request.POST.get(f'status2_{student.id}')
+            status8 = request.POST.get(f'status2_{student.id}')
+            status9 = request.POST.get(f'status2_{student.id}')
+            status10 = request.POST.get(f'status2_{student.id}')
+            status11 = request.POST.get(f'status2_{student.id}')
+            status12 = request.POST.get(f'status2_{student.id}')
+            status13 = request.POST.get(f'status2_{student.id}')
+            status14 = request.POST.get(f'status2_{student.id}')
+            status15 = request.POST.get(f'status2_{student.id}')
+            status16 = request.POST.get(f'status2_{student.id}')
+            status17 = request.POST.get(f'status2_{student.id}')
+            status18 = request.POST.get(f'status2_{student.id}')
+            status19 = request.POST.get(f'status2_{student.id}')
+            status20 = request.POST.get(f'status2_{student.id}')
+            status21 = request.POST.get(f'status2_{student.id}')
+            status22 = request.POST.get(f'status2_{student.id}')
             # Create a new attendance record for each student
             Attendance.objects.create(
                 student=student,
                 class_info=classes,
                 status1=status1,
-                status2=status2
+                status2=status2,
+                status3=status3,
+                status4=status4,
+                status5=status5,
+                status6=status6,
+                status7=status7,
+                status8=status8,
+                status9=status9,
+                status10=status10,
+                status11=status11,
+                status12=status12,
+                status13=status13,
+                status14=status14,
+                status15=status15,
+                status16=status16,
+                status17=status17,
+                status18=status18,
+                status19=status19,
+                status20=status20,
+                status21=status21,
+                status22=status22,
             )
         return redirect('teacher_class_list')
     else:
@@ -119,17 +159,30 @@ def update_attendance(request, class_id):
         for record in attendance_records:
             status1 = request.POST.get(f'status1_{record.student.id}', record.status1)
             status2 = request.POST.get(f'status2_{record.student.id}', record.status2)
-            
-            # Update the record fields
-            record.status1 = status1
-            record.status2 = status2
-            
-            # Save the updated record
+            status1=status1,
+            status2=status2,
+            status3=status3,
+            status4=status4,
+            status5=status5,
+            status6=status6,
+            status7=status7,
+            status8=status8,
+            status9=status9,
+            status10=status10,
+            status11=status11,
+            status12=status12,
+            status13=status13,
+            status14=status14,
+            status15=status15,
+            status16=status16,
+            status17=status17,
+            status18=status18,
+            status19=status19,
+            status20=status20,
+            status21=status21,
+            status22=status22,
             record.save()
-
         return redirect('teacher_class_list')
-    
-    # Create a dictionary of forms for each student
     forms = {}
     for record in attendance_records:
         forms[record.student.id] = AttendanceForm(instance=record)
