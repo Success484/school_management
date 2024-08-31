@@ -85,30 +85,45 @@ def select_class_attendance(request):
 def create_attendance(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
+
+    current_year = date.today().year
+    current_month = date.today().month
+    days_in_month = monthrange(current_year, current_month)[1]
+    
+    weekdays_in_month = []
+    weekday_labels = ['M', 'T', 'W', 'T', 'F']
+    weekday_count = 0  
+    for day in range(1, days_in_month + 1):
+        day_date = date(current_year, current_month, day)
+        if day_date.weekday() < 5:  
+            weekday_count += 1
+            weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
+
+
     if request.method == "POST":
         for student in students:
             status1 = request.POST.get(f'status1_{student.id}')
             status2 = request.POST.get(f'status2_{student.id}')
-            status3 = request.POST.get(f'status2_{student.id}')
-            status4 = request.POST.get(f'status2_{student.id}')
-            status5 = request.POST.get(f'status2_{student.id}')
-            status6 = request.POST.get(f'status2_{student.id}')
-            status7 = request.POST.get(f'status2_{student.id}')
-            status8 = request.POST.get(f'status2_{student.id}')
-            status9 = request.POST.get(f'status2_{student.id}')
-            status10 = request.POST.get(f'status2_{student.id}')
-            status11 = request.POST.get(f'status2_{student.id}')
-            status12 = request.POST.get(f'status2_{student.id}')
-            status13 = request.POST.get(f'status2_{student.id}')
-            status14 = request.POST.get(f'status2_{student.id}')
-            status15 = request.POST.get(f'status2_{student.id}')
-            status16 = request.POST.get(f'status2_{student.id}')
-            status17 = request.POST.get(f'status2_{student.id}')
-            status18 = request.POST.get(f'status2_{student.id}')
-            status19 = request.POST.get(f'status2_{student.id}')
-            status20 = request.POST.get(f'status2_{student.id}')
-            status21 = request.POST.get(f'status2_{student.id}')
-            status22 = request.POST.get(f'status2_{student.id}')
+            status3 = request.POST.get(f'status3_{student.id}')
+            status4 = request.POST.get(f'status4_{student.id}')
+            status5 = request.POST.get(f'status5_{student.id}')
+            status6 = request.POST.get(f'status6_{student.id}')
+            status7 = request.POST.get(f'status7_{student.id}')
+            status8 = request.POST.get(f'status8_{student.id}')
+            status9 = request.POST.get(f'status9_{student.id}')
+            status10 = request.POST.get(f'status10_{student.id}')
+            status11 = request.POST.get(f'status11_{student.id}')
+            status12 = request.POST.get(f'status12_{student.id}')
+            status13 = request.POST.get(f'status13_{student.id}')
+            status14 = request.POST.get(f'status14_{student.id}')
+            status15 = request.POST.get(f'status15_{student.id}')
+            status16 = request.POST.get(f'status16_{student.id}')
+            status17 = request.POST.get(f'status17_{student.id}')
+            status18 = request.POST.get(f'status18_{student.id}')
+            status19 = request.POST.get(f'status19_{student.id}')
+            status20 = request.POST.get(f'status20_{student.id}')
+            status21 = request.POST.get(f'status21_{student.id}')
+            status22 = request.POST.get(f'status22_{student.id}')
             # Create a new attendance record for each student
             Attendance.objects.create(
                 student=student,
@@ -142,7 +157,8 @@ def create_attendance(request, class_id):
     context = {
         'form': form,
         'students': students,
-        'class': classes
+        'class': classes,
+        'weekdays_in_month':weekdays_in_month
     }
 
     return render(request, 'dashboards/all_teacher_pages/attendance_record.html', context)
@@ -155,34 +171,71 @@ def update_attendance(request, class_id):
     students = Student.objects.filter(student_class=classes)
     attendance_records = Attendance.objects.filter(class_info=classes, student__in=students)
 
+    current_year = date.today().year
+    current_month = date.today().month
+    days_in_month = monthrange(current_year, current_month)[1]
+    
+    weekdays_in_month = []
+    weekday_labels = ['M', 'T', 'W', 'T', 'F']
+    weekday_count = 0  
+    for day in range(1, days_in_month + 1):
+        day_date = date(current_year, current_month, day)
+        if day_date.weekday() < 5:  
+            weekday_count += 1
+            weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
+
     if request.method == "POST":
         for record in attendance_records:
+            # Retrieve values from the POST request
             status1 = request.POST.get(f'status1_{record.student.id}', record.status1)
             status2 = request.POST.get(f'status2_{record.student.id}', record.status2)
-            status1=status1,
-            status2=status2,
-            status3=status3,
-            status4=status4,
-            status5=status5,
-            status6=status6,
-            status7=status7,
-            status8=status8,
-            status9=status9,
-            status10=status10,
-            status11=status11,
-            status12=status12,
-            status13=status13,
-            status14=status14,
-            status15=status15,
-            status16=status16,
-            status17=status17,
-            status18=status18,
-            status19=status19,
-            status20=status20,
-            status21=status21,
-            status22=status22,
+            status3 = request.POST.get(f'status3_{record.student.id}', record.status3)
+            status4 = request.POST.get(f'status4_{record.student.id}', record.status4)
+            status5 = request.POST.get(f'status5_{record.student.id}', record.status5)
+            status6 = request.POST.get(f'status6_{record.student.id}', record.status6)
+            status7 = request.POST.get(f'status7_{record.student.id}', record.status7)
+            status8 = request.POST.get(f'status8_{record.student.id}', record.status8)
+            status9 = request.POST.get(f'status9_{record.student.id}', record.status9)
+            status10 = request.POST.get(f'status10_{record.student.id}', record.status10)
+            status11 = request.POST.get(f'status11_{record.student.id}', record.status11)
+            status12 = request.POST.get(f'status12_{record.student.id}', record.status12)
+            status13 = request.POST.get(f'status13_{record.student.id}', record.status13)
+            status14 = request.POST.get(f'status14_{record.student.id}', record.status14)
+            status15 = request.POST.get(f'status15_{record.student.id}', record.status15)
+            status16 = request.POST.get(f'status16_{record.student.id}', record.status16)
+            status17 = request.POST.get(f'status17_{record.student.id}', record.status17)
+            status18 = request.POST.get(f'status18_{record.student.id}', record.status18)
+            status19 = request.POST.get(f'status19_{record.student.id}', record.status19)
+            status20 = request.POST.get(f'status20_{record.student.id}', record.status20)
+            status21 = request.POST.get(f'status21_{record.student.id}', record.status21)
+            status22 = request.POST.get(f'status22_{record.student.id}', record.status22)
+            # Assign the values to the record fields
+            record.status1 = status1
+            record.status2 = status2
+            record.status3 = status3
+            record.status4 = status4
+            record.status5 = status5
+            record.status6 = status6
+            record.status7 = status7
+            record.status8 = status8
+            record.status9 = status9
+            record.status10 = status10
+            record.status11 = status11
+            record.status12 = status12
+            record.status13 = status13
+            record.status14 = status14
+            record.status15 = status15
+            record.status16 = status16
+            record.status17 = status17
+            record.status18 = status18
+            record.status19 = status19
+            record.status20 = status20
+            record.status21 = status21
+            record.status22 = status22
             record.save()
+
         return redirect('teacher_class_list')
+
     forms = {}
     for record in attendance_records:
         forms[record.student.id] = AttendanceForm(instance=record)
@@ -191,10 +244,12 @@ def update_attendance(request, class_id):
         'students': students,
         'class': classes,
         'attendance_records': attendance_records,
-        'forms': forms
+        'forms': forms,
+        'weekdays_in_month':weekdays_in_month
     }
 
     return render(request, 'dashboards/all_teacher_pages/edit_record.html', context)
+
 
 
 

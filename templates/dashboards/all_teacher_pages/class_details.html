@@ -65,20 +65,20 @@
         <tbody>
             {% for timetable in timetables %}
             <tr>
-                <td class="py-2 px-2 border-b border-r border-gray-300">{{ timetable.day_of_week }}<br>
+                <td class="py-2 px-2 border-b border-r border-gray-400">{{ timetable.day_of_week }}<br>
                     {%if request.user is superuser%}
                     <a href="{%url 'edit_timetable' table_id=timetable.id%}" class="text-blue-500">Edit</a>
                     {%else%}
                     {%endif%}
                 </td>
-                <td class="py-2 px-2 border-b border-gray-300 ">{{ timetable.subject_one.name }}<br>{{ timetable.subject_one_start_time }}-{{ timetable.subject_one_end_time }}</td>
-                <td class="py-2 px-2 border-b border-gray-300 ">{{ timetable.subject_two.name }}<br>{{ timetable.subject_two_start_time }}-{{ timetable.subject_two_end_time }}</td>
-                <td class="py-2 px-2 border-b border-gray-300 ">{{ timetable.subject_three.name }}<br>{{ timetable.subject_three_start_time }}-{{ timetable.subject_three_end_time }}</td>
-                <td class="py-2 px-2 border-b border-gray-300 ">{{ timetable.subject_four.name }}<br>{{ timetable.subject_four_start_time }}-{{ timetable.subject_four_end_time }}</td>
-                <td class="py-2 px-2 border border-gray-300 ">BREAK</td>
-                <td class="py-2 px-2 border-b border-gray-300 ">{{ timetable.subject_five.name }}<br>{{ timetable.subject_five_start_time }}-{{ timetable.subject_five_end_time }}</td>
-                <td class="py-2 px-2 border-b border-gray-300 ">{{ timetable.subject_six.name }}<br>{{ timetable.subject_six_start_time }}-{{ timetable.subject_six_end_time }}</td>
-                <td class="py-2 px-2 border-b border-gray-300 ">{{ timetable.subject_seven.name }}<br>{{ timetable.subject_seven_start_time }}-{{ timetable.subject_seven_end_time }}</td>
+                <td class="p-1 border border-gray-400 ">{{ timetable.subject_one.name }}<br>{{ timetable.subject_one_start_time }}-{{ timetable.subject_one_end_time }}</td>
+                <td class="p-1 border border-gray-400 ">{{ timetable.subject_two.name }}<br>{{ timetable.subject_two_start_time }}-{{ timetable.subject_two_end_time }}</td>
+                <td class="p-1 border border-gray-400 ">{{ timetable.subject_three.name }}<br>{{ timetable.subject_three_start_time }}-{{ timetable.subject_three_end_time }}</td>
+                <td class="p-1 border border-gray-400 ">{{ timetable.subject_four.name }}<br>{{ timetable.subject_four_start_time }}-{{ timetable.subject_four_end_time }}</td>
+                <td class="p-1 border border-gray-400 ">BREAK</td>
+                <td class="p-1 border border-gray-400 ">{{ timetable.subject_five.name }}<br>{{ timetable.subject_five_start_time }}-{{ timetable.subject_five_end_time }}</td>
+                <td class="p-1 border border-gray-400 ">{{ timetable.subject_six.name }}<br>{{ timetable.subject_six_start_time }}-{{ timetable.subject_six_end_time }}</td>
+                <td class="p-1 border border-gray-400 ">{{ timetable.subject_seven.name }}<br>{{ timetable.subject_seven_start_time }}-{{ timetable.subject_seven_end_time }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -95,7 +95,7 @@
 
     <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
         <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE SHEET</h1>
-        <table class="min-w-full border-collapse border border-zinc-400">
+        <table class="min-w-full border-collapse border border-zinc-400 mb-6">
             <thead>
                 <tr>
                     <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME</th>
@@ -110,92 +110,265 @@
                 {% for student in students %}
                     <tr>
                         <td class="border border-zinc-400 p-1">{{ student }}</td>
-                        {% for day, label, weekday_count in weekdays_in_month %}
-                            {% with records=attendance_records|get_item:student.id %}
-                                {% if records %}
-                                    {% for record in records %}
-                                        {% if record.date.day == day %}
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status1 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status2 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status3 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status4 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status5 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status6 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status7 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status8 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status9 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status10 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status11 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status12 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status13 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status14 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status15 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status16 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status17 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status18 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status19 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status20 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status21 }}
-                                            </td>
-                                            <td class="border border-zinc-400 p-2">
-                                                {{ record.status22 }}
-                                            </td>
+                        {% with records=attendance_records|get_item:student.id %}
+                            {% if records %}
+                                {% for record in records %}
+                                <td class="border border-gray-300 p-1">
+                                    {% if record.status1 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status1 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status1 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
                                         {% endif %}
-                                    {% endfor %}
-                                {% else %}
-                                    <td class="border border-zinc-400 p-2">
-                                        <i class="fa fa-minus text-gray-500"></i> <!-- No record -->
                                     </td>
-                                {% endif %}
-                            {% endwith %}
-                        {% endfor %}
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status2 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status2 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status2 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status3 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status3 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status3 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status4 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status4 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status4 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status5 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status5 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status5 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status6 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status6 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status6 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status7 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status7 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status7 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status8 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status8 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status8 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status9 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status9 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status9 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status10 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status10 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status10 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status11 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status11 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status11 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status12 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status12 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status12 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status13 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status13 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status13 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status14 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status14 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status14 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status15 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status15 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status15 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status16 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status16 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status16 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status17 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status17 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status17 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status18 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status18 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status18 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status19 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status19 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status19 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status20 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status20 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status20 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status21 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status21 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status21 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td class="border border-gray-300 p-1">
+                                        {% if record.status22 == "A" %}
+                                            <i class="fa fa-times text-red-500"></i>
+                                        {% elif record.status22 == "P" %}
+                                            <i class="fa fa-check text-green-500"></i>
+                                        {% elif record.status22 == "D" %}
+                                            --
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            {% else %}
+                            <td class="border border-gray-300 p-1">
+                                <i class="fa fa-minus text-gray-500"></i> <!-- No record -->
+                                </td>
+                            {% endif %}
+                        {% endwith %}
                     </tr>
                 {% endfor %}
             </tbody>
+            
         </table>
         
-        <a href="{% url 'update_attendance' class_id=class.id %}" class="btn btn-primary">
+        <a class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg mt-5" href="{% url 'update_attendance' class_id=class.id %}" class="btn btn-primary">
             Update Attendance
         </a>
                     

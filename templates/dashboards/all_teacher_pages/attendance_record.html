@@ -10,37 +10,19 @@
             <table class="min-w-full border-collapse border border-zinc-400">
                 <thead>
                     <tr>
-                        <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-                        <th class="border border-zinc-400 bg-gray-200 p-1">jj</th>
-
+                        <th class="border border-zinc-400 bg-blue-200 p-2">STUDENT NAME</th>
+                        {% for day, label, weekday_count in weekdays_in_month %}
+                        <th class="border border-zinc-400 bg-{{ label|lower }}-200 p-1">
+                            {{ day }}<br>{{ label }}
+                        </th>
+                        {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for student in students %}
                     <tr>
-                        <td>{{ student }}</td>
-                        <td>
+                        <td class="border border-gray-300 p-1">{{ student }}</td>
+                        <td class="border border-gray-300 p-1">
                             <select name="status1_{{ student.id }}" class="custom-select">
                                 <option value="P" {% if form.status1.value == "P" %}selected{% endif %}>
                                    &#10003;
@@ -53,7 +35,7 @@
                                 </option>
                             </select>
                         </td>
-                        <td>
+                        <td class="border border-gray-300">
                             <select name="status2_{{ student.id }}" class="custom-select">
                                 <option value="P" {% if form.status2.value == "P" %}selected{% endif %}>
                                     &#10003;
@@ -62,6 +44,266 @@
                                     X
                                 </option>
                                 <option value="D" {% if form.status2.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status3_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status3.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status3.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status3.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status4_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status4.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status4.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status4.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status5_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status5.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status5.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status5.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status6_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status6.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status6.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status6.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status7_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status7.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status7.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status7.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status8_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status8.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status8.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status8.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status9_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status9.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status9.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status9.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status10_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status10.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status10.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status10.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status11_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status11.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status11.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status11.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status12_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status12.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status12.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status12.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status13_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status13.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status13.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status13.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status14_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status14.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status14.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status14.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status15_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status15.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status15.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status15.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status16_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status16.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status16.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status16.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status17_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status17.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status17.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status17.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status18_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status18.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status18.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status18.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status19_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status19.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status19.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status19.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status20_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status20.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status20.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status20.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                        <td class="border border-gray-300">
+                            <select name="status21_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status21.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status21.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status21.value == "D" %}selected{% endif %}>
+                                    --
+                                </option>
+                            </select>
+                        </td>
+                <td class="border border-gray-300">
+                            <select name="status22_{{ student.id }}" class="custom-select">
+                                <option value="P" {% if form.status22.value == "P" %}selected{% endif %}>
+                                    &#10003;
+                                </option>
+                                <option value="A" {% if form.status22.value == "A" %}selected{% endif %}>
+                                    X
+                                </option>
+                                <option value="D" {% if form.status22.value == "D" %}selected{% endif %}>
                                     --
                                 </option>
                             </select>
