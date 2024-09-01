@@ -1,6 +1,6 @@
 from django import forms
 from .models import TeacherClass, Attendance, Grade
-
+import calendar
 
 
 class TeacherClassForm(forms.ModelForm):
@@ -12,6 +12,17 @@ class TeacherClassForm(forms.ModelForm):
             'class_name': forms.Select(attrs={'class': 'form-control'}),
             'subjects': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
         }
+
+TERMS = [
+    ('first_term', 'First Term'),
+    ('second_term', 'Second Term'),
+    ('third_term', 'Third Term'),
+]
+
+class AttendanceMonthForm(forms.Form):
+    term = forms.ChoiceField(choices=TERMS)
+    month = forms.ChoiceField(choices=[(str(i), calendar.month_name[i]) for i in range(1, 13)])
+    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
 
 
 

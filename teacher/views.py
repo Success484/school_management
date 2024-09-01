@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from calendar import monthrange
-from datetime import date
+from datetime import date, timedelta
+import calendar
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from teacher.forms import TeacherClassForm, AttendanceForm, GradeForm
+from teacher.forms import TeacherClassForm, AttendanceForm, GradeForm, AttendanceMonthForm
 from teacher.models import TeacherClass, Attendance, Grade
 from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
+from django.db.models import Count
 
 
 
@@ -34,6 +36,19 @@ def teacher_class_list(request):
     return render(request, 'dashboards/all_teacher_pages/teacher_classes.html', {'classes':classes})
 
 
+# def attendance_overview(request, class_id):
+#     classes = get_object_or_404(Class, id=class_id)
+#     attendance = Attendance.objects.filter(class_info = classes)
+#     context = {
+#         'attendance':attendance,
+#         'classes':classes
+#     }
+#     return render(request, 'dashboards/attendance_detail/teacher_classes.html', context)
+
+
+
+
+
 def teacher_class_details(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
@@ -58,6 +73,14 @@ def teacher_class_details(request, class_id):
             weekday_count += 1
             weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
     
+    attendance_by_month = (
+        Attendance.objects.filter(student__student_class_id=class_id)
+        .values('date__year', 'date__month')
+        .annotate(total=Count('id'))
+        .order_by('date__year', 'date__month')
+    )
+
+    
     context = {
         'class': classes,
         'students': students,
@@ -65,6 +88,8 @@ def teacher_class_details(request, class_id):
         'timetables': timetables,
         'weekdays_in_month': weekdays_in_month,
         'attendance_records': attendance_records,
+        'attendance_by_month': attendance_by_month,
+
     }
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
 
@@ -75,16 +100,89 @@ def teacher_class_student_details(request, student_id):
     student = get_object_or_404(Student, user__id=student_id)
     return render(request, 'dashboards/all_teacher_pages/student_details.html', {'student': student})
 
-
 def select_class_attendance(request):
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     return render(request, 'dashboards/all_teacher_pages/class_attendance.html', {'classes': classes})
 
 
+
+def generate_weekdays(year, month):
+    first_day = date(year, month, 1)
+    last_day = date(year, month, calendar.monthrange(year, month)[1])
+    
+    weekdays = []
+    current_day = first_day
+    while current_day <= last_day:
+        if current_day.weekday() < 5:
+            weekdays.append(current_day)
+        current_day += timedelta(days=1)
+    
+    return weekdays
+
+
+def attendance_summary_view(request, class_id):
+    # Get all attendance records for the class, grouped by month
+    attendance_by_month = (
+        Attendance.objects.filter(student__student_class_id=class_id)
+        .values('date__year', 'date__month')
+        .annotate(total=Count('id'))
+        .order_by('date__year', 'date__month')
+    )
+    context = {
+        'attendance_by_month': attendance_by_month,
+    }
+    return render(request, 'attendance_summary.html', context)
+
+
+
+def attendance_detail(request, class_id, year, month):
+    # Fetch the class
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+
+    # Fetch the attendance records for the specified class, year, and month
+    attendance_qs = Attendance.objects.filter(
+        class_info=classes,
+        date__year=year,
+        date__month=month
+    )
+    
+    # Create a dictionary where keys are student IDs and values are attendance records
+    attendance_records = {}
+    for record in attendance_qs:
+        attendance_records[record.student.id] = record
+
+    # Get the weekdays for the month
+    cal = calendar.Calendar()
+    days_in_month = cal.itermonthdays2(year, month)
+    weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
+
+
+
+    context = {
+        'students': students,
+        'classes': classes,
+        'year': year,
+        'month': month,
+        'attendance_records': attendance_records,
+        'weekdays':weekdays
+    }
+    return render(request, 'dashboards/all_teacher_pages/attendance_month_detail.html', context)
+
+
+
 def create_attendance(request, class_id):
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
+
+    forms = AttendanceMonthForm(request.GET or None)
+    weekdays = []
+    
+    if forms.is_valid():
+        selected_month = int(forms.cleaned_data['month'])
+        selected_year = int(forms.cleaned_data['year'])
+        weekdays = generate_weekdays(selected_year, selected_month)
 
     current_year = date.today().year
     current_month = date.today().month
@@ -158,11 +256,12 @@ def create_attendance(request, class_id):
         'form': form,
         'students': students,
         'class': classes,
-        'weekdays_in_month':weekdays_in_month
+        'weekdays_in_month':weekdays_in_month,
+        'forms': forms,
+        'weekdays': weekdays,
     }
 
     return render(request, 'dashboards/all_teacher_pages/attendance_record.html', context)
-
 
 
 

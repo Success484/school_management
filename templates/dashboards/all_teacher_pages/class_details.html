@@ -94,6 +94,18 @@
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 mt-3" style="background-color: #F9F9F9;">{{class.name}} Attendance Record</p>
 
     <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
+        <h2>Attendance Records for {{ month }}</h2>
+        {% for record in attendance_by_month %}
+            <li>
+                <a href="{% url 'attendance_detail' class_id=class.id year=record.date__year month=record.date__month %}">
+                    {{ record.date__month|get_month_name }} {{ record.date__year }} - Total Records: {{ record.total }}
+                </a>
+            </li>
+        {% empty %}
+            <li>No attendance records found.</li>
+        {% endfor %}
+    </ul>
+
         <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE SHEET</h1>
         <table class="min-w-full border-collapse border border-zinc-400 mb-6">
             <thead>

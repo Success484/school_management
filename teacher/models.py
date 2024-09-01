@@ -20,7 +20,6 @@ class Attendance(models.Model):
     class_info =models.ForeignKey(Class, on_delete=models.CASCADE, related_name='classes', null=True, blank=True, default=False )
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='attendance', null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
-    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='attendance', null=True, blank=True)
     status1 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status2 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status3 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')

@@ -3,6 +3,13 @@
 {% block section %}
 
 <div class="m-3 text-black rounded-lg">
+    <form method="get">
+        {{ forms.as_p }}
+        <button type="submit">Generate Attendance Table</button>
+    </form>
+
+    {%if weekdays%}
+    <h3>Attendance for {{ forms.cleaned_data.month }} {{ forms.cleaned_data.year }}</h3>
     <form method="post" action="">
         {% csrf_token %}
         <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
@@ -11,9 +18,9 @@
                 <thead>
                     <tr>
                         <th class="border border-zinc-400 bg-blue-200 p-2">STUDENT NAME</th>
-                        {% for day, label, weekday_count in weekdays_in_month %}
+                        {% for day in weekdays %}
                         <th class="border border-zinc-400 bg-{{ label|lower }}-200 p-1">
-                            {{ day }}<br>{{ label }}
+                            {{ day }}<br>
                         </th>
                         {% endfor %}
                     </tr>
@@ -317,6 +324,7 @@
             <button type="submit" class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg">Save Attendance</button>
         </div>
     </form>
+    {%endif%}
     
       </div>
 </div>
