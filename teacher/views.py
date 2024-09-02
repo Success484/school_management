@@ -10,6 +10,8 @@ from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
 from django.db.models import Count
+from django.forms import modelformset_factory
+from django.urls import reverse
 
 
 
@@ -34,19 +36,6 @@ def teacher_class_list(request):
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     return render(request, 'dashboards/all_teacher_pages/teacher_classes.html', {'classes':classes})
-
-
-# def attendance_overview(request, class_id):
-#     classes = get_object_or_404(Class, id=class_id)
-#     attendance = Attendance.objects.filter(class_info = classes)
-#     context = {
-#         'attendance':attendance,
-#         'classes':classes
-#     }
-#     return render(request, 'dashboards/attendance_detail/teacher_classes.html', context)
-
-
-
 
 
 def teacher_class_details(request, class_id):
@@ -94,17 +83,15 @@ def teacher_class_details(request, class_id):
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
 
 
-
-
 def teacher_class_student_details(request, student_id):
     student = get_object_or_404(Student, user__id=student_id)
     return render(request, 'dashboards/all_teacher_pages/student_details.html', {'student': student})
+
 
 def select_class_attendance(request):
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     return render(request, 'dashboards/all_teacher_pages/class_attendance.html', {'classes': classes})
-
 
 
 def generate_weekdays(year, month):
@@ -122,7 +109,6 @@ def generate_weekdays(year, month):
 
 
 def attendance_summary_view(request, class_id):
-    # Get all attendance records for the class, grouped by month
     attendance_by_month = (
         Attendance.objects.filter(student__student_class_id=class_id)
         .values('date__year', 'date__month')
@@ -133,7 +119,6 @@ def attendance_summary_view(request, class_id):
         'attendance_by_month': attendance_by_month,
     }
     return render(request, 'attendance_summary.html', context)
-
 
 
 def attendance_detail(request, class_id, year, month):
@@ -169,7 +154,6 @@ def attendance_detail(request, class_id, year, month):
         'weekdays':weekdays
     }
     return render(request, 'dashboards/all_teacher_pages/attendance_month_detail.html', context)
-
 
 
 def create_attendance(request, class_id):
@@ -222,7 +206,6 @@ def create_attendance(request, class_id):
             status20 = request.POST.get(f'status20_{student.id}')
             status21 = request.POST.get(f'status21_{student.id}')
             status22 = request.POST.get(f'status22_{student.id}')
-            # Create a new attendance record for each student
             Attendance.objects.create(
                 student=student,
                 class_info=classes,
@@ -264,24 +247,29 @@ def create_attendance(request, class_id):
     return render(request, 'dashboards/all_teacher_pages/attendance_record.html', context)
 
 
-
-def update_attendance(request, class_id):
+def update_attendance(request, class_id, year, month):
     classes = get_object_or_404(Class, id=class_id)
-    students = Student.objects.filter(student_class=classes)
-    attendance_records = Attendance.objects.filter(class_info=classes, student__in=students)
-
-    current_year = date.today().year
-    current_month = date.today().month
-    days_in_month = monthrange(current_year, current_month)[1]
+    student = Student.objects.filter(student_class=classes)
     
-    weekdays_in_month = []
-    weekday_labels = ['M', 'T', 'W', 'T', 'F']
-    weekday_count = 0  
-    for day in range(1, days_in_month + 1):
-        day_date = date(current_year, current_month, day)
-        if day_date.weekday() < 5:  
-            weekday_count += 1
-            weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
+    # Filter attendance record by class, student, year, and month
+    attendance_records = Attendance.objects.filter(
+        class_info=classes,
+        date__year=year,
+        date__month=month
+    )
+
+
+    # days_in_month = monthrange(year, month)[1]
+    # weekday_labels = ['M', 'T', 'W', 'T', 'F']
+    # weekdays_in_month = []
+    # weekday_count = 0
+
+    cal = calendar.Calendar()
+    days_in_month = cal.itermonthdays2(year, month)
+    weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
+
+
+
 
     if request.method == "POST":
         for record in attendance_records:
@@ -308,6 +296,7 @@ def update_attendance(request, class_id):
             status20 = request.POST.get(f'status20_{record.student.id}', record.status20)
             status21 = request.POST.get(f'status21_{record.student.id}', record.status21)
             status22 = request.POST.get(f'status22_{record.student.id}', record.status22)
+            status23 = request.POST.get(f'status22_{record.student.id}', record.status23)
             # Assign the values to the record fields
             record.status1 = status1
             record.status2 = status2
@@ -331,28 +320,25 @@ def update_attendance(request, class_id):
             record.status20 = status20
             record.status21 = status21
             record.status22 = status22
+            record.status23 = status23
             record.save()
 
-        return redirect('teacher_class_list')
+        return redirect(reverse('attendance_detail', kwargs={'class_id': class_id, 'year': year, 'month': month}))
 
     forms = {}
     for record in attendance_records:
         forms[record.student.id] = AttendanceForm(instance=record)
 
     context = {
-        'students': students,
+        'student': student,
         'class': classes,
         'attendance_records': attendance_records,
-        'forms': forms,
-        'weekdays_in_month':weekdays_in_month
+        'year': year,
+        'month': month,
+        'weekdays':weekdays
     }
-
+    
     return render(request, 'dashboards/all_teacher_pages/edit_record.html', context)
-
-
-
-
-
 
 
 def view_attendance(request, class_id):

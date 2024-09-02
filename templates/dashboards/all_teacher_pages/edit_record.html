@@ -3,20 +3,57 @@
 {% block section %}
 {% load custom_filters %}
 
+<form method="post" action="{% url 'update_attendance' class_id=class.id year=year month=month %}" style="visibility: hidden;">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                {% for day in days_in_month %}
+                    <th>{{ day }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    {% for day in days_in_month %}
+                        <td>
+                            {% with status=status_data.student.id.day %}
+                                <select name="status_{{ day }}_{{ student.id }}">
+                                    <option value="P" {% if status == 'P' %}selected{% endif %}>Present</option>
+                                    <option value="A" {% if status == 'A' %}selected{% endif %}>Absent</option>
+                                    <option value="D" {% if status == 'D' %}selected{% endif %}>Default</option>
+                                </select>
+                            {% endwith %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Update</button>
+</form>
+
+
+
+
+<!--  -->
+<!--  -->
+<!--  -->
 <div class="m-3 rounded-lg mb-3" style="background-color: #F9F9F9;">
 <form method="post" action="">
     {% csrf_token %}
     <div class="p-3" >
-        <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE SHEET</h1>
+        <h1 class="text-2xl font-bold mb-4">Attendance for {{ student_class.name }} - {{ month }}/{{ year }}</h1>
         <table class="min-w-full border-collapse border border-zinc-400">
         <thead>
             <tr>
                 <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME</th>
-                    {% for day, label, weekday_count in weekdays_in_month %}
-                        <th class="border border-gray-300 bg-zinc-400 p-1">
-                            {{ day }}<br>{{ label }}
-                        </th>
-                    {% endfor %}
+                {% for day, weekday_name in weekdays %}
+                <th class="border border-zinc-400 bg-blue-200 p-1">{{ day }}</th>
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
@@ -175,6 +212,13 @@
                         <option value="P" {% if record.status22 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status22 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status22 == "D" %}selected{% endif %}>--</option>
+                    </select>
+                </td>
+                <td class="border border-gray-300">
+                    <select name="status23_{{ record.student.id }}" class="custom-select">
+                        <option value="P" {% if record.status23 == "P" %}selected{% endif %}>&#10003;</option>
+                        <option value="A" {% if record.status23 == "A" %}selected{% endif %}>X</option>
+                        <option value="D" {% if record.status23 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
             </tr>

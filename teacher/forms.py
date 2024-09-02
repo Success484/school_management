@@ -33,7 +33,8 @@ class AttendanceForm(forms.ModelForm):
                   'status3', 'status4', 'status5', 'status6', 'status7', 
                   'status8', 'status9', 'status10', 'status11', 'status12', 
                   'status13', 'status14', 'status15', 'status16', 'status17', 
-                  'status18', 'status19', 'status20', 'status21', 'status22',]
+                  'status18', 'status19', 'status20', 'status21', 'status22',
+                  'status23']
         widgets = {
             'status1': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
             'status2': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
@@ -57,6 +58,7 @@ class AttendanceForm(forms.ModelForm):
             'status20': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
             'status21': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
             'status22': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
+            'status23': forms.Select(choices=Attendance.STATUS_CHOICES, attrs={'class': 'form-control'}),
         }
 
 

@@ -3,10 +3,12 @@
 {% block section %}
 
 <div class="m-3 text-black rounded-lg">
-    <form method="get">
-        {{ forms.as_p }}
-        <button type="submit">Generate Attendance Table</button>
-    </form>
+    <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
+        <form method="get">
+            {{ forms.as_p }}
+            <button type="submit">Generate Attendance Table</button>
+        </form>
+    </div>
 
     {%if weekdays%}
     <h3>Attendance for {{ forms.cleaned_data.month }} {{ forms.cleaned_data.year }}</h3>
