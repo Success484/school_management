@@ -25,7 +25,6 @@ class AttendanceMonthForm(forms.Form):
     year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
 
 
-
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attendance

@@ -42,10 +42,11 @@
 <!--  -->
 <!--  -->
 <!--  -->
-<div class="m-3 rounded-lg mb-3" style="background-color: #F9F9F9;">
+<div class="m-3 rounded-lg mb-3 table-data" style="background-color: #F9F9F9;">
+<div>
 <form method="post" action="">
     {% csrf_token %}
-    <div class="p-3" >
+    <div class="p-3">
         <h1 class="text-2xl font-bold mb-4">Attendance for {{ student_class.name }} - {{ month }}/{{ year }}</h1>
         <table class="min-w-full border-collapse border border-zinc-400">
         <thead>
@@ -225,8 +226,10 @@
             {% endfor %}
         </tbody>
     </table>
+
     <button type="submit" class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg">Save Attendance</button>
 </form>
+</div>
 </div>
 
 

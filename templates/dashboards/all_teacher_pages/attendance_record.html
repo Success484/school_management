@@ -5,16 +5,28 @@
 <div class="m-3 text-black rounded-lg">
     <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
         <form method="get">
-            {{ forms.as_p }}
-            <button type="submit">Generate Attendance Table</button>
+            <div class="mb-2">
+                <span class="font-medium">Select Term</span>
+                {{ forms.term }}
+            </div>
+            <div class="mb-2">
+                <span class="font-medium">Select Month</span>
+                {{ forms.month }}
+            </div>
+            <div class="mb-2">
+                <span class="font-medium">Select Year</span>
+                {{ forms.year }}
+            </div>
+            <button class="p-1 bg-blue-500 text-white rounded-lg" type="submit">Generate Attendance Table</button>
         </form>
     </div>
 
     {%if weekdays%}
-    <h3>Attendance for {{ forms.cleaned_data.month }} {{ forms.cleaned_data.year }}</h3>
-    <form method="post" action="">
+    <h2 class="font-medium py-2 mt-2">Attendance for -/  {{ forms.cleaned_data.month }} / {{ forms.cleaned_data.year }}</h2>
+        <form method="post" action="">
         {% csrf_token %}
-        <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
+        <div class="p-3 rounded-lg table-data" style="background-color: #F9F9F9;">
+            <div>
             <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE SHEET</h1>
             <table class="min-w-full border-collapse border border-zinc-400">
                 <thead>
@@ -322,10 +334,12 @@
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
             
             <button type="submit" class="text-left py-2 px-3 my-3 font-normal text-white bg-blue-500 rounded-lg">Save Attendance</button>
         </div>
-    </form>
+        </form>
+    </div>
     {%endif%}
     
       </div>

@@ -133,7 +133,7 @@ def attendance_detail(request, class_id, year, month):
         date__month=month
     )
     
-    # Create a dictionary where keys are student IDs and values are attendance records
+    #dictionary where keys are student IDs and values are attendance records
     attendance_records = {}
     for record in attendance_qs:
         attendance_records[record.student.id] = record
@@ -142,7 +142,6 @@ def attendance_detail(request, class_id, year, month):
     cal = calendar.Calendar()
     days_in_month = cal.itermonthdays2(year, month)
     weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
-
 
 
     context = {
@@ -258,17 +257,9 @@ def update_attendance(request, class_id, year, month):
         date__month=month
     )
 
-
-    # days_in_month = monthrange(year, month)[1]
-    # weekday_labels = ['M', 'T', 'W', 'T', 'F']
-    # weekdays_in_month = []
-    # weekday_count = 0
-
     cal = calendar.Calendar()
     days_in_month = cal.itermonthdays2(year, month)
     weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
-
-
 
 
     if request.method == "POST":
