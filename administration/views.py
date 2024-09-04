@@ -39,9 +39,9 @@ def decline_users(request, user_id):
 
 @login_required
 def add_teacher(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
     if not request.user.is_teacher:
         return HttpResponseForbidden("You do not have permission to access this page.")
+    user = get_object_or_404(CustomUser, id=user_id)
     existing_teacher = Teacher.objects.filter(user=user).first()
     if existing_teacher:
         return redirect('teacher_dashboard')
@@ -62,6 +62,8 @@ def add_teacher(request, user_id):
 
 @login_required
 def edit_teacher(request, teacher_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     teacher = get_object_or_404(Teacher, id=teacher_id)
     if request.method == "POST":
         form = TeacherForm(request.POST, instance=teacher)
@@ -80,6 +82,8 @@ def edit_teacher(request, teacher_id):
 
 @login_required
 def delete_teacher(request, teacher_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     teacher = Teacher.objects.filter(id=teacher_id).first()
     if not teacher:
         messages.error(request, "Teacher not found.")
@@ -95,9 +99,9 @@ def delete_teacher(request, teacher_id):
 
 @login_required
 def add_student(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
+    user = get_object_or_404(CustomUser, id=user_id)
     existing_student = Student.objects.filter(user=user).first()
     if existing_student:
         return redirect('student_dashboard')
@@ -117,6 +121,8 @@ def add_student(request, user_id):
 
 @login_required
 def edit_student(request, student_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
     if request.method == "POST":
         form = StudentForm(request.POST, instance=student)
@@ -135,6 +141,8 @@ def edit_student(request, student_id):
 
 @login_required
 def delete_student(request, student_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
     if request.method == 'POST':
         user = student.user
@@ -147,12 +155,16 @@ def delete_student(request, student_id):
 
 @login_required
 def annoucement(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     post = Annoucement.objects.all()
     return render(request, 'dashboards/all_admin_pages/Annoucement.html', {'posts':post})
 
 
 @login_required
 def create_annoucement(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     if request.method == 'POST':
         form = AnnoucementForm(request.POST)
         if form.is_valid():
@@ -166,6 +178,8 @@ def create_annoucement(request):
 
 @login_required
 def edit_annoucement(request, post_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     post = get_object_or_404(Annoucement, id=post_id)
     if request.method == 'POST':
         form = AnnoucementForm(request.POST, instance=post)
@@ -180,6 +194,8 @@ def edit_annoucement(request, post_id):
 
 @login_required
 def delete_annoucement(request, post_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     post = get_object_or_404(Annoucement, id=post_id)
     post.delete()
     messages.success(request, 'Announcement delete successfully')

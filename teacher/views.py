@@ -10,10 +10,7 @@ from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
 from django.db.models import Count
-from django.forms import modelformset_factory
 from django.urls import reverse
-
-
 
 # Create your views here.
 def create_teacher_class(request):
@@ -343,13 +340,12 @@ def view_attendance(request, class_id):
 
 
 
-
 def create_grade(request):
     if request.method == 'POST':
         form = GradeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('grade_list')  # Redirect to the list of grades after saving
+            return redirect('grade_list') 
     else:
         form = GradeForm()
     return render(request, 'teacher/create_grade.html', {'form': form})
@@ -362,5 +358,3 @@ def grade_list(request, class_id=None):
     else:
         return redirect('dashboard')
     return render(request, 'teacher/grade_list.html', {'grades': grades})
-
-

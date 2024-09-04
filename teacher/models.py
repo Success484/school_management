@@ -44,7 +44,6 @@ class Attendance(models.Model):
     status22 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
     status23 = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True, blank=True, default='D')
 
-
     def __str__(self):
         return f" {self.class_info}"
 
