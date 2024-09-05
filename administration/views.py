@@ -5,6 +5,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from administration.forms import TeacherForm, StudentForm, AnnoucementForm
 from administration.models import Student, Teacher, Annoucement
+from teacher.models import TeacherClass
+from teacher.forms import TeacherClassForm
+from django.urls import reverse
+
 # Create your views here.
 
 
@@ -200,3 +204,36 @@ def delete_annoucement(request, post_id):
     post.delete()
     messages.success(request, 'Announcement delete successfully')
     return redirect('annoucement')
+
+
+def assign_teacher(request, teacher_id):
+    teacher = get_object_or_404(Teacher, id=teacher_id)
+    teacher_class = TeacherClass.objects.filter(teacher=teacher).first()
+    is_assigned = bool(teacher_class)
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    if request.method == 'POST':
+        if teacher_class:
+            form = TeacherClassForm(request.POST, instance=teacher_class)
+        else:
+            form = TeacherClassForm(request.POST)
+        if form.is_valid():
+            assign = form.save(commit=False)
+            assign.teacher = teacher
+            assign.save()
+            form.save_m2m()
+            return redirect(reverse('teacher_detail', kwargs={'user_id': teacher.user.id}))
+        print(form.errors)
+    else:
+        if teacher_class:
+            form = TeacherClassForm(instance=teacher_class)
+        else:
+            form = TeacherClassForm()
+
+    context = {
+        'teacher': teacher,
+        'form': form,
+        'is_assigned': is_assigned
+    }
+
+    return render(request, 'dashboards/all_admin_pages/assign_teacher.html', context)

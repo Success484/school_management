@@ -33,7 +33,7 @@
                         <li>Parent/Guardian Email: {{ student.parent_email }}</li>
                     </ul>
                 </div>
-                {%if request.user is superuser%}
+                {%if request.user.is_superuser%}
                 <div class="flex">
                     <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'edit_student' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg">Edit Student</a></div>
                     <div class="text-left p-3 mb-3 font-normal text-white text-right"><a href="{%url 'delete_student' student_id=student.id%}" class="bg-red-500 p-3 rounded-lg">Delete Student</a></div>

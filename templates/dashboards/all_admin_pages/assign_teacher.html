@@ -1,0 +1,25 @@
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+{% block section %}
+<div class="m-3 text-black rounded-lg">
+    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Assign Teacher {{teacher.user.first_name}} {{teacher.user.last_name}}</p>
+<div class="flex justify-center rounded-lg p-3" style="background-color: #F9F9F9;">
+<form action="" method="post">
+    {%csrf_token%}
+    <div class="mb-3">
+        {{form.teacher.label_tag}}
+        {{form.teacher}}
+    </div>
+    <div class="mb-3">
+        {{form.class_name.label_tag}}
+        {{form.class_name}}
+    </div>
+    <div class="mb-3">
+        {{form.subjects.label_tag}}
+        {{form.subjects}}
+    </div>
+    <button class="bg-blue-500 p-2 px-3 text-white rounded-lg " type="submit">Submit</button>
+</form>
+</div>
+</div>
+{% endblock section %}

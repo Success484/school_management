@@ -9,8 +9,8 @@ class TeacherClassForm(forms.ModelForm):
         fields = ['teacher', 'class_name', 'subjects']
         widgets = {
             'teacher': forms.Select(attrs={'class': 'form-control'}),
-            'class_name': forms.Select(attrs={'class': 'form-control'}),
-            'subjects': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
+            'class_name': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
+            'subjects': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
         }
 
 TERMS = [
@@ -65,14 +65,19 @@ class AttendanceForm(forms.ModelForm):
 class GradeForm(forms.ModelForm):
     class Meta:
         model = Grade
-        fields = ['student', 'class_info', 'subject', 'first_test', 'second_test', 'exam', 'final_grade', 'comments']
+        fields = ['subject1', 'subject2', 'first_test', 'second_test', 'exam', 'grade', 'final_grade', 'comments']
         widgets = {
-            'student': forms.Select(attrs={'class': 'form-control'}),
-            'class_info': forms.Select(attrs={'class': 'form-control'}),
-            'subject': forms.Select(attrs={'class': 'form-control'}),
-            'first_test': forms.TextInput(attrs={'class': 'form-control'}),
-            'second_test': forms.TextInput(attrs={'class': 'form-control'}),
-            'exam': forms.TextInput(attrs={'class': 'form-control'}),
-            'final_grade': forms.TextInput(attrs={'class': 'form-control'}),
-            'comments': forms.Textarea(attrs={'class': 'form-control'}),
+            'subject1': forms.Select(attrs={'class': 'form-control'}),
+            'subject2': forms.Select(attrs={'class': 'form-control'}),
+            'first_test': forms.TextInput(attrs={'class': 'final-grade'}),
+            'second_test': forms.TextInput(attrs={'class': 'final-grade'}),
+            'exam': forms.TextInput(attrs={'class': 'final-grade'}),
+            'grade': forms.TextInput(attrs={'class': 'final-grade'}),
+            'final_grade': forms.TextInput(attrs={'class': 'final-grade'}),
+            'comments': forms.Textarea(attrs={'class': 'final-grade'}),
         }
+
+
+
+
+        

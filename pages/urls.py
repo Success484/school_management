@@ -15,7 +15,6 @@ urlpatterns = [
     path('contact/', contact, name='contact_page'),
     path('teacher/dashboard/', teacher_dashboard, name='teacher_dashboard'),
     path('student/dashboard/', student_dashboard, name='student_dashboard'),
-    # Admin pages
     path('admin_dashboard/myteachers/', myTeacher, name='my_teacher'),
     path('admin_dashboard/myteachers/<int:user_id>/', teacherDetails, name='teacher_detail'),
     path('admin_dashboard/mystudents/', myStudent, name='my_student'),

@@ -3,6 +3,7 @@ from calendar import monthrange
 from datetime import date, timedelta
 import calendar
 from django.contrib import messages
+from classes.models import Subject
 from django.contrib.auth.decorators import login_required
 from teacher.forms import TeacherClassForm, AttendanceForm, GradeForm, AttendanceMonthForm
 from teacher.models import TeacherClass, Attendance, Grade
@@ -339,16 +340,35 @@ def view_attendance(request, class_id):
     return render(request, 'dashboards/all_teacher_pages/view_attendance.html', context)
 
 
+def create_grade(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    teachers = request.user.teacher_profile
+    teacher_classes = TeacherClass.objects.filter(teacher=teachers, class_name=student.student_class)
+    subjects = Subject.objects.filter(name__in=teacher_classes)
 
-def create_grade(request):
     if request.method == 'POST':
         form = GradeForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('grade_list') 
+            grade_form = form.save(commit=False)
+            print(f"Student: {student}")
+            print(f"Class Info: {teacher_classes.first()}")  # Should not be None
+            grade_form.student = student
+            grade_form.class_info = teacher_classes.first()  # Check what this is
+            grade_form.save()
+            return redirect(reverse('student_detail', kwargs={'student_id': student_id}))
+        print(form.errors)
     else:
         form = GradeForm()
-    return render(request, 'teacher/create_grade.html', {'form': form})
+
+    context = {
+        'student': student,
+        'form': form,
+        'subjects': subjects
+    }
+    return render(request, 'dashboards/all_teacher_pages/create_grade.html', context)
+
+
+
 
 
 def grade_list(request, class_id=None):

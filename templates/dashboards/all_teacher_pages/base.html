@@ -5,6 +5,8 @@
 {% url 'teacher_class_list' as teacher_class_list %}
 {% url 'teacher_dashboard' as teacher_dashboard %}
 {% url 'select_class_attendance' as select_class_attendance %}
+{% url 'create_grade' as create_grade %}
+
 
 
     <!-- SIDEBAR -->
@@ -32,8 +34,8 @@
                     <span class="text">Attendance Record</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{%if request.path == create_grade%}active{%else%}{%endif%}">
+                <a href="{{create_grade}}">
                     <i class='bx bxs-edit-alt'></i>
                     <span class="text">Grades</span>
                 </a>

@@ -4,11 +4,11 @@ from classes.models import Subject, Class
 
 class TeacherClass(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_classes')
-    class_name = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='class_teacher_classes')  # Changed related_name to 'class_teacher_classes'
+    class_name = models.ManyToManyField(Class, related_name='class_teacher_classes')
     subjects = models.ManyToManyField(Subject, related_name='teacher_subject')
 
     def __str__(self):
-        return self.class_name.name
+        return f"{self.teacher} - {self.class_name}"
 
 
 class Attendance(models.Model):
@@ -51,12 +51,14 @@ class Attendance(models.Model):
 class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='grades')
     class_info = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name='grades')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades')
-    first_test = models.CharField(max_length=3)
-    second_test = models.CharField(max_length=3)
-    exam = models.CharField(max_length=3)
-    final_grade = models.CharField(max_length=3)
-    comments = models.TextField()
+    subject1 = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject1', null=True, blank=True)
+    subject2 = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject2', null=True, blank=True)
+    first_test = models.CharField(max_length=3, null=True, blank=True)
+    second_test = models.CharField(max_length=3, null=True, blank=True)
+    exam = models.CharField(max_length=3, null=True, blank=True)
+    grade = models.CharField(max_length=3, null=True, blank=True)
+    final_grade = models.CharField(max_length=200, null=True, blank=True)
+    comments = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.student} - {self.class_info} - {self.subject} - {self.final_grade}"
+        return f"{self.student} - {self.class_info} - {self.subject1} / {self.subject2} - {self.final_grade}"
