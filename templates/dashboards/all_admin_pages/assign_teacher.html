@@ -2,21 +2,27 @@
 {% load static %}
 {% block section %}
 <div class="m-3 text-black rounded-lg">
-    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Assign Teacher {{teacher.user.first_name}} {{teacher.user.last_name}}</p>
+    <div class="text-center p-5 mb-3 rounded-lg font-medium text-gray-700" style="background-color: #F9F9F9;">
+        Assign Teacher {{teacher.user.first_name}} {{teacher.user.last_name}}
+        <ul class="text-sm mt-2">
+            <li>Subject: {{teacher.subject.all|join:", "}}</li>
+            <li>Classes: {{teacher.classes.all|join:", "}}</li>
+          </ul>
+    </div>
 <div class="flex justify-center rounded-lg p-3" style="background-color: #F9F9F9;">
 <form action="" method="post">
     {%csrf_token%}
-    <div class="mb-3">
-        {{form.teacher.label_tag}}
+    <div class="mb-4">
+        <p class="text-lg font-medium text-gray-700 mb-1">{{form.teacher.label_tag}}</p>
         {{form.teacher}}
     </div>
-    <div class="mb-3">
-        {{form.class_name.label_tag}}
-        {{form.class_name}}
-    </div>
-    <div class="mb-3">
-        {{form.subjects.label_tag}}
+    <div class="mb-4">
+        <p class="text-lg font-medium text-gray-700 mb-1">{{form.subjects.label_tag}}</p>
         {{form.subjects}}
+    </div>
+    <div class="mb-4">
+        <p class="text-lg font-medium text-gray-700 mb-1">{{form.class_name.label_tag}}</p>
+        {{form.class_name}}
     </div>
     <button class="bg-blue-500 p-2 px-3 text-white rounded-lg " type="submit">Submit</button>
 </form>

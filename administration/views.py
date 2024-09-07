@@ -209,6 +209,7 @@ def delete_annoucement(request, post_id):
 def assign_teacher(request, teacher_id):
     teacher = get_object_or_404(Teacher, id=teacher_id)
     teacher_class = TeacherClass.objects.filter(teacher=teacher).first()
+
     is_assigned = bool(teacher_class)
     if not request.user.is_superuser:
         return HttpResponseForbidden('You do not have permission to access this page.')

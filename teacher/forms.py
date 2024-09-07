@@ -8,7 +8,7 @@ class TeacherClassForm(forms.ModelForm):
         model = TeacherClass
         fields = ['teacher', 'class_name', 'subjects']
         widgets = {
-            'teacher': forms.Select(attrs={'class': 'form-control'}),
+            'teacher': forms.Select(attrs={'class': 'final-grade'}),
             'class_name': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
             'subjects': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
         }

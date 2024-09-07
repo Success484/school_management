@@ -12,8 +12,8 @@ class TeacherForm(forms.ModelForm):
             'emergency_contact'
         ]
         widgets = {
-            'phone_number': forms.TextInput(attrs={'class': ' class-form'}),
-            'home_address': forms.TextInput(attrs={'class': ' class-form'}),
+            'phone_number': forms.TextInput(attrs={'class': ' final-grade'}),
+            'home_address': forms.TextInput(attrs={'class': ' final-grade'}),
             'subject': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
             'classes': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
             'emergency_contact': forms.TextInput(attrs={'class': ' class-form'}),
@@ -32,12 +32,12 @@ class StudentForm(forms.ModelForm):
             'parent_email'
         ]
         widgets = {
-            'student_class': forms.Select(attrs={'class': 'form-control'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'home_address': forms.TextInput(attrs={'class': 'form-control'}),
-            'parent_or_guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'parent_or_guardian_phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'parent_email': forms.TextInput(attrs={'class': 'form-control'}),
+            'student_class': forms.Select(attrs={'class': 'final-grade'}),
+            'phone_number': forms.TextInput(attrs={'class': 'final-grade'}),
+            'home_address': forms.TextInput(attrs={'class': 'final-grade'}),
+            'parent_or_guardian_name': forms.TextInput(attrs={'class': 'final-grade'}),
+            'parent_or_guardian_phone_number': forms.TextInput(attrs={'class': 'final-grade'}),
+            'parent_email': forms.TextInput(attrs={'class': 'final-grade'}),
         }
         
 
