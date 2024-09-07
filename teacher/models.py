@@ -8,7 +8,8 @@ class TeacherClass(models.Model):
     subjects = models.ManyToManyField(Subject, related_name='teacher_subject')
 
     def __str__(self):
-        return f"{self.teacher} - {self.class_name}"
+        class_names = ', '.join([str(cls) for cls in self.class_name.all()])
+        return f"{self.teacher} - {class_names}"
 
 
 class Attendance(models.Model):

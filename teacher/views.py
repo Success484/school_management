@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from calendar import monthrange
 from datetime import date, timedelta
 import calendar
@@ -82,7 +82,7 @@ def teacher_class_details(request, class_id):
 
 
 def teacher_class_student_details(request, student_id):
-    student = get_object_or_404(Student, user__id=student_id)
+    student = get_object_or_404(Student, id=student_id)
     return render(request, 'dashboards/all_teacher_pages/student_details.html', {'student': student})
 
 
@@ -343,19 +343,24 @@ def view_attendance(request, class_id):
 def create_grade(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     teachers = request.user.teacher_profile
+
     teacher_classes = TeacherClass.objects.filter(teacher=teachers, class_name=student.student_class)
-    subjects = Subject.objects.filter(name__in=teacher_classes)
+
+    if not teacher_classes.exists():
+        return HttpResponse(f"No class assigned for teacher {teachers} in {student.student_class}")
+
+    class_info = teacher_classes.first()
+    class_names = class_info.class_name.all()
+    subjects = Subject.objects.filter(teacher_subject__in=teacher_classes)
 
     if request.method == 'POST':
         form = GradeForm(request.POST)
         if form.is_valid():
             grade_form = form.save(commit=False)
-            print(f"Student: {student}")
-            print(f"Class Info: {teacher_classes.first()}")  # Should not be None
             grade_form.student = student
-            grade_form.class_info = teacher_classes.first()  # Check what this is
+            grade_form.class_info = class_info
             grade_form.save()
-            return redirect(reverse('student_detail', kwargs={'student_id': student_id}))
+            return redirect(reverse('teacher_class_student_details', kwargs={'student_id': student_id}))
         print(form.errors)
     else:
         form = GradeForm()
@@ -363,12 +368,10 @@ def create_grade(request, student_id):
     context = {
         'student': student,
         'form': form,
-        'subjects': subjects
+        'subjects': subjects,
+        'class_names': class_names,
     }
     return render(request, 'dashboards/all_teacher_pages/create_grade.html', context)
-
-
-
 
 
 def grade_list(request, class_id=None):
