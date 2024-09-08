@@ -206,6 +206,7 @@ def delete_annoucement(request, post_id):
     return redirect('annoucement')
 
 
+@login_required
 def assign_teacher(request, teacher_id):
     teacher = get_object_or_404(Teacher, id=teacher_id)
     teacher_class = TeacherClass.objects.filter(teacher=teacher).first()

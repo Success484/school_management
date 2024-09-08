@@ -12,11 +12,11 @@ class TeacherForm(forms.ModelForm):
             'emergency_contact'
         ]
         widgets = {
-            'phone_number': forms.TextInput(attrs={'class': ' final-grade'}),
+            'phone_number': forms.TextInput(attrs={'class': ' final-grade '}),
             'home_address': forms.TextInput(attrs={'class': ' final-grade'}),
-            'subject': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
-            'classes': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
-            'emergency_contact': forms.TextInput(attrs={'class': ' class-form'}),
+            'subject': forms.SelectMultiple(attrs={'class': ' select2-multiple final-grade'}),
+            'classes': forms.SelectMultiple(attrs={'class': ' select2-multiple final-grade'}),
+            'emergency_contact': forms.TextInput(attrs={'class': ' final-grade'}),
         }
 
 

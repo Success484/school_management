@@ -13,16 +13,16 @@
         {% csrf_token %}
 
       <div class="mb-4">
-        {{ form.phone_number.label_tag }}
+        <p>{{ form.phone_number.label_tag }}</p>
         {{ form.phone_number }}
       </div>
   
       <div class="mb-6">
-        {{ form.home_address.label_tag }}
+        <p>{{ form.home_address.label_tag }}</p>
         {{ form.home_address }}
       </div>
       <div class="mb-6">
-        {{ form.subject.label_tag }}
+        <p>{{ form.subject.label_tag }}</p>
         {{form.subject}}
         {% for error in form.subject.errors %}
             <div class="error">{{ error }}</div>
@@ -30,12 +30,12 @@
       </div>
   
       <div class="mb-4">
-        {{ form.classes.label_tag }}
+        <p>{{ form.classes.label_tag }}</p>
         {{form.classes}}
       </div>
 
       <div class="mb-4">
-        {{ form.emergency_contact.label_tag }}
+        <p>{{ form.emergency_contact.label_tag }}</p>
         {{form.emergency_contact}}
       </div>
   

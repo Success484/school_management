@@ -82,7 +82,7 @@ def teacher_class_details(request, class_id):
 
 
 def teacher_class_student_details(request, student_id):
-    student = get_object_or_404(Student, id=student_id)
+    student = get_object_or_404(Student, user__id=student_id)
     return render(request, 'dashboards/all_teacher_pages/student_details.html', {'student': student})
 
 
@@ -360,7 +360,7 @@ def create_grade(request, student_id):
             grade_form.student = student
             grade_form.class_info = class_info
             grade_form.save()
-            return redirect(reverse('teacher_class_student_details', kwargs={'student_id': student_id}))
+            return redirect('teacher_class_student_details', student_id=student.user.id)
         print(form.errors)
     else:
         form = GradeForm()

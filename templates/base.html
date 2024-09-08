@@ -36,6 +36,14 @@
     <!-- Template Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
+<style>
+    .final-grade {
+        width: 100%;
+        border: 1px solid rgb(142, 141, 141); /* Corrected border property */
+        border-radius: 5px; /* Apply rounded corners */
+        padding: 4px;
+    }
+</style>
 
 <body>
 {% url 'home_page' as home_url %}

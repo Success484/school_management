@@ -65,14 +65,18 @@ class AttendanceForm(forms.ModelForm):
 class GradeForm(forms.ModelForm):
     class Meta:
         model = Grade
-        fields = ['subject1', 'subject2', 'first_test', 'second_test', 'exam', 'grade', 'final_grade', 'comments']
+        fields = ['subject', 'first_test', 'second_test', 'exam', 'grade', 'subject2', 'first_test2', 'second_test2', 'exam2', 'grade2', 'final_grade', 'comments']
         widgets = {
-            'subject1': forms.Select(attrs={'class': 'form-control'}),
-            'subject2': forms.Select(attrs={'class': 'form-control'}),
-            'first_test': forms.TextInput(attrs={'class': 'final-grade'}),
-            'second_test': forms.TextInput(attrs={'class': 'final-grade'}),
-            'exam': forms.TextInput(attrs={'class': 'final-grade'}),
+            'subject': forms.Select(attrs={'class': 'final-grade'}),
+            'first_test': forms.NumberInput(attrs={'class': 'final-grade'}),
+            'second_test': forms.NumberInput(attrs={'class': 'final-grade'}),
+            'exam': forms.NumberInput(attrs={'class': 'final-grade'}),
             'grade': forms.TextInput(attrs={'class': 'final-grade'}),
+            'subject2': forms.Select(attrs={'class': 'final-grade'}),
+            'first_test2': forms.NumberInput(attrs={'class': 'final-grade'}),
+            'second_test2': forms.NumberInput(attrs={'class': 'final-grade'}),
+            'exam2': forms.NumberInput(attrs={'class': 'final-grade'}),
+            'grade2': forms.TextInput(attrs={'class': 'final-grade'}),
             'final_grade': forms.TextInput(attrs={'class': 'final-grade'}),
             'comments': forms.Textarea(attrs={'class': 'final-grade'}),
         }

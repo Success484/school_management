@@ -52,14 +52,20 @@ class Attendance(models.Model):
 class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='grades')
     class_info = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name='grades')
-    subject1 = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject1', null=True, blank=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject1', null=True, blank=True)
     subject2 = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject2', null=True, blank=True)
     first_test = models.CharField(max_length=3, null=True, blank=True)
+    first_test2 = models.CharField(max_length=3, null=True, blank=True)
     second_test = models.CharField(max_length=3, null=True, blank=True)
+    second_test2 = models.CharField(max_length=3, null=True, blank=True)
     exam = models.CharField(max_length=3, null=True, blank=True)
+    exam2 = models.CharField(max_length=3, null=True, blank=True)
     grade = models.CharField(max_length=3, null=True, blank=True)
+    grade2 = models.CharField(max_length=3, null=True, blank=True)
     final_grade = models.CharField(max_length=200, null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
 
+
+
     def __str__(self):
-        return f"{self.student} - {self.class_info} - {self.subject1} / {self.subject2} - {self.final_grade}"
+        return f"{self.student} - {self.class_info} - {self.subject} / {self.subject2} - {self.final_grade}"
