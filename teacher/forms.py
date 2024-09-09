@@ -63,9 +63,11 @@ class AttendanceForm(forms.ModelForm):
 
 
 class GradeForm(forms.ModelForm):
+    term = forms.ChoiceField(choices=TERMS)
+    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
     class Meta:
         model = Grade
-        fields = ['subject', 'first_test', 'second_test', 'exam', 'grade', 'subject2', 'first_test2', 'second_test2', 'exam2', 'grade2', 'final_grade', 'comments']
+        fields = ['term', 'year', 'subject', 'first_test', 'second_test', 'exam', 'grade', 'subject2', 'first_test2', 'second_test2', 'exam2', 'grade2', 'final_grade', 'comments']
         widgets = {
             'subject': forms.Select(attrs={'class': 'final-grade'}),
             'first_test': forms.NumberInput(attrs={'class': 'final-grade'}),

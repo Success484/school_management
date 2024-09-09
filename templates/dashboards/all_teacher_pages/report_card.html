@@ -1,0 +1,142 @@
+{% extends 'dashboards/all_teacher_pages/base.html' %}
+{% load static %}
+{% block section %}
+<div class="bg-card  rounded-lg shadow-md m-3 rounded-lg bg-white">
+  <div class="mb-6 text-white invisible">h</div>
+  <div class="flex justify-center item-center w-full bg-blue-100">
+    <div class="py-7 flex md:space-x-4 space-x-0">
+      <div>
+      <img src="{%static 'img/school-logo.png'%}" alt="school-logo" loading="lazy" height="130px" width="130px">
+      </div>
+      <div class="md:mt-6 sm:mt-3 mt-6 pl-1">
+        <h1 class="md:text-3xl text-2xl  font-bold text-blue-500 md:tracking-wide tracking-normal">REPORT CARD</h1>
+        <h2 class="text-xl text-muted-foreground text-blue-500">Salford High School</h2>
+      </div>
+  </div>
+</div>
+  <div class="p-6">
+    <div class="mt-4 grid md:grid-cols-3 grid-cols-2 gap-2">
+      <div class="mt-4">
+        <label class="block text-muted-foreground">Student Name:</label>
+        <div class="border border-border rounded p-2 w-full bg-white">
+          {{ student.user.first_name }} {{ student.user.last_name }}
+        </div>
+      </div>
+  
+      
+      <div>
+        <label class="block text-muted-foreground mt-4">Class:</label>
+        <div class="border border-border rounded p-2 w-full bg-white">
+          {{class_names}}
+        </div>
+      </div>
+      
+      <div>
+        <label class="block text-muted-foreground mt-4">Year:</label>
+        <input type="text" class="border border-border p-2 rounded w-full" />
+      </div>
+      
+      <div>
+        <label class="block text-muted-foreground mt-4">Term:</label>
+        <input type="text" class="border border-border p-2 rounded w-full" />
+      </div>
+    </div>
+  
+    <table class="mt-6 w-full border-collapse">
+      <thead>
+        <tr class="bg-muted text-muted-foreground">
+          <th class="border border-border p-2">Subject</th>
+          <th class="border border-border p-2">1st Quarter</th>
+          <th class="border border-border p-2">2nd Quarter</th>
+          <th class="border border-border p-2">3rd Quarter</th>
+          <th class="border border-border p-2">4th Quarter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border border-border p-2">English</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Economic</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">History</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Biology</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Math</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Science</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Social Studies</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Art</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Physical Education</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-border p-2">Chemistry</td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <label class="block text-muted-foreground mt-4">Position:</label>
+    <input type="text" class="border border-border p-2 rounded w-full" />
+  </div>
+  
+    <div class="mt-6">
+      <h3 class="text-muted-foreground">GRADING SCALE:</h3>
+      <p class="text-muted-foreground">A = 90% - 100% | B = 80% - 89% | C = 60% - 79% | D = 0% - 59%</p>
+  
+      <label class="block text-muted-foreground mt-4">Comment:</label>
+      <textarea class="border border-border p-2 rounded w-full" rows="4"></textarea>
+    </div>
+  </div>
+{% endblock section %}

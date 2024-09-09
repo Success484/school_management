@@ -371,8 +371,7 @@ def create_grade(request, student_id):
         'subjects': subjects,
         'class_names': class_names,
     }
-    return render(request, 'dashboards/all_teacher_pages/create_grade.html', context)
-
+    return render(request, 'dashboards/all_teacher_pages/report_card.html', context)
 
 def grade_list(request, class_id=None):
     if class_id:

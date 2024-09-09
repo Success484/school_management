@@ -51,7 +51,7 @@ class Attendance(models.Model):
 
 class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='grades')
-    class_info = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name='grades')
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='grades')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject1', null=True, blank=True)
     subject2 = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject2', null=True, blank=True)
     first_test = models.CharField(max_length=3, null=True, blank=True)
