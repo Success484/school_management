@@ -8,8 +8,8 @@ class TeacherClass(models.Model):
     subjects = models.ManyToManyField(Subject, related_name='teacher_subject')
 
     def __str__(self):
-        class_names = ', '.join([str(cls) for cls in self.class_name.all()])
-        return f"{self.teacher} - {class_names}"
+        return f"{self.teacher} - {self.class_name}"
+
 
 
 class Attendance(models.Model):
@@ -51,30 +51,30 @@ class Attendance(models.Model):
 
 class FirstTest(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="firsttest_student")
-    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="firsttest_class_info")
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="firsttest_subject", null=False, default=False)
+    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="firsttest_teacher_class", null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="firsttest_subject", null=False)
     score = models.CharField(max_length=20)
     out_of = models.IntegerField(default=100)
 
     def __str__(self):
-        return f"{self.student} - {self.class_info} - {self.subject} - {self.score}"
+        return f"{self.student} - {self.teacher_class} - {self.subject} - {self.score}"
 
 class SecondTest(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="secondtest_student")
-    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="secondtest_class_info")
+    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="secondtest_teacher_class", null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="secondtest_subject", null=False, default=False)
     score = models.CharField(max_length=20)
     out_of = models.IntegerField(default=100)
 
     def __str__(self):
-        return f"{self.student} - {self.class_info} - {self.subject} - {self.score}"
+        return f"{self.student} - {self.teacher_class} - {self.subject} - {self.score}"
 
 class Exam(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="exam_student")
-    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="exam_class_info")
+    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="exam_teacher_class", null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="exam_subject", null=False, default=False)
     score = models.CharField(max_length=20)
     out_of = models.IntegerField(default=100)
 
     def __str__(self):
-        return f"{self.student} - {self.class_info} - {self.subject} - {self.score}"
+        return f"{self.student} - {self.teacher_class} - {self.subject} - {self.score}"

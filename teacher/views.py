@@ -347,30 +347,36 @@ def choose_grade(request, student_id):
 
 def first_test_score(request, student_id):
     student = get_object_or_404(Student, id=student_id)
-    classes = Class.objects.get(name = student.student_class)
+    class_info = student.student_class  # Get student's class
+    teacher = request.user.teacher_profile
+
     if request.method == "POST":
-        form = FirstTestForm(request.POST)
+        form = FirstTestForm(request.POST, class_info=class_info, teacher=teacher)
         if form.is_valid():
             record = form.save(commit=False)
             record.student = student
-            record.class_info = classes
+            record.class_info = class_info
             record.save()
             return redirect('teacher_class_student_details', student_id=student.user.id)
-        print(form.errors)
-    form = FirstTestForm()
+    else:
+        form = FirstTestForm(class_info=class_info, teacher=teacher)
+
     context = {
-        'student':student,
-        'classes':classes,
-        'form':form
+        'student': student,
+        'class_info': class_info,
+        'form': form
     }
     return render(request, 'dashboards/all_teacher_pages/first_test_form.html', context)
+
 
 
 def second_test_score(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     classes = Class.objects.get(name = student.student_class)
+    teacher = request.user.teacher_profile
+
     if request.method == "POST":
-        form = SecondTestForm(request.POST)
+        form = SecondTestForm(request.POST, class_info=classes, teacher=teacher)
         if form.is_valid():
             record = form.save(commit=False)
             record.student = student
@@ -378,7 +384,7 @@ def second_test_score(request, student_id):
             record.save()
             return redirect('teacher_class_student_details', student_id=student.user.id)
         print(form.errors)
-    form = SecondTestForm()
+    form = SecondTestForm(class_info=classes, teacher=teacher)
     context = {
         'student':student,
         'classes':classes,
@@ -390,8 +396,10 @@ def second_test_score(request, student_id):
 def Exam_test_score(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     classes = Class.objects.get(name = student.student_class)
+    teacher = request.user.teacher_profile
+
     if request.method == "POST":
-        form = ExamTestForm(request.POST)
+        form = ExamTestForm(request.POST, class_info=classes, teacher=teacher)
         if form.is_valid():
             record = form.save(commit=False)
             record.student = student
@@ -399,7 +407,7 @@ def Exam_test_score(request, student_id):
             record.save()
             return redirect('teacher_class_student_details', student_id=student.user.id)
         print(form.errors)
-    form = ExamTestForm()
+    form = ExamTestForm(class_info=classes, teacher=teacher)
     context = {
         'student':student,
         'classes':classes,

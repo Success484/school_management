@@ -1,6 +1,7 @@
 from django import forms
 from .models import TeacherClass, Attendance, FirstTest, SecondTest, Exam
 import calendar
+from classes.models import Subject
 
 
 class TeacherClassForm(forms.ModelForm):
@@ -63,48 +64,100 @@ class AttendanceForm(forms.ModelForm):
 
 
 class FirstTestForm(forms.ModelForm):
-    term = forms.ChoiceField(choices=TERMS)
-    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
+    term = forms.ChoiceField(
+        choices=TERMS, 
+        widget=forms.Select(attrs={'class': 'final-grade'})
+    )
+    year = forms.ChoiceField(
+        choices=[(str(y), y) for y in range(2024, 2034)],
+        widget=forms.Select(attrs={'class': 'final-grade'})
+    )
+
     class Meta:
         model = FirstTest
         fields = ['subject', 'term', 'year', 'score', 'out_of']
         widgets = {
             'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'term': forms.Select(attrs={'class': 'final-grade'}),
-            'year': forms.Select(attrs={'class': 'final-grade'}),
             'score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        class_info = kwargs.pop('class_info', None)
+        teacher = kwargs.pop('teacher', None)
+        super().__init__(*args, **kwargs)
+
+        if class_info and teacher:
+            # Filter subjects to only include those taught by the teacher in the specific class
+            self.fields['subject'].queryset = Subject.objects.filter(
+                teacher_subject__teacher=teacher,
+                teacher_subject__class_name=class_info
+            )
+
+
+
 
 class SecondTestForm(forms.ModelForm):
-    term = forms.ChoiceField(choices=TERMS)
-    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
+    term = forms.ChoiceField(
+        choices=TERMS, 
+        widget=forms.Select(attrs={'class': 'final-grade'})
+    )
+    year = forms.ChoiceField(
+        choices=[(str(y), y) for y in range(2024, 2034)],
+        widget=forms.Select(attrs={'class': 'final-grade'})
+    )
     class Meta:
         model = SecondTest
         fields = ['subject', 'term', 'year', 'score', 'out_of']
         widgets = {
             'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'term': forms.Select(attrs={'class': 'final-grade'}),
-            'year': forms.Select(attrs={'class': 'final-grade'}),
             'score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        class_info = kwargs.pop('class_info', None)
+        teacher = kwargs.pop('teacher', None)
+        super().__init__(*args, **kwargs)
+
+        if class_info and teacher:
+            # Filter subjects to only include those taught by the teacher in the specific class
+            self.fields['subject'].queryset = Subject.objects.filter(
+                teacher_subject__teacher=teacher,
+                teacher_subject__class_name=class_info
+            )
+
+
 
 class ExamTestForm(forms.ModelForm):
-    term = forms.ChoiceField(choices=TERMS)
-    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
+    term = forms.ChoiceField(
+        choices=TERMS, 
+        widget=forms.Select(attrs={'class': 'final-grade'})
+    )
+    year = forms.ChoiceField(
+        choices=[(str(y), y) for y in range(2024, 2034)],
+        widget=forms.Select(attrs={'class': 'final-grade'})
+    )
     class Meta:
         model = Exam
         fields = ['subject', 'term', 'year', 'score', 'out_of']
         widgets = {
             'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'term': forms.Select(attrs={'class': 'final-grade'}),
-            'year': forms.Select(attrs={'class': 'final-grade'}),
             'score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        class_info = kwargs.pop('class_info', None)
+        teacher = kwargs.pop('teacher', None)
+        super().__init__(*args, **kwargs)
+
+        if class_info and teacher:
+            # Filter subjects to only include those taught by the teacher in the specific class
+            self.fields['subject'].queryset = Subject.objects.filter(
+                teacher_subject__teacher=teacher,
+                teacher_subject__class_name=class_info
+            )
 
 
 

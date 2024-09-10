@@ -14,14 +14,14 @@ class AttendanceAdmin(admin.ModelAdmin):
     
 @admin.register(FirstTest)
 class FirstTestAdmin(admin.ModelAdmin):
-    list_display = ('student', 'class_info', 'subject', 'score')
+    list_display = ('student', 'teacher_class', 'subject', 'score')
 
 
 @admin.register(SecondTest)
 class SecondTestAdmin(admin.ModelAdmin):
-    list_display = ('student', 'class_info', 'subject', 'score')
+    list_display = ('student', 'teacher_class', 'subject', 'score')
 
 
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
-    list_display = ('student', 'class_info', 'subject', 'score')
+    list_display = ('student', 'teacher_class', 'subject', 'score')
