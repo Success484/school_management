@@ -49,32 +49,32 @@ class Attendance(models.Model):
         return f" {self.class_info}"
 
 
-class FirstTest(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="firsttest_student")
-    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="firsttest_teacher_class", null=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="firsttest_subject", null=False)
+
+class BaseTestModel(models.Model):
+    TERMS = [
+        ('First Term', 'First Term'),
+        ('Second Term', 'Second Term'),
+        ('Third Term', 'Third Term'),
+    ]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="%(class)s_student")
+    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="%(class)s_teacher_class", null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="%(class)s_subject", null=False)
     score = models.CharField(max_length=20)
     out_of = models.IntegerField(default=100)
+    term = models.CharField(max_length=20, choices=TERMS, default='First Term')
+    year = models.IntegerField(default=2024)
+
+    class Meta:
+        abstract = True
 
     def __str__(self):
-        return f"{self.student} - {self.teacher_class} - {self.subject} - {self.score}"
+        return f"{self.student} - {self.term} - {self.year} - {self.subject} - {self.score}"
 
-class SecondTest(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="secondtest_student")
-    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="secondtest_teacher_class", null=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="secondtest_subject", null=False, default=False)
-    score = models.CharField(max_length=20)
-    out_of = models.IntegerField(default=100)
+class FirstTest(BaseTestModel):
+    pass
 
-    def __str__(self):
-        return f"{self.student} - {self.teacher_class} - {self.subject} - {self.score}"
+class SecondTest(BaseTestModel):
+    pass
 
-class Exam(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="exam_student")
-    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="exam_teacher_class", null=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="exam_subject", null=False, default=False)
-    score = models.CharField(max_length=20)
-    out_of = models.IntegerField(default=100)
-
-    def __str__(self):
-        return f"{self.student} - {self.teacher_class} - {self.subject} - {self.score}"
+class Exam(BaseTestModel):
+    pass

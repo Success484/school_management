@@ -1,0 +1,46 @@
+{% extends 'dashboards/all_teacher_pages/base.html' %}
+{% load static %}
+{% block section %}
+<div class="py-8 px-4 m-3 rounded-lg" style="background-color: #F9F9F9;">
+    <div id="accordion">
+        {% for first_test in first_tests %}
+            <h3 class="font-medium">
+                {{ first_test.student }}, {{ first_test.term }} Grades {{ first_test.year }}
+            </h3>
+            <div>
+                <article class="mb-6">
+                    <h2>FIRST TEST GRADE</h2>
+                    <ul>
+                        <li>Scores</li>
+                        <li>{{ first_test.subject }}: {{ first_test.score }} out of {{ first_test.out_of }}</li>
+                    </ul>
+                </article>
+                
+                {% for second_test in second_tests %}
+                    {% if second_test.student == first_test.student and second_test.term == first_test.term %}
+                        <article class="mb-6">
+                            <h2>SECOND TEST GRADE</h2>
+                            <ul>
+                                <li>Scores</li>
+                                <li>{{ second_test.subject }}: {{ second_test.score }} out of {{ second_test.out_of }}</li>
+                            </ul>
+                        </article>
+                    {% endif %}
+                {% endfor %}
+                
+                {% for exam in exams %}
+                    {% if exam.student == first_test.student and exam.term == first_test.term %}
+                        <article class="mb-6">
+                            <h2>EXAM GRADE</h2>
+                            <ul>
+                                <li>Scores</li>
+                                <li>{{ exam.subject }}: {{ exam.score }} out of {{ exam.out_of }}</li>
+                            </ul>
+                        </article>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock section %}

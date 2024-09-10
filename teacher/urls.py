@@ -16,6 +16,6 @@ urlpatterns = [
     path('admin_dashboard/mystudents/details/<int:student_id>/form/first/', views.first_test_score, name='first_test_score'),
     path('admin_dashboard/mystudents/details/<int:student_id>/form/second/', views.second_test_score, name='second_test_score'),
     path('admin_dashboard/mystudents/details/<int:student_id>/form/third/', views.Exam_test_score, name='Exam_test_score'),
-    path('admin_dashboard/mystudents/details/card/', views.report_card, name='report_card'),
+    path('admin_dashboard/mystudents/details/grades/<int:student_id>/', views.view_student_grades, name='view_student_grades'),
 
 ]

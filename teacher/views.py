@@ -6,7 +6,7 @@ from django.contrib import messages
 from classes.models import Subject
 from django.contrib.auth.decorators import login_required
 from teacher.forms import TeacherClassForm, AttendanceForm, AttendanceMonthForm, FirstTestForm, SecondTestForm, ExamTestForm
-from teacher.models import TeacherClass, Attendance
+from teacher.models import Attendance, FirstTest, SecondTest, Exam
 from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
@@ -358,6 +358,7 @@ def first_test_score(request, student_id):
             record.class_info = class_info
             record.save()
             return redirect('teacher_class_student_details', student_id=student.user.id)
+        print(form.errors)
     else:
         form = FirstTestForm(class_info=class_info, teacher=teacher)
 
@@ -367,7 +368,6 @@ def first_test_score(request, student_id):
         'form': form
     }
     return render(request, 'dashboards/all_teacher_pages/first_test_form.html', context)
-
 
 
 def second_test_score(request, student_id):
@@ -415,6 +415,21 @@ def Exam_test_score(request, student_id):
     }
     return render(request, 'dashboards/all_teacher_pages/exam_test_form.html', context)
 
+
+def view_student_grades(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    
+    first_tests = FirstTest.objects.filter(student=student)
+    second_tests = SecondTest.objects.filter(student=student)
+    exams = Exam.objects.filter(student=student)
+
+    context = {
+        'student': student,
+        'first_tests': first_tests,
+        'second_tests': second_tests,
+        'exams': exams
+    }
+    return render(request, 'dashboards/all_teacher_pages/view_grade.html', context)
 
 def report_card(request):
     return render(request, 'dashboards/all_teacher_pages/report_card.html')

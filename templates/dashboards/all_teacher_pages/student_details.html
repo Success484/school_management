@@ -24,7 +24,7 @@
                     </ul>
                 </div>
                 <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'choose_grade' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg">Grade Student</a></div>
-                <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'report_card' %}" class="bg-blue-500 p-3 rounded-lg">report card</a></div>
+                <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'view_student_grades' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg">View Student Grades</a></div>
 
                 {%if request.user.is_superuser%}
                 <div class="bg-card p-4 rounded-lg my-4">

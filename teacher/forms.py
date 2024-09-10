@@ -64,13 +64,9 @@ class AttendanceForm(forms.ModelForm):
 
 
 class FirstTestForm(forms.ModelForm):
-    term = forms.ChoiceField(
-        choices=TERMS, 
-        widget=forms.Select(attrs={'class': 'final-grade'})
-    )
     year = forms.ChoiceField(
         choices=[(str(y), y) for y in range(2024, 2034)],
-        widget=forms.Select(attrs={'class': 'final-grade'})
+        widget=forms.Select(attrs={'class': 'final-grade '})
     )
 
     class Meta:
@@ -80,6 +76,8 @@ class FirstTestForm(forms.ModelForm):
             'subject': forms.Select(attrs={'class': 'final-grade'}),
             'score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
+            'term': forms.Select(attrs={'class': 'final-grade'}),
+            'year': forms.Select(attrs={'class': 'final-grade'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -98,10 +96,6 @@ class FirstTestForm(forms.ModelForm):
 
 
 class SecondTestForm(forms.ModelForm):
-    term = forms.ChoiceField(
-        choices=TERMS, 
-        widget=forms.Select(attrs={'class': 'final-grade'})
-    )
     year = forms.ChoiceField(
         choices=[(str(y), y) for y in range(2024, 2034)],
         widget=forms.Select(attrs={'class': 'final-grade'})
@@ -113,6 +107,8 @@ class SecondTestForm(forms.ModelForm):
             'subject': forms.Select(attrs={'class': 'final-grade'}),
             'score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
+            'term': forms.Select(attrs={'class': 'final-grade'}),
+            'year': forms.Select(attrs={'class': 'final-grade'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -130,10 +126,6 @@ class SecondTestForm(forms.ModelForm):
 
 
 class ExamTestForm(forms.ModelForm):
-    term = forms.ChoiceField(
-        choices=TERMS, 
-        widget=forms.Select(attrs={'class': 'final-grade'})
-    )
     year = forms.ChoiceField(
         choices=[(str(y), y) for y in range(2024, 2034)],
         widget=forms.Select(attrs={'class': 'final-grade'})
@@ -145,6 +137,8 @@ class ExamTestForm(forms.ModelForm):
             'subject': forms.Select(attrs={'class': 'final-grade'}),
             'score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
+            'term': forms.Select(attrs={'class': 'final-grade'}),
+            'year': forms.Select(attrs={'class': 'final-grade'}),
         }
 
     def __init__(self, *args, **kwargs):
