@@ -1,5 +1,5 @@
 from django import forms
-from .models import TeacherClass, Attendance, Grade
+from .models import TeacherClass, Attendance, FirstTest, SecondTest, Exam
 import calendar
 
 
@@ -62,25 +62,48 @@ class AttendanceForm(forms.ModelForm):
 
 
 
-class GradeForm(forms.ModelForm):
+class FirstTestForm(forms.ModelForm):
     term = forms.ChoiceField(choices=TERMS)
     year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
     class Meta:
-        model = Grade
-        fields = ['term', 'year', 'subject', 'first_test', 'second_test', 'exam', 'grade', 'subject2', 'first_test2', 'second_test2', 'exam2', 'grade2', 'final_grade', 'comments']
+        model = FirstTest
+        fields = ['subject', 'term', 'year', 'score', 'out_of']
         widgets = {
             'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'first_test': forms.NumberInput(attrs={'class': 'final-grade'}),
-            'second_test': forms.NumberInput(attrs={'class': 'final-grade'}),
-            'exam': forms.NumberInput(attrs={'class': 'final-grade'}),
-            'grade': forms.TextInput(attrs={'class': 'final-grade'}),
-            'subject2': forms.Select(attrs={'class': 'final-grade'}),
-            'first_test2': forms.NumberInput(attrs={'class': 'final-grade'}),
-            'second_test2': forms.NumberInput(attrs={'class': 'final-grade'}),
-            'exam2': forms.NumberInput(attrs={'class': 'final-grade'}),
-            'grade2': forms.TextInput(attrs={'class': 'final-grade'}),
-            'final_grade': forms.TextInput(attrs={'class': 'final-grade'}),
-            'comments': forms.Textarea(attrs={'class': 'final-grade'}),
+            'term': forms.Select(attrs={'class': 'final-grade'}),
+            'year': forms.Select(attrs={'class': 'final-grade'}),
+            'score': forms.TextInput(attrs={'class': 'final-grade'}),
+            'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
+        }
+
+
+class SecondTestForm(forms.ModelForm):
+    term = forms.ChoiceField(choices=TERMS)
+    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
+    class Meta:
+        model = SecondTest
+        fields = ['subject', 'term', 'year', 'score', 'out_of']
+        widgets = {
+            'subject': forms.Select(attrs={'class': 'final-grade'}),
+            'term': forms.Select(attrs={'class': 'final-grade'}),
+            'year': forms.Select(attrs={'class': 'final-grade'}),
+            'score': forms.TextInput(attrs={'class': 'final-grade'}),
+            'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
+        }
+
+
+class ExamTestForm(forms.ModelForm):
+    term = forms.ChoiceField(choices=TERMS)
+    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
+    class Meta:
+        model = Exam
+        fields = ['subject', 'term', 'year', 'score', 'out_of']
+        widgets = {
+            'subject': forms.Select(attrs={'class': 'final-grade'}),
+            'term': forms.Select(attrs={'class': 'final-grade'}),
+            'year': forms.Select(attrs={'class': 'final-grade'}),
+            'score': forms.TextInput(attrs={'class': 'final-grade'}),
+            'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
         }
 
 

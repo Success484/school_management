@@ -5,8 +5,8 @@ import calendar
 from django.contrib import messages
 from classes.models import Subject
 from django.contrib.auth.decorators import login_required
-from teacher.forms import TeacherClassForm, AttendanceForm, GradeForm, AttendanceMonthForm
-from teacher.models import TeacherClass, Attendance, Grade
+from teacher.forms import TeacherClassForm, AttendanceForm, AttendanceMonthForm, FirstTestForm, SecondTestForm, ExamTestForm
+from teacher.models import TeacherClass, Attendance
 from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
@@ -340,43 +340,73 @@ def view_attendance(request, class_id):
     return render(request, 'dashboards/all_teacher_pages/view_attendance.html', context)
 
 
-def create_grade(request, student_id):
+def choose_grade(request, student_id):
     student = get_object_or_404(Student, id=student_id)
-    teachers = request.user.teacher_profile
+    return render(request, 'dashboards/all_teacher_pages/choose_grade.html', {'student': student})
 
-    teacher_classes = TeacherClass.objects.filter(teacher=teachers, class_name=student.student_class)
 
-    if not teacher_classes.exists():
-        return HttpResponse(f"No class assigned for teacher {teachers} in {student.student_class}")
-
-    class_info = teacher_classes.first()
-    class_names = class_info.class_name.all()
-    subjects = Subject.objects.filter(teacher_subject__in=teacher_classes)
-
-    if request.method == 'POST':
-        form = GradeForm(request.POST)
+def first_test_score(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    classes = Class.objects.get(name = student.student_class)
+    if request.method == "POST":
+        form = FirstTestForm(request.POST)
         if form.is_valid():
-            grade_form = form.save(commit=False)
-            grade_form.student = student
-            grade_form.class_info = class_info
-            grade_form.save()
+            record = form.save(commit=False)
+            record.student = student
+            record.class_info = classes
+            record.save()
             return redirect('teacher_class_student_details', student_id=student.user.id)
         print(form.errors)
-    else:
-        form = GradeForm()
-
+    form = FirstTestForm()
     context = {
-        'student': student,
-        'form': form,
-        'subjects': subjects,
-        'class_names': class_names,
+        'student':student,
+        'classes':classes,
+        'form':form
     }
-    return render(request, 'dashboards/all_teacher_pages/report_card.html', context)
+    return render(request, 'dashboards/all_teacher_pages/first_test_form.html', context)
 
-def grade_list(request, class_id=None):
-    if class_id:
-        teacher_class = get_object_or_404(TeacherClass, id=class_id)
-        grades = Grade.objects.filter(class_info=teacher_class)
-    else:
-        return redirect('dashboard')
-    return render(request, 'teacher/grade_list.html', {'grades': grades})
+
+def second_test_score(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    classes = Class.objects.get(name = student.student_class)
+    if request.method == "POST":
+        form = SecondTestForm(request.POST)
+        if form.is_valid():
+            record = form.save(commit=False)
+            record.student = student
+            record.class_info = classes
+            record.save()
+            return redirect('teacher_class_student_details', student_id=student.user.id)
+        print(form.errors)
+    form = SecondTestForm()
+    context = {
+        'student':student,
+        'classes':classes,
+        'form':form
+    }
+    return render(request, 'dashboards/all_teacher_pages/second_test_form.html', context)
+
+
+def Exam_test_score(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    classes = Class.objects.get(name = student.student_class)
+    if request.method == "POST":
+        form = ExamTestForm(request.POST)
+        if form.is_valid():
+            record = form.save(commit=False)
+            record.student = student
+            record.class_info = classes
+            record.save()
+            return redirect('teacher_class_student_details', student_id=student.user.id)
+        print(form.errors)
+    form = ExamTestForm()
+    context = {
+        'student':student,
+        'classes':classes,
+        'form':form
+    }
+    return render(request, 'dashboards/all_teacher_pages/exam_test_form.html', context)
+
+
+def report_card(request):
+    return render(request, 'dashboards/all_teacher_pages/report_card.html')

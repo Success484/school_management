@@ -1,0 +1,20 @@
+{% extends 'dashboards/all_teacher_pages/base.html' %}
+{% load static %}
+{% block section %}
+<div class="m-3 text-black rounded-lg">
+    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Choose Grades</p>
+    <ul class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-center" >
+            <a href="{% url 'first_test_score' student_id=student.id%}">
+                <li class="p-5 rounded-lg font-medium text-gray-700" style="background-color: #F9F9F9;">First Test</li>
+            </a>
+
+            <a href="{% url 'second_test_score' student_id=student.id%}">
+                <li class="p-5 rounded-lg font-medium text-gray-700" style="background-color: #F9F9F9;">Second Test</li>
+            </a>
+
+            <a href="{% url 'Exam_test_score' student_id=student.id%}">
+                <li class="p-5 rounded-lg font-medium text-gray-700" style="background-color: #F9F9F9;">Exam</li>
+            </a>
+    </ul>
+</div>
+{% endblock section %}

@@ -49,23 +49,32 @@ class Attendance(models.Model):
         return f" {self.class_info}"
 
 
-class Grade(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='grades')
-    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='grades')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject1', null=True, blank=True)
-    subject2 = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grades_subject2', null=True, blank=True)
-    first_test = models.CharField(max_length=3, null=True, blank=True)
-    first_test2 = models.CharField(max_length=3, null=True, blank=True)
-    second_test = models.CharField(max_length=3, null=True, blank=True)
-    second_test2 = models.CharField(max_length=3, null=True, blank=True)
-    exam = models.CharField(max_length=3, null=True, blank=True)
-    exam2 = models.CharField(max_length=3, null=True, blank=True)
-    grade = models.CharField(max_length=3, null=True, blank=True)
-    grade2 = models.CharField(max_length=3, null=True, blank=True)
-    final_grade = models.CharField(max_length=200, null=True, blank=True)
-    comments = models.TextField(null=True, blank=True)
-
-
+class FirstTest(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="firsttest_student")
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="firsttest_class_info")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="firsttest_subject", null=False, default=False)
+    score = models.CharField(max_length=20)
+    out_of = models.IntegerField(default=100)
 
     def __str__(self):
-        return f"{self.student} - {self.class_info} - {self.subject} / {self.subject2} - {self.final_grade}"
+        return f"{self.student} - {self.class_info} - {self.subject} - {self.score}"
+
+class SecondTest(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="secondtest_student")
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="secondtest_class_info")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="secondtest_subject", null=False, default=False)
+    score = models.CharField(max_length=20)
+    out_of = models.IntegerField(default=100)
+
+    def __str__(self):
+        return f"{self.student} - {self.class_info} - {self.subject} - {self.score}"
+
+class Exam(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="exam_student")
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="exam_class_info")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="exam_subject", null=False, default=False)
+    score = models.CharField(max_length=20)
+    out_of = models.IntegerField(default=100)
+
+    def __str__(self):
+        return f"{self.student} - {self.class_info} - {self.subject} - {self.score}"

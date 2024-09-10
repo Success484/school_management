@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TimetableForm
 from classes.models import Class
-from teacher.models import Attendance, Grade
+from teacher.models import Attendance
 from student.models import Timetable
 from django.contrib import messages
 
@@ -80,8 +80,3 @@ def view_attendance(request):
     attendances = Attendance.objects.filter(student=student)
     return render(request, 'student/attendance_list.html', {'attendances': attendances})
 
-
-def view_grades(request):
-    student = request.user.student
-    grades = Grade.objects.filter(student=student)
-    return render(request, 'student/grades_list.html', {'grades': grades})
