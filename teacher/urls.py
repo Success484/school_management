@@ -12,10 +12,7 @@ urlpatterns = [
     path('teacher/details/<int:teacher_id>/', views.teacher_details_page, name='teacher_details_page'),
     path('attendance/record/classes/', views.select_class_attendance, name='select_class_attendance'),
     path('admin_dashboard/mystudents/details/<int:student_id>/', views.teacher_class_student_details, name='teacher_class_student_details'),
-    path('admin_dashboard/mystudents/details/<int:student_id>/grade/', views.choose_grade, name='choose_grade'),
-    path('admin_dashboard/mystudents/details/<int:student_id>/form/first/', views.first_test_score, name='first_test_score'),
-    path('admin_dashboard/mystudents/details/<int:student_id>/form/second/', views.second_test_score, name='second_test_score'),
-    path('admin_dashboard/mystudents/details/<int:student_id>/form/third/', views.Exam_test_score, name='Exam_test_score'),
-    path('admin_dashboard/mystudents/details/grades/<int:student_id>/', views.view_student_grades, name='view_student_grades'),
-
+    path('admin_dashboard/mystudents/details/<int:student_id>/grade/form/', views.grade_student, name='grade_student'),
+    # path('admin_dashboard/mystudents/details/grades/<int:student_id>/', views.view_student_grades, name='view_student_grades'),
+    path('admin_dashboard/mystudents/details/grades/<int:student_id>/report_card/', views.report_card, name='report_card'),
 ]

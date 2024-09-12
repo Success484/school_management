@@ -1,5 +1,5 @@
 from django import forms
-from .models import TeacherClass, Attendance, FirstTest, SecondTest, Exam
+from .models import TeacherClass, Attendance, StudentGradeModel
 import calendar
 from classes.models import Subject
 
@@ -63,20 +63,23 @@ class AttendanceForm(forms.ModelForm):
 
 
 
-class FirstTestForm(forms.ModelForm):
+class StudentGradeForm(forms.ModelForm):
     year = forms.ChoiceField(
         choices=[(str(y), y) for y in range(2024, 2034)],
         widget=forms.Select(attrs={'class': 'final-grade '})
     )
 
     class Meta:
-        model = FirstTest
-        fields = ['subject', 'term', 'year', 'score', 'out_of']
+        model = StudentGradeModel
+        fields = ['subject', 'term', 'year', 'first_test_score', 'second_test_score', 'exam_score', 'final_grade', 'out_of']
         widgets = {
             'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'score': forms.TextInput(attrs={'class': 'final-grade'}),
+            'first_test_score': forms.TextInput(attrs={'class': 'final-grade'}),
+            'second_test_score': forms.TextInput(attrs={'class': 'final-grade'}),
+            'exam_score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
             'term': forms.Select(attrs={'class': 'final-grade'}),
+            'final_grade': forms.Select(attrs={'class': 'final-grade'}),
             'year': forms.Select(attrs={'class': 'final-grade'}),
         }
 
@@ -91,69 +94,3 @@ class FirstTestForm(forms.ModelForm):
                 teacher_subject__teacher=teacher,
                 teacher_subject__class_name=class_info
             )
-
-
-
-
-class SecondTestForm(forms.ModelForm):
-    year = forms.ChoiceField(
-        choices=[(str(y), y) for y in range(2024, 2034)],
-        widget=forms.Select(attrs={'class': 'final-grade'})
-    )
-    class Meta:
-        model = SecondTest
-        fields = ['subject', 'term', 'year', 'score', 'out_of']
-        widgets = {
-            'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'score': forms.TextInput(attrs={'class': 'final-grade'}),
-            'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
-            'term': forms.Select(attrs={'class': 'final-grade'}),
-            'year': forms.Select(attrs={'class': 'final-grade'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        class_info = kwargs.pop('class_info', None)
-        teacher = kwargs.pop('teacher', None)
-        super().__init__(*args, **kwargs)
-
-        if class_info and teacher:
-            # Filter subjects to only include those taught by the teacher in the specific class
-            self.fields['subject'].queryset = Subject.objects.filter(
-                teacher_subject__teacher=teacher,
-                teacher_subject__class_name=class_info
-            )
-
-
-
-class ExamTestForm(forms.ModelForm):
-    year = forms.ChoiceField(
-        choices=[(str(y), y) for y in range(2024, 2034)],
-        widget=forms.Select(attrs={'class': 'final-grade'})
-    )
-    class Meta:
-        model = Exam
-        fields = ['subject', 'term', 'year', 'score', 'out_of']
-        widgets = {
-            'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'score': forms.TextInput(attrs={'class': 'final-grade'}),
-            'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
-            'term': forms.Select(attrs={'class': 'final-grade'}),
-            'year': forms.Select(attrs={'class': 'final-grade'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        class_info = kwargs.pop('class_info', None)
-        teacher = kwargs.pop('teacher', None)
-        super().__init__(*args, **kwargs)
-
-        if class_info and teacher:
-            # Filter subjects to only include those taught by the teacher in the specific class
-            self.fields['subject'].queryset = Subject.objects.filter(
-                teacher_subject__teacher=teacher,
-                teacher_subject__class_name=class_info
-            )
-
-
-
-
-        

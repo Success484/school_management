@@ -1,46 +1,58 @@
 {% extends 'dashboards/all_teacher_pages/base.html' %}
 {% load static %}
 {% block section %}
+<p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 m-3" style="background-color: #F9F9F9;">{{student|upper}} GRADES {{student.student_class|upper}} STUDENT</p>
+
 <div class="py-8 px-4 m-3 rounded-lg" style="background-color: #F9F9F9;">
+    
     <div id="accordion">
         {% for first_test in first_tests %}
             <h3 class="font-medium">
                 {{ first_test.student }}, {{ first_test.term }} Grades {{ first_test.year }}
             </h3>
             <div>
-                <article class="mb-6">
-                    <h2>FIRST TEST GRADE</h2>
-                    <ul>
-                        <li>Scores</li>
-                        <li>{{ first_test.subject }}: {{ first_test.score }} out of {{ first_test.out_of }}</li>
-                    </ul>
-                </article>
-                
-                {% for second_test in second_tests %}
-                    {% if second_test.student == first_test.student and second_test.term == first_test.term %}
-                        <article class="mb-6">
-                            <h2>SECOND TEST GRADE</h2>
-                            <ul>
-                                <li>Scores</li>
-                                <li>{{ second_test.subject }}: {{ second_test.score }} out of {{ second_test.out_of }}</li>
-                            </ul>
-                        </article>
-                    {% endif %}
-                {% endfor %}
-                
-                {% for exam in exams %}
-                    {% if exam.student == first_test.student and exam.term == first_test.term %}
-                        <article class="mb-6">
-                            <h2>EXAM GRADE</h2>
-                            <ul>
-                                <li>Scores</li>
-                                <li>{{ exam.subject }}: {{ exam.score }} out of {{ exam.out_of }}</li>
-                            </ul>
-                        </article>
-                    {% endif %}
-                {% endfor %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-2">Student</th>
+                            <th class="border border-gray-300 px-4 py-2">Term</th>
+                            <th class="border border-gray-300 px-4 py-2">Year</th>
+                            <th class="border border-gray-300 px-4 py-2">Subject</th>
+                            <th class="border border-gray-300 px-4 py-2">First Test (Score/Out Of)</th>
+                            <th class="border border-gray-300 px-4 py-2">Second Test (Score/Out Of)</th>
+                            <th class="border border-gray-300 px-4 py-2">Exam (Score/Out Of)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 px-2 py-2">{{ first_test.student }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ first_test.term }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ first_test.year }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ first_test.subject }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ first_test.score }} / {{ first_test.out_of }}</td>
+                            <td class="border border-gray-300 px-2 py-2">
+                                {% for second_test in second_tests %}
+                                    {% if second_test.student == first_test.student and second_test.term == first_test.term %}
+                                        {{ second_test.score }} / {{ second_test.out_of }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="border border-gray-300 px-4 py-2">
+                                {% for exam in exams %}
+                                    {% if exam.student == first_test.student and exam.term == first_test.term %}
+                                        {{ exam.score }} / {{ exam.out_of }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         {% endfor %}
     </div>
 </div>
+
+
+
+
 {% endblock section %}

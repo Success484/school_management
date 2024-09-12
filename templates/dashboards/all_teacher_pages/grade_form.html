@@ -1,0 +1,43 @@
+{% extends 'dashboards/all_teacher_pages/base.html' %}
+{% load static %}
+{% block section %} 
+<p class="text-center p-5 m-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">First Test Grade</p>
+<div class="p-6 m-3 rounded-lg" style="background-color: #F9F9F9;">
+    <form action="" method="post">
+        {%csrf_token%}
+        <div class="mb-3">
+            <p>{{gradeForm.subject.label_tag}}</p>
+            {{gradeForm.subject}}
+        </div>
+        <div class="mb-3">
+            <p>{{gradeForm.term.label_tag}}</p>
+            {{gradeForm.term}}
+        </div>
+        <div class="mb-3">
+            <p>{{gradeForm.year.label_tag}}</p>
+            {{gradeForm.year}}
+        </div>
+        <div class="mb-3">
+            <p>{{gradeForm.first_test_score.label_tag}}</p>
+            {{gradeForm.first_test_score}}
+        </div>
+        <div class="mb-3">
+            <p>{{gradeForm.second_test_score.label_tag}}</p>
+            {{gradeForm.second_test_score}}
+        </div>
+        <div class="mb-3">
+            <p>{{gradeForm.exam_score.label_tag}}</p>
+            {{gradeForm.exam_score}}
+        </div>
+        <div class="mb-4">
+            <p>{{gradeForm.out_of.label_tag}}</p>
+            {{gradeForm.out_of}}
+        </div>
+        <div class="mb-3">
+            <p>{{gradeForm.grade.label_tag}}</p>
+            {{gradeForm.grade}}
+        </div>
+        <button class="bg-blue-500 text-white py-1 px-3 rounded-lg" type="submit">submit</button>
+    </form>
+</div>
+{% endblock section %}

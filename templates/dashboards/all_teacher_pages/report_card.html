@@ -1,6 +1,7 @@
 {% extends 'dashboards/all_teacher_pages/base.html' %}
 {% load static %}
 {% block section %}
+{% for first_test in first_tests %}
 <div class="bg-card  rounded-lg shadow-md m-3 rounded-lg bg-white">
   <div class="mb-6 text-white invisible">h</div>
   <div class="flex justify-center item-center w-full bg-blue-100">
@@ -19,7 +20,7 @@
       <div class="mt-4">
         <label class="block text-muted-foreground">Student Name:</label>
         <div class="border border-border rounded p-2 w-full bg-white">
-          {{ student.user.first_name }} {{ student.user.last_name }}
+          {{ student.user.first_name|upper}} {{ student.user.last_name|upper}}
         </div>
       </div>
   
@@ -27,18 +28,22 @@
       <div>
         <label class="block text-muted-foreground mt-4">Class:</label>
         <div class="border border-border rounded p-2 w-full bg-white">
-          {{class_names}}
+          {{student.student_class|upper}}
         </div>
       </div>
       
       <div>
         <label class="block text-muted-foreground mt-4">Year:</label>
-        <input type="text" class="border border-border p-2 rounded w-full" />
+        <div class="border border-border rounded p-2 w-full bg-white">
+          {{first_test.year}}
+        </div>
       </div>
       
       <div>
         <label class="block text-muted-foreground mt-4">Term:</label>
-        <input type="text" class="border border-border p-2 rounded w-full" />
+        <div class="border border-border rounded p-2 w-full bg-white">
+          {{first_test.term|upper}}
+        </div>
       </div>
     </div>
   
@@ -46,97 +51,50 @@
       <thead>
         <tr class="bg-muted text-muted-foreground">
           <th class="border border-border p-2">Subject</th>
-          <th class="border border-border p-2">1st Quarter</th>
-          <th class="border border-border p-2">2nd Quarter</th>
-          <th class="border border-border p-2">3rd Quarter</th>
-          <th class="border border-border p-2">4th Quarter</th>
+          <th class="border border-border p-2">First Test</th>
+          <th class="border border-border p-2">Second Test</th>
+          <th class="border border-border p-2">Exam</th>
+          <th class="border border-border p-2">Final Grade</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="border border-border p-2">English</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Economic</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">History</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Biology</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Math</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Science</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Social Studies</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Art</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Physical Education</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-        </tr>
-        <tr>
-          <td class="border border-border p-2">Chemistry</td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
-          <td class="border border-border p-2"></td>
+          <td class="border border-border p-2 text-center">{{first_test.subject}}</td>
+          <td class="border border-border p-2 text-center">{{first_test.score}}</td>
+          <td class="border border-gray-300 px-2 py-2 text-center">
+            {% for second_test in second_tests %}
+                {% if second_test.student == first_test.student and second_test.term == first_test.term %}
+                    {{ second_test.score }}
+                {% endif %}
+            {% endfor %}
+        </td>
+        <td class="border border-gray-300 px-4 py-2 text-center">
+          {% for exam in exams %}
+              {% if exam.student == first_test.student and exam.term == first_test.term %}
+                  {{ exam.score }}
+              {% endif %}
+          {% endfor %}
+        </td>
+          <td class="border border-border p-2 text-center">{{first_test.grade}}</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div>
-    <label class="block text-muted-foreground mt-4">Position:</label>
-    <input type="text" class="border border-border p-2 rounded w-full" />
-  </div>
-  
-    <div class="mt-6">
-      <h3 class="text-muted-foreground">GRADING SCALE:</h3>
-      <p class="text-muted-foreground">A = 90% - 100% | B = 80% - 89% | C = 60% - 79% | D = 0% - 59%</p>
-  
-      <label class="block text-muted-foreground mt-4">Comment:</label>
-      <textarea class="border border-border p-2 rounded w-full" rows="4"></textarea>
+  <div class="m-6">
+    <div>
+      <label class="block text-muted-foreground mt-4">Position:</label>
+      <input type="text" class="border border-border p-2 rounded w-full" />
     </div>
+    
+      <div class="mt-6">
+        <h3 class="text-muted-foreground">GRADING SCALE:</h3>
+        <p class="text-muted-foreground">A = 90% - 100% | B = 80% - 89% | C = 60% - 79% | D = 0% - 59%</p>
+    
+        <label class="block text-muted-foreground mt-4">Comment:</label>
+        <textarea class="border border-border p-2 rounded w-full" rows="4"></textarea>
+      </div>
   </div>
+  </div>
+
+  {%endfor%}
 {% endblock section %}

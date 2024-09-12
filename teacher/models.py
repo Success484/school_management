@@ -50,31 +50,28 @@ class Attendance(models.Model):
 
 
 
-class BaseTestModel(models.Model):
+class StudentGradeModel(models.Model):
     TERMS = [
         ('First Term', 'First Term'),
         ('Second Term', 'Second Term'),
         ('Third Term', 'Third Term'),
     ]
+    GRADE_CHOICES = [
+        ('A', 'A (90% - 100%)'),
+        ('B', 'B (80% - 89%)'),
+        ('C', 'C (60% - 79%)'),
+        ('D', 'D (0% - 59%)'),
+    ]
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="%(class)s_student")
     teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="%(class)s_teacher_class", null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="%(class)s_subject", null=False)
-    score = models.CharField(max_length=20)
-    out_of = models.IntegerField(default=100)
     term = models.CharField(max_length=20, choices=TERMS, default='First Term')
+    first_test_score = models.CharField(max_length=20, null=False)
+    second_test_score = models.CharField(max_length=20, null=True)
+    exam_score = models.CharField(max_length=20, null=True)
+    out_of = models.IntegerField(default=100)
+    final_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, default='D')
     year = models.IntegerField(default=2024)
 
-    class Meta:
-        abstract = True
-
     def __str__(self):
-        return f"{self.student} - {self.term} - {self.year} - {self.subject} - {self.score}"
-
-class FirstTest(BaseTestModel):
-    pass
-
-class SecondTest(BaseTestModel):
-    pass
-
-class Exam(BaseTestModel):
-    pass
+        return f"{self.student} - {self.term} - {self.year} - {self.subject}"
