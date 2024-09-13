@@ -18,3 +18,13 @@ def get_num_days_in_month(month, year):
 def get_month_name(month_number):
     """Converts a month number to its name."""
     return calendar.month_name[month_number]
+
+
+
+
+@register.filter
+def first_paragraph(text):
+    if not text:
+        return ''
+    paragraphs = text.split('\n\n')  # Split by double newlines, which typically separates paragraphs
+    return paragraphs[0] if paragraphs else ''

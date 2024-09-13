@@ -214,6 +214,8 @@ def assign_teacher(request, teacher_id):
     is_assigned = bool(teacher_class)
     if not request.user.is_superuser:
         return HttpResponseForbidden('You do not have permission to access this page.')
+    
+    
     if request.method == 'POST':
         if teacher_class:
             form = TeacherClassForm(request.POST, instance=teacher_class)

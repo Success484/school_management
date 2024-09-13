@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from calendar import monthrange
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import calendar
 from django.contrib import messages
 from classes.models import Subject
 from django.contrib.auth.decorators import login_required
-from teacher.forms import TeacherClassForm, AttendanceForm, AttendanceMonthForm, StudentGradeForm
-from teacher.models import Attendance, StudentGradeModel, TeacherClass
+from teacher.forms import TeacherClassForm, AttendanceForm, AttendanceMonthForm, StudentGradeForm, StudentPositionForm
+from teacher.models import Attendance, StudentGradeModel, TeacherClass, StudentPosition
 from administration.models import Teacher, Student
 from classes.models import Class
 from student.models import Timetable
@@ -345,26 +345,102 @@ def grade_student(request, student_id):
     class_info = student.student_class
     teacher = request.user.teacher_profile
 
+    teacher_subject = teacher.subject.first()
+    
+    student_grade = StudentGradeModel.objects.filter(student=student, subject=teacher_subject).first()
+
     if request.method == "POST":
-        gradeForm = StudentGradeForm(request.POST, class_info=class_info, teacher=teacher)
+        if student_grade:
+            gradeForm = StudentGradeForm(request.POST, instance=student_grade, class_info=class_info, teacher=teacher)
+        else:
+            gradeForm = StudentGradeForm(request.POST, class_info=class_info, teacher=teacher)
+
         if gradeForm.is_valid():
             grade_info = gradeForm.save(commit=False)
             grade_info.student = student
             grade_info.teacher_class = TeacherClass.objects.get(teacher=teacher, class_name=class_info)
+            grade_info.subject = teacher_subject
             grade_info.save()
-            return redirect('teacher_class_student_details',student_id=student.user.id)
-        print(gradeForm.errors)
+            return redirect('teacher_class_student_details', student_id=student.user.id)
+        else:
+            print(gradeForm.errors)
 
-    gradeForm = StudentGradeForm(class_info=class_info, teacher=teacher)
+    else:
+        if student_grade:
+            gradeForm = StudentGradeForm(instance=student_grade, class_info=class_info, teacher=teacher)
+        else:
+            gradeForm = StudentGradeForm(class_info=class_info, teacher=teacher)
+
     context = {
-        'student':student,
-        'class_info':class_info,
-        'teacher':teacher,
-        'gradeForm':gradeForm
+        'student': student,
+        'class_info': class_info,
+        'teacher': teacher,
+        'gradeForm': gradeForm
     }
     return render(request, 'dashboards/all_teacher_pages/grade_form.html', context)
 
 
-def report_card(request):
-    return render(request, 'dashboards/all_teacher_pages/report_card.html', )
+def view_student_grades(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    student_grade = StudentGradeModel.objects.filter(student=student).order_by('-year')
+    context = {
+        'student':student,
+        'grades':student_grade
+    }
+    return render(request, 'dashboards/all_teacher_pages/view_grade.html', context)
 
+
+def report_card(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    student_position_and_comment_view = StudentPosition.objects.filter(student=student)
+    student_grade = StudentGradeModel.objects.filter(student=student).select_related('subject').order_by('-year', '-term')
+    current_year = datetime.now().year
+    context = {
+        'current_year':current_year,
+        'student':student,
+        'grades':student_grade,
+        'student_position_and_comment_view':student_position_and_comment_view
+    }
+    return render(request, 'dashboards/all_teacher_pages/report_card.html', context)
+
+
+def grade_student_nav(request):
+    teacher = get_object_or_404(Teacher, user=request.user)
+    classes = teacher.classes.all()
+    return render(request, 'dashboards/all_teacher_pages/grade_student_class.html', {'classes':classes})
+
+
+def grade_student_list(request, class_id):
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+    context = {
+        'classes':classes,
+        'students': students,
+    }
+    return render(request, 'dashboards/all_teacher_pages/grade_student_list.html', context)
+
+
+def student_position_and_comment(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    student_position = StudentPosition.objects.filter(student=student).first()
+
+    if request.method == "POST":
+        if student_position:
+            form = StudentPositionForm(request.POST, instance=student_position)
+        else:
+            form = StudentPositionForm(request.POST)
+        if form.is_valid():
+            position_form = form.save(commit=False)
+            position_form.student=student
+            position_form.save()
+            return redirect('teacher_class_student_details', student_id=student.user.id)
+    else: 
+        if student_position:
+            form =  StudentPositionForm(instance=student_position)
+        else:
+            form =  StudentPositionForm()
+    context={
+        'student':student,
+        'form':form
+    }
+    return render(request, 'dashboards/all_teacher_pages/student_position_and_comment.html', context)

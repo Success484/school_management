@@ -1,5 +1,5 @@
 from django.contrib import admin
-from teacher.models import Attendance, TeacherClass, StudentGradeModel
+from teacher.models import Attendance, TeacherClass, StudentGradeModel, StudentPosition
 # Register your models here.
 
 admin.site.register(TeacherClass)
@@ -13,5 +13,12 @@ class AttendanceAdmin(admin.ModelAdmin):
                     'status18', 'status19', 'status20', 'status21', 'status22','status23')
     
 @admin.register(StudentGradeModel)
-class FirstTestAdmin(admin.ModelAdmin):
-    list_display = ('student', 'first_test_score', 'second_test_score', 'exam_score', 'subject', 'final_grade', 'out_of', 'year')
+class GradeStudentAdmin(admin.ModelAdmin):
+    list_display = ('student', 'first_test_score', 'second_test_score', 'exam_score', 
+                    'subject', 'first_test_grade', 'second_test_grade', 'out_of', 'year', 
+                    'exam_grade', 'final_grade')
+    
+
+@admin.register(StudentPosition)
+class StudentPositionAdmin(admin.ModelAdmin):
+    list_display = ('student', 'position')

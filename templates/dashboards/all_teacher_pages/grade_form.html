@@ -1,43 +1,65 @@
 {% extends 'dashboards/all_teacher_pages/base.html' %}
 {% load static %}
 {% block section %} 
-<p class="text-center p-5 m-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">First Test Grade</p>
+<p class="text-center p-5 m-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Creating Grade For {{student}}</p>
 <div class="p-6 m-3 rounded-lg" style="background-color: #F9F9F9;">
     <form action="" method="post">
         {%csrf_token%}
         <div class="mb-3">
-            <p>{{gradeForm.subject.label_tag}}</p>
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.subject.label_tag}}</p>
             {{gradeForm.subject}}
         </div>
         <div class="mb-3">
-            <p>{{gradeForm.term.label_tag}}</p>
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.term.label_tag}}</p>
             {{gradeForm.term}}
         </div>
         <div class="mb-3">
-            <p>{{gradeForm.year.label_tag}}</p>
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.year.label_tag}}</p>
             {{gradeForm.year}}
         </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-2 gap-3">
+
         <div class="mb-3">
-            <p>{{gradeForm.first_test_score.label_tag}}</p>
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.first_test_score.label_tag}}</p>
             {{gradeForm.first_test_score}}
         </div>
         <div class="mb-3">
-            <p>{{gradeForm.second_test_score.label_tag}}</p>
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.first_test_grade.label_tag}}</p>
+            {{gradeForm.first_test_grade}}
+        </div>
+        <div class="mb-3">
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.second_test_score.label_tag}}</p>
             {{gradeForm.second_test_score}}
         </div>
         <div class="mb-3">
-            <p>{{gradeForm.exam_score.label_tag}}</p>
-            {{gradeForm.exam_score}}
-        </div>
-        <div class="mb-4">
-            <p>{{gradeForm.out_of.label_tag}}</p>
-            {{gradeForm.out_of}}
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.second_test_grade.label_tag}}</p>
+            {{gradeForm.second_test_grade}}
         </div>
         <div class="mb-3">
-            <p>{{gradeForm.grade.label_tag}}</p>
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.exam_score.label_tag}}</p>
+            {{gradeForm.exam_score}}
+        </div>
+        <div class="mb-3">
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.exam_grade.label_tag}}</p>
+            {{gradeForm.exam_grade}}
+        </div>
+
+        </div>
+
+        <div class="mb-3">
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.final_grade.label_tag}}</p>
+            {{gradeForm.final_grade}}
+        </div>
+        <div class="mb-4">
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.out_of.label_tag}}</p>
+            {{gradeForm.out_of}}
+        </div>
+        <div class="mb-7">
+            <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.grade.label_tag}}</p>
             {{gradeForm.grade}}
         </div>
-        <button class="bg-blue-500 text-white py-1 px-3 rounded-lg" type="submit">submit</button>
+        <button class="bg-blue-500 text-white py-2 px-4 rounded-lg text-lg font-medium mb-1" type="submit">submit</button>
     </form>
 </div>
 {% endblock section %}

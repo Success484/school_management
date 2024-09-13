@@ -11,7 +11,6 @@ class TeacherClass(models.Model):
         return f"{self.teacher} - {self.class_name}"
 
 
-
 class Attendance(models.Model):
     STATUS_CHOICES = [
         ('P', 'Present'),
@@ -49,7 +48,6 @@ class Attendance(models.Model):
         return f" {self.class_info}"
 
 
-
 class StudentGradeModel(models.Model):
     TERMS = [
         ('First Term', 'First Term'),
@@ -62,16 +60,31 @@ class StudentGradeModel(models.Model):
         ('C', 'C (60% - 79%)'),
         ('D', 'D (0% - 59%)'),
     ]
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="%(class)s_student")
-    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="%(class)s_teacher_class", null=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="%(class)s_subject", null=False)
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="grades")
+    teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="teacher_grades", null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="subject_grades", null=False)
     term = models.CharField(max_length=20, choices=TERMS, default='First Term')
-    first_test_score = models.CharField(max_length=20, null=False)
-    second_test_score = models.CharField(max_length=20, null=True)
-    exam_score = models.CharField(max_length=20, null=True)
+
+    first_test_score = models.IntegerField(null=False)
+    first_test_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)
+    second_test_score = models.IntegerField(null=True, blank=True)
+    second_test_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)
+    exam_score = models.IntegerField(null=True, blank=True)
+    exam_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)
+
+    final_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)
     out_of = models.IntegerField(default=100)
-    final_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, default='D')
     year = models.IntegerField(default=2024)
 
     def __str__(self):
         return f"{self.student} - {self.term} - {self.year} - {self.subject}"
+
+
+class StudentPosition(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="grades_positions")
+    position = models.CharField(max_length=300, null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.position} - {self.comment}"

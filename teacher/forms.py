@@ -1,5 +1,5 @@
 from django import forms
-from .models import TeacherClass, Attendance, StudentGradeModel
+from .models import TeacherClass, Attendance, StudentGradeModel, StudentPosition
 import calendar
 from classes.models import Subject
 
@@ -71,7 +71,8 @@ class StudentGradeForm(forms.ModelForm):
 
     class Meta:
         model = StudentGradeModel
-        fields = ['subject', 'term', 'year', 'first_test_score', 'second_test_score', 'exam_score', 'final_grade', 'out_of']
+        fields = ['subject', 'term', 'year', 'first_test_score', 'second_test_score', 'exam_score', 
+                  'out_of', 'first_test_grade', 'second_test_grade', 'exam_grade', 'final_grade']
         widgets = {
             'subject': forms.Select(attrs={'class': 'final-grade'}),
             'first_test_score': forms.TextInput(attrs={'class': 'final-grade'}),
@@ -79,6 +80,9 @@ class StudentGradeForm(forms.ModelForm):
             'exam_score': forms.TextInput(attrs={'class': 'final-grade'}),
             'out_of': forms.TextInput(attrs={'class': 'final-grade'}),
             'term': forms.Select(attrs={'class': 'final-grade'}),
+            'first_test_grade': forms.Select(attrs={'class': 'final-grade'}),
+            'second_test_grade': forms.Select(attrs={'class': 'final-grade'}),
+            'exam_grade': forms.Select(attrs={'class': 'final-grade'}),
             'final_grade': forms.Select(attrs={'class': 'final-grade'}),
             'year': forms.Select(attrs={'class': 'final-grade'}),
         }
@@ -94,3 +98,12 @@ class StudentGradeForm(forms.ModelForm):
                 teacher_subject__teacher=teacher,
                 teacher_subject__class_name=class_info
             )
+
+class StudentPositionForm(forms.ModelForm):
+    class Meta:
+        model = StudentPosition
+        fields = ['position', 'comment']
+        widgets = {
+            'position': forms.TextInput(attrs={'class': 'final-grade'}),
+            'comment': forms.Textarea(attrs={'class': 'final-grade'}),
+        }

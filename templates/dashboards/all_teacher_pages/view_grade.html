@@ -6,49 +6,49 @@
 <div class="py-8 px-4 m-3 rounded-lg" style="background-color: #F9F9F9;">
     
     <div id="accordion">
-        {% for first_test in first_tests %}
+        {%if grades%}
+        {% for grade in grades %}
             <h3 class="font-medium">
-                {{ first_test.student }}, {{ first_test.term }} Grades {{ first_test.year }}
+                {{ grade.student }}, {{ grade.term }} Grades {{ grade.year }}, <span class="font-semibold">{{ grade.subject }}</span>
             </h3>
             <div>
                 <table>
                     <thead>
                         <tr>
-                            <th class="border border-gray-300 px-4 py-2">Student</th>
-                            <th class="border border-gray-300 px-4 py-2">Term</th>
-                            <th class="border border-gray-300 px-4 py-2">Year</th>
-                            <th class="border border-gray-300 px-4 py-2">Subject</th>
-                            <th class="border border-gray-300 px-4 py-2">First Test (Score/Out Of)</th>
-                            <th class="border border-gray-300 px-4 py-2">Second Test (Score/Out Of)</th>
-                            <th class="border border-gray-300 px-4 py-2">Exam (Score/Out Of)</th>
+                            <th class="border border-gray-300 px-2 py-3">Student</th>
+                            <th class="border border-gray-300 px-2 py-3">Term</th>
+                            <th class="border border-gray-300 px-2 py-3">Year</th>
+                            <th class="border border-gray-300 px-2 py-3">Subject</th>
+                            <th class="border border-gray-300 px-2 py-3">First Test (Score/Out Of)</th>
+                            <th class="border border-gray-300 px-2 py-3">Second Test (Score/Out Of)</th>
+                            <th class="border border-gray-300 px-2 py-3">Exam (Score/Out Of)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="border border-gray-300 px-2 py-2">{{ first_test.student }}</td>
-                            <td class="border border-gray-300 px-2 py-2">{{ first_test.term }}</td>
-                            <td class="border border-gray-300 px-2 py-2">{{ first_test.year }}</td>
-                            <td class="border border-gray-300 px-2 py-2">{{ first_test.subject }}</td>
-                            <td class="border border-gray-300 px-2 py-2">{{ first_test.score }} / {{ first_test.out_of }}</td>
-                            <td class="border border-gray-300 px-2 py-2">
-                                {% for second_test in second_tests %}
-                                    {% if second_test.student == first_test.student and second_test.term == first_test.term %}
-                                        {{ second_test.score }} / {{ second_test.out_of }}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            <td class="border border-gray-300 px-4 py-2">
-                                {% for exam in exams %}
-                                    {% if exam.student == first_test.student and exam.term == first_test.term %}
-                                        {{ exam.score }} / {{ exam.out_of }}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.student }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.term }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.year }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.subject }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.first_test_score }} / {{ grade.out_of }}</td>
+                            {%if grade.second_test_score == None%}
+                            <td class="border border-gray-300 px-2 py-2"></td>
+                            {%else%}
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.second_test_score }} / {{ grade.out_of }}</td>
+                            {%endif%}
+                            {%if grade.exam_score == None%}
+                            <td class="border border-gray-300 px-2 py-2"></td>
+                            {%else%}
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.exam_score }} / {{ grade.out_of }}</td>
+                            {%endif%}
                         </tr>
                     </tbody>
                 </table>
             </div>
         {% endfor %}
+        {%else%}
+        <p>No Grades Yet</p>
+        {%endif%}
     </div>
 </div>
 
