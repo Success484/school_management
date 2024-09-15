@@ -160,7 +160,7 @@ def delete_student(request, student_id):
 def annoucement(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden('You do not have permission to access this page.')
-    post = Annoucement.objects.all()
+    post = Annoucement.objects.all().order_by('-date_posted')
     return render(request, 'dashboards/all_admin_pages/Annoucement.html', {'posts':post})
 
 
