@@ -3,6 +3,11 @@
 {%block content%}
 
 {% url 'teacher_class_list' as teacher_class_list %}
+{% url 'teacher_dashboard' as teacher_dashboard %}
+{%url 'annoucements' as annoucements%}
+{% url 'grade_student_nav' as grade_student_nav %}
+
+
 
     <!-- SIDEBAR -->
     <section id="sidebar">
@@ -11,8 +16,8 @@
             <span class="text">Teacher</span>
         </a>
         <ul class="side-menu top">
-            <li class="active">
-                <a href="#">
+            <li class="{%if request.path == teacher_dashboard%}active{%else%}{%endif%}">
+                <a href="{{teacher_dashboard}}">
                     <i class='bx bxs-dashboard' ></i>
                     <span class="text">Dashboard</span>
                 </a>
@@ -23,23 +28,23 @@
                     <span class="text">My Classes</span>
                 </a>
             </li>
-            <li>
+            <li class="{%if request.path == select_class_attendance%}active{%else%}{%endif%}">
                 <a href="{% url 'select_class_attendance'%}">
                     <i class='bx bxs-book-open' ></i>
                     <span class="text">Attendance Record</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{%if request.path == grade_student_nav%}active{%else%}{%endif%}">
+                <a href="{{grade_student_nav}}">
                     <i class='bx bxs-edit-alt'></i>
-                    <span class="text">Grades</span>
+                    <span class="text">Grade Student</span>
                 </a>
             </li>
         </ul>
         <!--  -->
         <ul class="side-menu">
-        <li>
-            <a href="#">
+        <li class="{%if request.path == select_class_attendance%}active{%else%}{%endif%}">
+            <a href="{{annoucements}}">
                 <i class='bx bxs-book-reader' ></i>
                 <span class="text">Announcements</span>
             </a>

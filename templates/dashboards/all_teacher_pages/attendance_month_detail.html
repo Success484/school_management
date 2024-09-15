@@ -4,6 +4,11 @@
 {% block section %}
 
 <div class="m-3 p-3 rounded-lg" style="background-color: #F9F9F9;">
+    {% if messages %}
+    {% for message in messages %}
+    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+    {% endfor %}
+    {% endif %}
 
 <h1 class="text-2xl font-bold mb-4">Attendance for {{ student_class.name }} - {{ month }}/{{ year }}</h1>
 <div class="table-data">

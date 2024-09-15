@@ -30,7 +30,11 @@
                             <td class="border border-gray-300 px-2 py-2">{{ grade.term }}</td>
                             <td class="border border-gray-300 px-2 py-2">{{ grade.year }}</td>
                             <td class="border border-gray-300 px-2 py-2">{{ grade.subject }}</td>
+                            {%if grade.first_test_score == None%}
+                            <td class="border border-gray-300 px-2 py-2"></td>
+                            {%else%}
                             <td class="border border-gray-300 px-2 py-2">{{ grade.first_test_score }} / {{ grade.out_of }}</td>
+                            {%endif%}
                             {%if grade.second_test_score == None%}
                             <td class="border border-gray-300 px-2 py-2"></td>
                             {%else%}
@@ -51,8 +55,4 @@
         {%endif%}
     </div>
 </div>
-
-
-
-
 {% endblock section %}

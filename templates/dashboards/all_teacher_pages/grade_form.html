@@ -3,7 +3,7 @@
 {% block section %} 
 <p class="text-center p-5 m-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Creating Grade For {{student}}</p>
 <div class="p-6 m-3 rounded-lg" style="background-color: #F9F9F9;">
-    <form action="" method="post">
+    <form action=""  method="post">
         {%csrf_token%}
         <div class="mb-3">
             <p class="text-lg font-medium text-gray-700 mb-1">{{gradeForm.subject.label_tag}}</p>
@@ -60,6 +60,8 @@
             {{gradeForm.grade}}
         </div>
         <button class="bg-blue-500 text-white py-2 px-4 rounded-lg text-lg font-medium mb-1" type="submit">submit</button>
+        <a href="{%url 'clear_grades' student_id=student.id%}" class="bg-red-500 text-white py-2 px-4 rounded-lg text-lg font-medium mb-1" >Clear Form</a>
+
     </form>
 </div>
 {% endblock section %}

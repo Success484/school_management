@@ -4,16 +4,22 @@
 {% load custom_filters %}
 
 <div class="m-3 rounded-lg mb-3">
+    {% if messages %}
+    {% for message in messages %}
+    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+    {% endfor %}
+    {% endif %}
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">{{class.name}} STUDENTS</p>
-    <div class="order flex">
-        <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+    <div class="order flex item-center">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {%if students%}
             {%for student in students%}
             <a href="{% url 'teacher_class_student_details' student_id=student.user.id %}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{student.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{student.user.first_name}} {{student.user.last_name}}">
-                    <div class="text-center font-medium p-2">
+                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                    <div>
+                        <img src="{{student.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{student.user.first_name}} {{student.user.last_name}}">
                         <p>{{student.user.first_name}} {{student.user.last_name}}</p>
+                        <p></p>
                     </div>
                 </div>
             </a>
@@ -24,15 +30,15 @@
 
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 mt-3" style="background-color: #F9F9F9;">{{class.name}} TEACHERS</p>
     <div class="order flex">
-        <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {%if teachers%}
             {%for teacher in teachers%}
             <a href="{% url 'teacher_details_page' teacher_id=teacher.user.id %}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{teacher.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
-                    <div class="text-center font-medium p-2">
-                        <p>{{teacher.user.first_name}} {{teacher.user.last_name}}</p>
-                    </div>
+                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                    <div>
+                    <img src="{{teacher.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
+                    <p>{{teacher.user.first_name}} {{teacher.user.last_name}}</p>
+                </div>
                 </div>
             </a>
             {%endfor%}
@@ -41,11 +47,6 @@
     </div>
 
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 mt-3" style="background-color: #F9F9F9;">{{class.name}} TIMETABLE</p>
-    {% if messages %}
-    {% for message in messages %}
-    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
-    {% endfor %}
-    {% endif %}
     <div class="table-data">
     <div>
     <table class="min-w-full py-3 rounded-lg" style="background-color: #F9F9F9;">

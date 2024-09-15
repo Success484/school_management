@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('create-teacher-class/', views.create_teacher_class, name='create_teacher_class'),
     path('attendance/<int:class_id>/<int:month>/', views.attendance_summary_view, name='attendance_detail'),
     path('attendance/<int:class_id>/<int:year>/<int:month>/', views.attendance_detail, name='attendance_detail'),
     path('teacher-class-list/', views.teacher_class_list, name='teacher_class_list'),
@@ -17,5 +16,8 @@ urlpatterns = [
     path('admin_dashboard/mystudents/details/grades/<int:student_id>/report_card/', views.report_card, name='report_card'),
     path('admin_dashboard/mystudents/grade-class-list/', views.grade_student_nav, name='grade_student_nav'),
     path('admin_dashboard/mystudents/grade-student-list/<int:class_id>/', views.grade_student_list, name='grade_student_list'),
-        path('admin_dashboard/mystudents/grade-student-position/<int:student_id>/student_position_and_comment/', views.student_position_and_comment, name='student_position_and_comment'),
+    path('admin_dashboard/mystudents/details/<int:student_id>/grade/clear/', views.clear_grade_form, name='clear_grades'),
+    path('admin_dashboard/mystudents/grade-student-position/<int:student_id>/student_position_and_comment/', views.student_position_and_comment, name='student_position_and_comment'),
+    path('admin_dashboard/mystudents/grade-student-position/<int:student_id>/clear/student_position_and_comment/', views.clear_student_position_and_comment_form, name='clear_student_position'),
+    path('admin_dashboard/annoucements/',views. annoucement, name='annoucements'),
 ]

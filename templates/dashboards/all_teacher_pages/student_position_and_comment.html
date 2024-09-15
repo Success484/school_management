@@ -15,6 +15,7 @@
             {{form.comment}}
         </div>
         <button class="bg-blue-500 text-white py-2 px-4 rounded-lg text-lg font-medium mb-1" type="submit">submit</button>
+        <a href="{%url 'clear_student_position' student_id=student.id%}" class="bg-red-500 text-white py-2 px-4 rounded-lg text-lg font-medium mb-1" >Clear Form</a>
     </form>
 </div>
 {% endblock section %}

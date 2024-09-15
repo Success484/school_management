@@ -8,7 +8,6 @@ from administration.models import Student, Teacher, Annoucement
 from teacher.models import TeacherClass
 from teacher.forms import TeacherClassForm
 from django.urls import reverse
-
 # Create your views here.
 
 

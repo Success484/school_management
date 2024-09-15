@@ -63,10 +63,10 @@ class StudentGradeModel(models.Model):
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="grades")
     teacher_class = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="teacher_grades", null=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="subject_grades", null=False)
-    term = models.CharField(max_length=20, choices=TERMS, default='First Term')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="subject_grades", null=False, blank=True)
+    term = models.CharField(max_length=20, choices=TERMS, default='First Term',)
 
-    first_test_score = models.IntegerField(null=False)
+    first_test_score = models.IntegerField(null=True, blank=True)
     first_test_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)
     second_test_score = models.IntegerField(null=True, blank=True)
     second_test_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)

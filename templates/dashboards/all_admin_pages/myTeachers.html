@@ -9,14 +9,15 @@
     {% endfor %}
     {% endif %}
     <div class="order flex">
-        <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {%if teacher%}
             {%for teachers in teacher%}
             <a href="{% url 'teacher_detail' user_id=teachers.user.id %}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{teachers.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
-                    <div class="text-center font-medium p-2">
-                        <p>{{teachers.user.first_name}} {{teachers.user.last_name}}</p>
+                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                    <div>
+                    <img src="{{teachers.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
+                    <p>{{teachers.user.first_name}} {{teachers.user.last_name}}</p>
+                    <p class="text-sm">{{teachers.classes.all|join:", "}}</p>
                     </div>
                 </div>
             </a>

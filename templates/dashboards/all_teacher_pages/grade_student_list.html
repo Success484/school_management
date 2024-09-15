@@ -4,14 +4,15 @@
 <div class="m-3 rounded-lg mb-3">
 <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">{{classes.name}}  STUDENTS</p>
     <div class="order flex">
-        <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {%if students%}
             {%for student in students%}
             <a href="{%url 'grade_student' student_id=student.id%}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{student.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{student.user.first_name}} {{student.user.last_name}}">
-                    <div class="text-center font-medium p-2">
+                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                    <div>
+                        <img src="{{student.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{student.user.first_name}} {{student.user.last_name}}">
                         <p>{{student.user.first_name}} {{student.user.last_name}}</p>
+                        <p>{{student.classes.all|join:", "}}</p>
                     </div>
                 </div>
             </a>

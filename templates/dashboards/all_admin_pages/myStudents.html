@@ -9,15 +9,17 @@
     {% endfor %}
     {% endif %}
     <div class="order flex">
-        <div class="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {%if student%}
             {%for students in student%}
             <a href="{% url 'student_detail' user_id=students.user.id %}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg" style="background-color: #F9F9F9;">
-                    <img src="{{students.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 200px; width: 200px;" alt="{{students.user.first_name}} {{students.user.last_name}}">
-                    <div class="text-center font-medium p-2">
+                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                    <div>
+                        <img src="{{students.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{students.user.first_name}} {{students.user.last_name}}">
                         <p>{{students.user.first_name}} {{students.user.last_name}}</p>
+                        <p class="text-sm">{{students.student_class}}</p>
                     </div>
+                </div>
                 </div>
             </a>
             {%endfor%}
