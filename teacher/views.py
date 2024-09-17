@@ -17,10 +17,10 @@ from django.urls import reverse
 
 # Create your views here.
 @login_required
-def teacher_details_page(request, teacher_id):
+def teacher_details_page(request):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
-    teacher = get_object_or_404(Teacher, user__id=teacher_id)
+    teacher = request.user.teacher_profile
     return render(request, 'dashboards/all_teacher_pages/teacher_details.html', {'teacher': teacher})
 
 

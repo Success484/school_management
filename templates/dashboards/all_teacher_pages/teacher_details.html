@@ -35,17 +35,6 @@
                     </ul>
                 </div>
                 {% endif %}
-                {% if request.user.is_superuser %}
-                <div class="flex">
-                    <div class="text-left p-3 mb-3 font-normal text-white">
-                        <a href="{% url 'edit_teacher' teacher_id=teacher.id %}" class="bg-blue-500 p-3 rounded-lg">Edit Teacher</a>
-                    </div>
-                    <div class="text-left p-3 mb-3 font-normal text-white text-right">
-                        <a href="{% url 'delete_teacher' teacher_id=teacher.id %}" class="bg-red-500 p-3 rounded-lg">Delete Teacher</a>
-                    </div>
-                </div>
-                {%else%}
-                {% endif %}
             </div>
         </div>
     </section>

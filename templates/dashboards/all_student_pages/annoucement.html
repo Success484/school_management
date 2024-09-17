@@ -1,0 +1,30 @@
+{% extends 'dashboards/all_student_pages/base.html' %}
+{% load static %}
+{% block section %}
+
+<div class="m-3 text-black rounded-lg">
+    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">ALL Annoucement</p>
+    {% if messages %}
+    {% for message in messages %}
+    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+    {% endfor %}
+    {% endif %}
+    <div id="accordion">
+        {%if posts%}
+        {%for post in posts%}
+            <h3>
+                <span class="font-semibold">{{post.title}}</span> - {{post.date_posted}}
+            </h3>
+            <div>
+                <h1 class="annoucement_suject">{{post.subject}}</h1>
+                <article class="mb-6">
+                    {{post.description}}
+                </article>
+            </div>
+        {%endfor%}
+        {%else%}
+        <p class="bg-white text-gray-700 py-4 px-6 m-3 rounded-lg text-center font-medium text-2xl">Sorry, No Annoucements Yet. </p>
+        {%endif%}
+    </div>
+</div>
+{% endblock section %}

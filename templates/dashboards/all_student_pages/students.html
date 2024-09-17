@@ -5,7 +5,10 @@
 {% url 'student_dashboard' as student_dashboard%}
 {% url 'view_class_timetable' as view_class_timetable%}
 {% url 'student_teacher' as student_teacher%}
+{% url 'view_student_grades' as view_student_grades%}
 {% url 'view_class_attendance' as view_class_attendance%}
+{% url 'annoucement' as annoucement%}
+
 
     <section id="sidebar">
         <a href="" class="brand">
@@ -37,28 +40,35 @@
                     <span class="text">Attendance Record</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{%if request.path == view_student_grades%} active {%else%}{%endif%}">
+                <a href="{{view_student_grades}}">
                     <i class='bx bxs-edit-alt'></i>
                     <span class="text">My grades</span>
                 </a>
             </li>
         </ul>
         <!--  -->
-        <ul class="side-menu">
-        <li>
-            <a href="#">
+
+    <ul class="side-menu">
+        <li class="{%if request.path == annoucement%} active {%else%}{%endif%}">
+            <a href="{{annoucement}}">
                 <i class='bx bxs-book-reader' ></i>
                 <span class="text">Announcements</span>
             </a>
         </li>
-        <li>
-            <a href="{%url 'logout'%}" class="logout">
-                <i class='bx bxs-log-out-circle' ></i>
-                <span class="text">Logout</span>
-            </a>
-        </li>
-    </ul>
+        <li class="{%if request.path == student_details_page%} active {%else%}{%endif%}">
+        <a href="{{student_details_page}}">
+            <i class='bx bxs-book-reader' ></i>
+            <span class="text">My Profile</span>
+        </a>
+    </li>
+    <li>
+        <a href="{%url 'logout'%}" class="logout">
+            <i class='bx bxs-log-out-circle' ></i>
+            <span class="text">Logout</span>
+        </a>
+    </li>
+</ul>
     </section>
     <!-- END OF SIDEBAR -->
 

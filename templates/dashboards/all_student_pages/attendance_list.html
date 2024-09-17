@@ -4,17 +4,20 @@
 
 {% block section %}
 <div class="p-3 rounded-lg m-3" style="background-color: #F9F9F9;">
-    <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE RECORD LISTS</h1>
-    <div>
+    <h1 class="md:text-2xl text-1xl font-bold mb-4 text-center mt-2">MONTHLY ATTENDANCE RECORD LISTS</h1> 
+</div>
+
+<div class="p-3 rounded-lg m-3" style="background-color: #F9F9F9;">
+    <ul class="md:text-2xl text-normal">
         {% for record in attendance_by_month %}
             <li class="my-3">
-                <a class="text-2xl border-b-2 border-gray-400" href="{%url 'attendance_detail_record' year=record.date__year month=record.date__month%}">
+                <a class="border-b-2 border-gray-400" href="{%url 'attendance_detail_record' year=record.date__year month=record.date__month%}">
                     {{ record.date__month|get_month_name }} {{ record.date__year }} Attendance Records
                 </a>
             </li>
         {% empty %}
             <li>No attendance records found.</li>
         {% endfor %}
-    </div>         
-</div>  
+    </ul> 
+</div>
 {% endblock %}

@@ -3,11 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .forms import TimetableForm
 from classes.models import Class
-from teacher.models import Attendance
+from teacher.models import Attendance, StudentGradeModel
 from student.models import Timetable
 from django.contrib import messages
 from django.db.models import Count
-from administration.models import Teacher,Student
+from administration.models import Teacher,Student, Annoucement
 import calendar
 
 
@@ -131,8 +131,6 @@ def view_class_attendance(request):
     return render(request, 'dashboards/all_student_pages/attendance_list.html', context)
 
 
-
-
 def attendance_detail_record(request, year, month):
     # Fetch the class
     student = request.user.student_profile
@@ -167,3 +165,17 @@ def attendance_detail_record(request, year, month):
     }
     return render(request, 'dashboards/all_student_pages/view_attendance.html', context)
 
+
+def view_student_grades(request):
+    student = request.user.student_profile
+    student_grade = StudentGradeModel.objects.filter(student=student).order_by('-year')
+    context = {
+        'student':student,
+        'grades':student_grade
+    }
+    return render(request, 'dashboards/all_student_pages/view_student_grade.html', context)
+
+
+def annoucement(request):
+    post = Annoucement.objects.all().order_by('-date_posted')
+    return render(request, 'dashboards/all_student_pages/annoucement.html', {'posts':post})

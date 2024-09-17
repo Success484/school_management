@@ -1,0 +1,58 @@
+{% extends 'dashboards/all_student_pages/base.html' %}
+{% load static %}
+{% block section %}
+<p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 m-3" style="background-color: #F9F9F9;">{{student|upper}} GRADES {{student.student_class|upper}} STUDENT</p>
+
+<div class="py-8 px-4 m-3 rounded-lg" style="background-color: #F9F9F9;">
+    
+    <div id="accordion">
+        {%if grades%}
+        {% for grade in grades %}
+            <h3 class="font-medium">
+                {{ grade.student }}, {{ grade.term }} Grades {{ grade.year }}, <span class="font-semibold">{{ grade.subject }}</span>
+            </h3>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 px-2 py-3">Student</th>
+                            <th class="border border-gray-300 px-2 py-3">Term</th>
+                            <th class="border border-gray-300 px-2 py-3">Year</th>
+                            <th class="border border-gray-300 px-2 py-3">Subject</th>
+                            <th class="border border-gray-300 px-2 py-3">First Test (Score/Out Of)</th>
+                            <th class="border border-gray-300 px-2 py-3">Second Test (Score/Out Of)</th>
+                            <th class="border border-gray-300 px-2 py-3">Exam (Score/Out Of)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.student }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.term }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.year }}</td>
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.subject }}</td>
+                            {%if grade.first_test_score == None%}
+                            <td class="border border-gray-300 px-2 py-2"></td>
+                            {%else%}
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.first_test_score }} / {{ grade.out_of }}</td>
+                            {%endif%}
+                            {%if grade.second_test_score == None%}
+                            <td class="border border-gray-300 px-2 py-2"></td>
+                            {%else%}
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.second_test_score }} / {{ grade.out_of }}</td>
+                            {%endif%}
+                            {%if grade.exam_score == None%}
+                            <td class="border border-gray-300 px-2 py-2"></td>
+                            {%else%}
+                            <td class="border border-gray-300 px-2 py-2">{{ grade.exam_score }} / {{ grade.out_of }}</td>
+                            {%endif%}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+        {%else%}
+        <p>No Grades Yet</p>
+        {%endif%}
+    </div>
+</div>
+{% endblock section %}
