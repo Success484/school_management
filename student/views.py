@@ -1,14 +1,25 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from .forms import TimetableForm
 from classes.models import Class
 from teacher.models import Attendance
 from student.models import Timetable
 from django.contrib import messages
+from django.db.models import Count
+from administration.models import Teacher,Student
+import calendar
+
+
+
+def student_details_page(request):
+    student = request.user.student_profile
+    return render(request, 'dashboards/all_student_pages/student_details.html', {'student': student})
 
 
 def create_timetable(request):
     classes = Class.objects.all()
-    return render(request, 'dashboards/all_admin_pages/timetable.html', {'classes': classes})
+    return render(request, 'dashboards/all_student_pages/timetable.html', {'classes': classes})
 
 
 def create_class_timetable(request, class_id):
@@ -70,13 +81,89 @@ def edit_timetable(request, table_id):
     return render(request, 'dashboards/all_admin_pages/edit_timetable.html', context)
 
 
-def view_timetable(request):
-    classes = Class.objects.all()
-    return render(request, 'dashboards/all_admin_pages/timetable.html', {'classes': classes})
+def view_class_timetable(request):
+    student = request.user.student_profile
+    student_class = student.student_class
+    timetable = Timetable.objects.filter(class_info=student_class)
+    context={
+        'class': student_class,
+        'timetables': timetable
+    }
+    return render(request, 'dashboards/all_student_pages/timetable.html', context)
 
 
-def view_attendance(request):
-    student = request.user.student  # Assuming the user has a related Student model
-    attendances = Attendance.objects.filter(student=student)
-    return render(request, 'student/attendance_list.html', {'attendances': attendances})
+def student_teacher(request):
+    student = request.user.student_profile
+    student_class = student.student_class
+    teachers = Teacher.objects.filter(classes = student_class)
+
+    teacher_subjects = {}
+    for teacher in teachers:
+        subjects_for_class = teacher.subject.filter(classes=student_class)
+        teacher_subjects[teacher] = subjects_for_class
+    
+    context = {
+        'teachers':teachers,
+        'teacher_subjects':teacher_subjects
+    }
+    return render(request, 'dashboards/all_student_pages/student_teachers.html', context)
+
+
+
+def student_teacher_details(request, teacher_id):
+    teachers = get_object_or_404(Teacher, user__id=teacher_id)
+    return render(request, 'dashboards/all_student_pages/student_teachers_details.html', {'teacher':teachers})
+
+
+
+def view_class_attendance(request):
+    student = request.user.student_profile
+    student_class = student.student_class
+    attendance_by_month = (
+        Attendance.objects.filter(student__student_class=student_class)
+        .values('date__year', 'date__month')
+        .annotate(total=Count('id'))
+        .order_by('-date__year', '-date__month')
+    )
+    context = {
+        'attendance_by_month': attendance_by_month,
+    }
+    return render(request, 'dashboards/all_student_pages/attendance_list.html', context)
+
+
+
+
+def attendance_detail_record(request, year, month):
+    # Fetch the class
+    student = request.user.student_profile
+    student_class = student.student_class
+    students = Student.objects.filter(student_class=student_class)
+
+    # Fetch the attendance records for the specified class, year, and month
+    attendance_qs = Attendance.objects.filter(
+        class_info=student_class,
+        date__year=year,
+        date__month=month
+    )
+    
+    #dictionary where keys are student IDs and values are attendance records
+    attendance_records = {}
+    for record in attendance_qs:
+        attendance_records[record.student.id] = record
+
+    # Get the weekdays for the month
+    cal = calendar.Calendar()
+    days_in_month = cal.itermonthdays2(year, month)
+    weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
+
+
+    context = {
+        'students': students,
+        'classes': student_class,
+        'year': year,
+        'month': month,
+        'attendance_records': attendance_records,
+        'weekdays':weekdays
+    }
+    return render(request, 'dashboards/all_student_pages/view_attendance.html', context)
 

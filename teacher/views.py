@@ -112,22 +112,6 @@ def generate_weekdays(year, month):
 
 
 @login_required
-def attendance_summary_view(request, class_id):
-    if not request.user.is_teacher:
-        return HttpResponseForbidden('You do not have permission to access this page.')
-    attendance_by_month = (
-        Attendance.objects.filter(student__student_class_id=class_id)
-        .values('date__year', 'date__month')
-        .annotate(total=Count('id'))
-        .order_by('date__year', 'date__month')
-    )
-    context = {
-        'attendance_by_month': attendance_by_month,
-    }
-    return render(request, 'attendance_summary.html', context)
-
-
-@login_required
 def attendance_detail(request, class_id, year, month):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')

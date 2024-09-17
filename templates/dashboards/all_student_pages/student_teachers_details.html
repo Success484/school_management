@@ -1,0 +1,53 @@
+{% extends 'dashboards/all_student_pages/base.html' %}
+{% load static %}
+{% block section %}
+<div class="m-3 rounded-lg">
+    <section class="bg-background flex flex-col items-center justify-center text-black">
+        <div class="bg-card w-full max-w-3xl rounded-lg shadow-lg overflow-hidden">
+            {% if messages %}
+            {% for message in messages %}
+            <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+            {% endfor %}
+            {% endif %}
+            <div class="py-8 px-4" style="background-color: #F9F9F9;">
+                <a href="{{ teacher.user.profile_photo.url }}" data-lightbox="user-image" data-title="{{ teacher.user.first_name }} {{ teacher.user.last_name }}">
+                    <img src="{{ teacher.user.profile_photo.url }}" alt="{{ teacher.user.first_name }} {{ teacher.user.last_name }}" style="height: 200px; width: 300px;" class="rounded-lg mx-auto border-4 border-background" />
+                </a>
+                <h1 class="text-2xl font-bold text-primary-foreground text-center mt-4">{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h1>
+                <p class="text-sm text-primary-foreground text-center">{{ teacher.user.role }}</p>
+            </div>
+            <div class="p-4" style="background-color: #F9F9F9;">
+                <div class="bg-card p-4 rounded-lg my-4">
+                    <h2 class="text-lg font-bold">Subjects & Classes</h2>
+                    <ul class="text-sm mt-2">
+                        <li>Subject: {{ teacher.subject.all|join:", " }}</li>
+                        <li>Classes: {{ teacher.classes.all|join:", " }}</li>
+                    </ul>
+                </div>
+                {% if request.user.is_superuser or request.user == teacher.user %}
+                <div class="bg-card p-4 rounded-lg my-4">
+                    <h2 class="text-lg font-bold">Contact</h2>
+                    <ul class="text-sm mt-2">
+                        <li>Email: {{ teacher.user.email }}</li>
+                        <li>Phone: {{ teacher.phone_number }}</li>
+                        <li>Home Address: {{ teacher.home_address }}</li>
+                        <li>Emergency Contact: {{ teacher.emergency_contact }}</li>
+                    </ul>
+                </div>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                <div class="flex">
+                    <div class="text-left p-3 mb-3 font-normal text-white">
+                        <a href="{% url 'edit_teacher' teacher_id=teacher.id %}" class="bg-blue-500 p-3 rounded-lg">Edit Teacher</a>
+                    </div>
+                    <div class="text-left p-3 mb-3 font-normal text-white text-right">
+                        <a href="{% url 'delete_teacher' teacher_id=teacher.id %}" class="bg-red-500 p-3 rounded-lg">Delete Teacher</a>
+                    </div>
+                </div>
+                {%else%}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,5 +1,4 @@
 from django.db import models
-from accounts.models import CustomUser
 from classes.models import Class, Subject
 from django.contrib.auth import get_user_model
 

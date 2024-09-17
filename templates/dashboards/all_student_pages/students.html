@@ -2,33 +2,37 @@
 {%load static%}
 {%block content%}
 
-    <!-- SIDEBAR -->
+{% url 'student_dashboard' as student_dashboard%}
+{% url 'view_class_timetable' as view_class_timetable%}
+{% url 'student_teacher' as student_teacher%}
+{% url 'view_class_attendance' as view_class_attendance%}
+
     <section id="sidebar">
         <a href="" class="brand">
             <i class='bx bxs-smile' ></i>
             <span class="text">Student</span>
         </a>
         <ul class="side-menu top">
-            <li class="active">
-                <a href="#">
+            <li class="{%if request.path == student_dashboard%} active {%else%}{%endif%}">
+                <a href="{%url 'student_dashboard'%}">
                     <i class='bx bxs-dashboard' ></i>
                     <span class="text">Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{%if request.path == view_class_timetable%} active {%else%}{%endif%}">
+                <a href="{{view_class_timetable}}">
                     <i class='bx bx-table' ></i>
-                    <span class="text">My Timetable</span>
+                    <span class="text">Class Timetable</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{%if request.path == student_teacher%} active {%else%}{%endif%}">
+                <a href="{{student_teacher}}">
                     <i class='bx bxs-user-rectangle'></i>
                     <span class="text">My Teachers</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{%if request.path == view_class_attendance%} active {%else%}{%endif%}">
+                <a href="{%url 'view_class_attendance'%}">
                     <i class='bx bxs-book-open' ></i>
                     <span class="text">Attendance Record</span>
                 </a>
@@ -75,7 +79,7 @@
                 <i class='bx bxs-bell' ></i>
                 <span class="num">8</span>
             </a>
-            <a href="#" class="profile">
+            <a href="{%url 'student_details_page' %}" class="profile">
                 <img src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
             </a>
         </nav>

@@ -1,0 +1,40 @@
+{% extends 'dashboards/all_student_pages/base.html' %}
+{% load static %}
+{% block section %}
+<div class="m-3 rounded-lg">
+    <section class="bg-background flex flex-col items-center justify-center text-black">
+        <div class="bg-card w-full max-w-3xl rounded-lg shadow-lg overflow-hidden">
+            {% if messages %}
+            {% for message in messages %}
+            <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+            {% endfor %}
+            {% endif %}
+            <div class="py-8 px-4" style="background-color: #F9F9F9;">
+                <a href="{{ student.user.profile_photo.url }}" data-lightbox="user-image" data-title="{{student.user.first_name}} {{student.user.last_name}}">
+                    <img src="{{ student.user.profile_photo.url }}" alt="{{ student.user.first_name }} {{ student.user.last_name }}" style="height: 200px; width: 300px;" class="rounded-lg mx-auto border-4 border-background" />
+                </a>
+                <h1 class="text-2xl font-bold text-primary-foreground text-center mt-4">{{ student.user.first_name }} {{ student.user.last_name }}</h1>
+                <p class="text-sm text-primary-foreground text-center">{{ student.user.role }}</p>
+            </div>
+            <div class="p-4" style="background-color: #F9F9F9;">                        
+                <div class="bg-card p-4 rounded-lg my-4">
+                    <h2 class="text-lg font-bold">Class</h2>
+                    <ul class="text-sm mt-2">
+                        <li>Class: {{ student.student_class }}</li>
+                    </ul>
+                </div>
+                <div class="bg-card p-4 rounded-lg my-4">
+                    <h2 class="text-lg font-bold">Contact</h2>
+                    <ul class="text-sm mt-2">
+                        <li>Phone: {{ student.phone_number }}</li>
+                        <li>Home Address: {{ student.home_address }}</li>
+                        <li>Parent/Guardian Name: {{ student.parent_or_guardian_name }}</li>
+                        <li>Parent/Guardian Phone: {{ student.parent_or_guardian_phone_number }}</li>
+                        <li>Parent/Guardian Email: {{ student.parent_email }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock section %}
