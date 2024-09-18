@@ -10,7 +10,7 @@
             {% endfor %}
             {% endif %}
             <div class="py-8 px-4" style="background-color: #F9F9F9;">
-                <div class="text-left text-right mb-5 text-sm md:text-base text-white"><a href="{%url 'report_card' student_id=student.id %}" class="bg-blue-500 p-2 rounded-lg">Report Card</a></div>
+                <div class="text-left text-right mb-5 text-sm md:text-base text-white text-center"><a href="{%url 'report_card' student_id=student.id %}" class="bg-blue-500 p-2 rounded-lg"><i class='bx bx-card'></i><span class="pl-1">Report Card</span></a></div>
 
                 <a href="{{ student.user.profile_photo.url }}" data-lightbox="user-image" data-title="{{student.user.first_name}} {{student.user.last_name}}">
                     <img src="{{ student.user.profile_photo.url }}" alt="{{ student.user.first_name }} {{ student.user.last_name }}" style="height: 200px; width: 300px;" class="rounded-lg mx-auto border-4 border-background" />
@@ -37,8 +37,8 @@
                 </div>
                 {%if request.user.is_superuser%}
                 <div class="flex">
-                    <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'edit_student' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg">Edit Student</a></div>
-                    <div class="text-left p-3 mb-3 font-normal text-white text-right"><a href="{%url 'delete_student' student_id=student.id%}" class="bg-red-500 p-3 rounded-lg">Delete Student</a></div>
+                    <div class="p-1 md:p-2 mb-3 text-sm md:text-base text-white"><a href="{%url 'edit_student' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg"><i class="fa-regular fa-pen-to-square fa-sm"></i><span class="md:pl-1">Edit Student</span></a></div>
+                    <div class="p-1 md:p-2 mb-3 text-sm md:text-base text-white text-right"><a href="{%url 'delete_student' student_id=student.id%}" class="bg-red-500 p-3 rounded-lg"><i class="fa-solid fa-trash-can fa-sm"></i><span class="md:pl-1">Delete Student</span></a></div>
                 </div>
                 {%else%}
                 {%endif%}

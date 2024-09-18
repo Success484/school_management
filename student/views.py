@@ -19,7 +19,7 @@ def student_details_page(request):
 
 def create_timetable(request):
     classes = Class.objects.all()
-    return render(request, 'dashboards/all_student_pages/timetable.html', {'classes': classes})
+    return render(request, 'dashboards/all_admin_pages/timetable.html', {'classes': classes})
 
 
 def create_class_timetable(request, class_id):

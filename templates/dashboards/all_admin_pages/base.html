@@ -6,9 +6,9 @@
 {%url 'my_teacher' as my_teacher%}
 {%url 'my_student' as my_student%}
 {%url 'my_class' as my_class%}
-{%url 'create_timetable' as create_timetable%}
+{%url 'choose_class_timetable' as choose_class_timetable%}
 {%url 'subject_list' as subject_list%}
-{%url 'annoucement' as annoucement%}
+{%url 'all_annoucement' as all_annoucement%}
 
 
 
@@ -43,8 +43,8 @@
                     <span class="text">All Classes</span>
                 </a>
             </li>
-            <li class="{% if request.path == create_timetable %}active{% endif %}">
-                <a href="{{create_timetable}}">
+            <li class="{% if request.path == choose_class_timetable %}active{% endif %}">
+                <a href="{{choose_class_timetable}}">
                     <i class='bx bxs-building-house' ></i>
                     <span class="text">Create Timetable</span>
                 </a>
@@ -58,8 +58,8 @@
         </ul>
         <!--  -->
         <ul class="side-menu">
-        <li class="{% if request.path == annoucement %}active{% endif %}">
-            <a href="{{annoucement}}">
+        <li class="{% if request.path == all_annoucement %}active{% endif %}">
+            <a href="{{all_annoucement}}">
                 <i class='bx bxs-book-reader' ></i>
                 <span class="text">Announcements</span>
             </a>

@@ -10,7 +10,7 @@
                   {% endfor %}
                   {% endif %}
                   <div class="py-8 px-4" style="background-color: #F9F9F9;">
-                    <div class="text-left text-right mb-5 text-sm md:text-base text-white"><a href="{%url 'assign_teacher' teacher_id=teacher.id%}" class="bg-blue-500 p-2 rounded-lg">Assign Teacher</a></div>
+                    <div class="text-left text-right mb-5 text-sm md:text-base text-white"><a href="{%url 'assign_teacher' teacher_id=teacher.id%}" class="bg-blue-500 p-2 rounded-lg"><i class="fa-solid fa-plus"></i><span class="pl-1">Assign Teacher</span></a></div>
                     <a href="{{ teacher.user.profile_photo.url }}" data-lightbox="user-image" data-title="{{teacher.user.first_name}} {{teacher.user.last_name}}">
                     <img src="{{teacher.user.profile_photo.url}}" alt="{{teacher.user.first_name}} {{teacher.user.last_name}}" style="height: 200px; width: 300px;" class="rounded-lg mx-auto border-4 border-background" />
                     </a>
@@ -38,8 +38,8 @@
                         {%endif%}
                         {%if request.user.is_superuser%}
                         <div class="flex">
-                          <div class="text-left p-3 mb-3 text-sm md:text-base text-white"><a href="{%url 'edit_teacher' teacher_id=teacher.id%}" class="bg-blue-500 p-3 rounded-lg">Edit Teacher</a></div>
-                          <div class="text-left p-3 mb-3 text-sm md:text-base text-white text-right"><a href="{%url 'delete_teacher' teacher_id=teacher.id%}" class="bg-red-500 p-3 rounded-lg">Delete Teacher</a></div>
+                          <div class="p-1 md:p-2 mb-3 text-sm md:text-base text-white"><a href="{%url 'edit_teacher' teacher_id=teacher.id%}" class="bg-blue-500 p-3 rounded-lg"><i class="fa-regular fa-pen-to-square fa-sm"></i><span class="md:pl-1">Edit Teacher</span></a></div>
+                          <div class="p-1 md:p-2 mb-3 text-sm md:text-base text-white text-right"><a href="{%url 'delete_teacher' teacher_id=teacher.id%}" class="bg-red-500 p-3 rounded-lg"><i class="fa-solid fa-trash-can fa-sm"></i><span class="md:pl-1">Delete Teacher</span></a></div>
                         </div>
                         {%else%}
                         {%endif%}

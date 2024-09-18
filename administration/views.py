@@ -225,6 +225,7 @@ def assign_teacher(request, teacher_id):
             assign.teacher = teacher
             assign.save()
             form.save_m2m()
+            messages.success(request, 'Teacher successfully assigned')
             return redirect(reverse('teacher_detail', kwargs={'user_id': teacher.user.id}))
         print(form.errors)
     else:
