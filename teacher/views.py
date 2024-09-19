@@ -24,8 +24,17 @@ def teacher_details_page(request):
     return render(request, 'dashboards/all_teacher_pages/teacher_details.html', {'teacher': teacher})
 
 
+def teacher_detail(request, teacher_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    teachers = get_object_or_404(Teacher, user__id=teacher_id)
+    return render(request, 'dashboards/all_teacher_pages/all_teacher_details.html', {'teacher':teachers})
+
+
 @login_required
 def teacher_class_list(request):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     return render(request, 'dashboards/all_teacher_pages/teacher_classes.html', {'classes':classes})
@@ -59,10 +68,10 @@ def teacher_class_details(request, class_id):
             weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
     
     attendance_by_month = (
-        Attendance.objects.filter(student__student_class_id=class_id)
-        .values('date__year', 'date__month')
-        .annotate(total=Count('id'))
-        .order_by('date__year', 'date__month')
+    Attendance.objects.filter(student__student_class_id=class_id)
+    .values('date__year', 'date__month')
+    .annotate(total=Count('id'))
+    .order_by('date__year', 'date__month')
     )
 
     
@@ -332,19 +341,6 @@ def update_attendance(request, class_id, year, month):
 
 
 @login_required
-def view_attendance(request, class_id):
-    if not request.user.is_teacher:
-        return HttpResponseForbidden('You do not have permission to access this page.')
-    classes = Class.objects.get(id=class_id)
-    class_attendance_records = Attendance.objects.filter(class_info=classes)
-    context = {
-        'classes': classes,
-        'attendance_records': class_attendance_records,
-    }
-    return render(request, 'dashboards/all_teacher_pages/view_attendance.html', context)
-
-
-@login_required
 def grade_student(request, student_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
@@ -391,11 +387,12 @@ def clear_grade_form(request, student_id):
         return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
     teacher = request.user.teacher_profile
-
     teacher_subject = teacher.subject.first()
-    
     student_grade = StudentGradeModel.objects.filter(student=student, subject=teacher_subject).first()
-    student_grade.delete()
+    if student_grade:
+        student_grade.delete()
+    else:
+        pass
     return redirect('grade_student', student_id=student_id)
 
 
@@ -414,7 +411,7 @@ def view_student_grades(request, student_id):
 
 @login_required
 def report_card(request, student_id):
-    if not request.user.is_teacher and not request.user.is_superuser:
+    if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
     student_position_and_comment_view = StudentPosition.objects.filter(student=student)

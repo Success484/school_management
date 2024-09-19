@@ -3,10 +3,6 @@
 {% block section %}
 
 <div class="m-3 text-black rounded-lg">
-    {%if request.user.is_superuser%}
-    <p class="text-right p-3 mb-3 font-normal text-white"><a href="{%url 'create_annoucement'%}" class="bg-blue-500 p-3 rounded-lg">+ Create Annoucement</a></p>
-     {%else%}
-    {%endif%}
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">ALL Annoucement</p>
     {% if messages %}
     {% for message in messages %}
@@ -24,11 +20,6 @@
                 <article class="mb-6">
                     {{post.description}}
                 </article>
-                {%if request.user.is_superuser%}
-                <p class="text-left p-3 font-normal text-white"><a href="{%url 'edit_annoucement' post_id=post.id%}" class="bg-gray-200 hover:bg-blue-500 hover:text-white p-2 rounded-lg">Edit Post</a></p>
-                <p class="text-left p-3 font-normal text-white"><a href="{%url 'delete_annoucement' post_id=post.id%}" class="bg-red-300 hover:bg-red-500 hover:text-white p-2 rounded-lg">Delete Post</a></p>
-                {%else%}
-                {%endif%}
             </div>
         {%endfor%}
         {%else%}

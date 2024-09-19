@@ -14,8 +14,8 @@
             <p class="text-lg font-medium text-gray-700 mb-1">{{form.comment.label_tag}}</p>
             {{form.comment}}
         </div>
-        <button class="bg-blue-500 text-white py-2 px-4 rounded-lg md:text-lg md:font-medium font-normal mb-1 text-normal" type="submit">submit</button>
-        <a href="{%url 'clear_student_position' student_id=student.id%}" class="bg-red-500 text-white py-2 px-4 rounded-lg md:text-lg text-normal md:font-medium font-normal mb-1" >Clear Existing Form</a>
+        <button class="bg-blue-500 text-white md:py-2 py-1 px-1 md:px-2 rounded-lg md:text-lg md:font-medium font-normal mb-3 text-normal" type="submit"><i class="fa-solid fa-plus"></i><span class="pl-1">Add Position And Comment</span></button><br>
+        <a href="{%url 'clear_student_position' student_id=student.id%}" class="bg-red-500 text-white md:py-2 py-1 px-1 md:px-2 rounded-lg md:text-lg text-normal md:font-medium font-normal mb-1" ><i class="fa-solid fa-trash-can fa-sm"></i> <span class="pl-1">Clear Existing</span></a>
     </form>
 </div>
 {% endblock section %}

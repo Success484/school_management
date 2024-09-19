@@ -14,16 +14,11 @@ class TeacherClassForm(forms.ModelForm):
             'subjects': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
         }
 
-TERMS = [
-    ('first_term', 'First Term'),
-    ('second_term', 'Second Term'),
-    ('third_term', 'Third Term'),
-]
+        
 
 class AttendanceMonthForm(forms.Form):
-    term = forms.ChoiceField(choices=TERMS)
-    month = forms.ChoiceField(choices=[(str(i), calendar.month_name[i]) for i in range(1, 13)])
-    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)])
+    month = forms.ChoiceField(choices=[(str(i), calendar.month_name[i]) for i in range(1, 13)], widget=forms.Select(attrs={'class': 'final-grade'}))
+    year = forms.ChoiceField(choices=[(str(y), y) for y in range(2024, 2034)], widget=forms.Select(attrs={'class': 'final-grade'}))
 
 
 class AttendanceForm(forms.ModelForm):

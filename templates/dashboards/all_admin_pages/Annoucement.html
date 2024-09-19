@@ -26,8 +26,8 @@
                 </article>
                 {%if request.user.is_superuser%}
                 <div class="text-white">
-                <p class="p-3 font-normal"><a href="{%url 'edit_annoucement' post_id=post.id%}" class="bg-blue-500 p-2 rounded-lg" style="color: white;">Edit Post</a></p>
-                <p class="p-3 font-normal"><a href="{%url 'delete_annoucement' post_id=post.id%}" class="bg-red-500 p-2 rounded-lg" style="color: white;">Delete Post</a></p>
+                <p class="p-3 font-normal"><a href="{%url 'edit_annoucement' post_id=post.id%}" class="bg-blue-500 p-2 rounded-lg" style="color: white;"><i class="fa-regular fa-pen-to-square fa-sm"></i><span class="md:pl-1">Edit Annoucement</span></a></p>
+                <p class="p-3 font-normal"><a href="{%url 'delete_annoucement' post_id=post.id%}" class="bg-red-500 p-2 rounded-lg" style="color: white;"><i class="fa-solid fa-trash-can fa-sm"></i> <span class="pl-1">Delete Annoucement</span></a></p>
                 </div>
                 {%else%}
                 {%endif%}

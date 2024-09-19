@@ -33,7 +33,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {%if teachers%}
             {%for teacher in teachers%}
-            <a href="{% url 'teacher_details_page' teacher_id=teacher.user.id %}">
+            <a href="{% url 'teacher_detail' teacher_id=teacher.user.id%}">
                 <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
                     <div>
                     <img src="{{teacher.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
@@ -98,7 +98,7 @@
             {% for record in attendance_by_month %}
                 <li class="my-3">
                     <a class="text-2xl border-b-2 border-gray-400" href="{% url 'attendance_detail' class_id=class.id year=record.date__year month=record.date__month %}">
-                        {{ record.date__month|get_month_name }} {{ record.date__year }} Attendance Records
+                        {{ record.date__month|get_month_name }} {{ record.date__year }} Attendance Records {{record.term}}
                     </a>
                 </li>
             {% empty %}

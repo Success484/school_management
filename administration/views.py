@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from administration.forms import TeacherForm, StudentForm, AnnoucementForm
 from administration.models import Student, Teacher, Annoucement
-from teacher.models import TeacherClass
+from teacher.models import TeacherClass, StudentPosition, StudentGradeModel
+from datetime import datetime
 from teacher.forms import TeacherClassForm
 from django.urls import reverse
 # Create your views here.
@@ -241,3 +242,20 @@ def assign_teacher(request, teacher_id):
     }
 
     return render(request, 'dashboards/all_admin_pages/assign_teacher.html', context)
+
+
+@login_required
+def student_report_card(request, student_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    student = get_object_or_404(Student, id=student_id)
+    student_position_and_comment_view = StudentPosition.objects.filter(student=student)
+    student_grade = StudentGradeModel.objects.filter(student=student)
+    current_year = datetime.now().year
+    context = {
+        'current_year':current_year,
+        'student':student,
+        'grades':student_grade,
+        'student_position_and_comment_view':student_position_and_comment_view
+    }
+    return render(request, 'dashboards/all_admin_pages/report_card.html', context)

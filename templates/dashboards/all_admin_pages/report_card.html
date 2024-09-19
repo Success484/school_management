@@ -1,9 +1,9 @@
-{% extends 'dashboards/all_teacher_pages/base.html' %}
+{% extends 'dashboards/all_admin_pages/base.html' %}
 {% load static %}
 {% load custom_filters %}
 {% block section %}
 
-{% if student and grades and student_position_and_comment_view %}
+
     <div class="bg-card rounded-lg shadow-md m-3 rounded-lg bg-white">
         <div class="mb-6 text-white invisible">h</div>
         <div class="flex justify-center item-center w-full bg-blue-100">
@@ -94,11 +94,5 @@
         </div>
         {% endfor %}
     </div>
-{% else %}
-    <p class="bg-white text-gray-700 py-4 px-6 m-3 rounded-lg text-center font-medium text-2xl">Sorry, No Student Report Card Yet. 
-        <br>
-        <span class="font-normal text-xl">All Student Grades Must Be Filled To Reveal Full Student Report Card</span>
-    </p>
-{% endif %}
 
 {% endblock section %}

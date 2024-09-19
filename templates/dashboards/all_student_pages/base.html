@@ -9,12 +9,13 @@
 {% url 'view_class_attendance' as view_class_attendance%}
 {% url 'annoucement' as annoucement%}
 {% url 'student_details_page' as student_details_page%}
+{% url 'my_report_card' as my_report_card%}
 
 
 
     <!-- SIDEBAR -->
     <section id="sidebar">
-        <a href="" class="brand">
+        <a href="{%url 'student_dashboard'%}" class="brand">
             <i class='bx bxs-smile' ></i>
             <span class="text">Student</span>
         </a>
@@ -51,6 +52,15 @@
             </li>
         </ul>
         <!--  -->
+        <ul class="side-menu top">
+            <li class="{%if request.path == my_report_card%} active {%else%}{%endif%}">
+                <a href="{%url 'my_report_card'%}">
+                    <i class='bx bxs-book-open' ></i>
+                    <span class="text">My Report Card</span>
+                </a>
+            </li>
+    </ul>
+
         <ul class="side-menu">
             <li class="{%if request.path == annoucement%} active {%else%}{%endif%}">
                 <a href="{{annoucement}}">

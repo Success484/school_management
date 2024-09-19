@@ -3,12 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .forms import TimetableForm
 from classes.models import Class
-from teacher.models import Attendance, StudentGradeModel
+from teacher.models import Attendance, StudentGradeModel, StudentPosition
 from student.models import Timetable
 from django.contrib import messages
 from django.db.models import Count
 from administration.models import Teacher,Student, Annoucement
 import calendar
+from datetime import datetime
 
 
 
@@ -115,7 +116,6 @@ def student_teacher_details(request, teacher_id):
     return render(request, 'dashboards/all_student_pages/student_teachers_details.html', {'teacher':teachers})
 
 
-
 def view_class_attendance(request):
     student = request.user.student_profile
     student_class = student.student_class
@@ -140,6 +140,7 @@ def attendance_detail_record(request, year, month):
     # Fetch the attendance records for the specified class, year, and month
     attendance_qs = Attendance.objects.filter(
         class_info=student_class,
+        student=student,
         date__year=year,
         date__month=month
     )
@@ -179,3 +180,17 @@ def view_student_grades(request):
 def annoucement(request):
     post = Annoucement.objects.all().order_by('-date_posted')
     return render(request, 'dashboards/all_student_pages/annoucement.html', {'posts':post})
+
+
+def my_report_card(request):
+    student = request.user.student_profile
+    student_position_and_comment_view = StudentPosition.objects.filter(student=student)
+    student_grade = StudentGradeModel.objects.filter(student=student)
+    current_year = datetime.now().year
+    context = {
+        'current_year':current_year,
+        'student':student,
+        'grades':student_grade,
+        'student_position_and_comment_view':student_position_and_comment_view
+    }
+    return render(request, 'dashboards/all_student_pages/my_report_card.html', context)

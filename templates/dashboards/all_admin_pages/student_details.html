@@ -10,7 +10,7 @@
             {% endfor %}
             {% endif %}
             <div class="py-8 px-4" style="background-color: #F9F9F9;">
-                <div class="text-left text-right mb-5 text-sm md:text-base text-white text-center"><a href="{%url 'report_card' student_id=student.id %}" class="bg-blue-500 p-2 rounded-lg"><i class='bx bx-card'></i><span class="pl-1">Report Card</span></a></div>
+                <div class="text-left text-right mb-5 text-sm md:text-base text-white text-center"><a href="{%url 'student_report_card' student_id=student.id %}" class="bg-blue-500 p-2 rounded-lg"><i class='bx bx-card'></i><span class="pl-1">Report Card</span></a></div>
 
                 <a href="{{ student.user.profile_photo.url }}" data-lightbox="user-image" data-title="{{student.user.first_name}} {{student.user.last_name}}">
                     <img src="{{ student.user.profile_photo.url }}" alt="{{ student.user.first_name }} {{ student.user.last_name }}" style="height: 200px; width: 300px;" class="rounded-lg mx-auto border-4 border-background" />

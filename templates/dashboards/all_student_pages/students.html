@@ -8,10 +8,11 @@
 {% url 'view_student_grades' as view_student_grades%}
 {% url 'view_class_attendance' as view_class_attendance%}
 {% url 'annoucement' as annoucement%}
+{% url 'my_report_card' as my_report_card%}
 
 
     <section id="sidebar">
-        <a href="" class="brand">
+        <a href="{%url 'student_dashboard'%}" class="brand">
             <i class='bx bxs-smile' ></i>
             <span class="text">Student</span>
         </a>
@@ -47,7 +48,15 @@
                 </a>
             </li>
         </ul>
-        <!--  -->
+        
+        <ul class="side-menu top">
+            <li class="{%if request.path == my_report_card%} active {%else%}{%endif%}">
+                <a href="{%url 'my_report_card'%}">
+                    <i class='bx bxs-book-open' ></i>
+                    <span class="text">My Report Card</span>
+                </a>
+            </li>
+    </ul>
 
     <ul class="side-menu">
         <li class="{%if request.path == annoucement%} active {%else%}{%endif%}">
@@ -57,11 +66,11 @@
             </a>
         </li>
         <li class="{%if request.path == student_details_page%} active {%else%}{%endif%}">
-        <a href="{{student_details_page}}">
-            <i class='bx bxs-book-reader' ></i>
-            <span class="text">My Profile</span>
-        </a>
-    </li>
+            <a href="{{student_details_page}}">
+                <i class='bx bxs-book-reader' ></i>
+                <span class="text">My Profile</span>
+            </a>
+        </li>
     <li>
         <a href="{%url 'logout'%}" class="logout">
             <i class='bx bxs-log-out-circle' ></i>

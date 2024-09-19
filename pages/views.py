@@ -56,13 +56,16 @@ def myTeacher(request):
     teacher = Teacher.objects.all()
     return render(request, 'dashboards/all_admin_pages/myTeachers.html', {'teacher': teacher})
 
+
 def teacherDetails(request, user_id):
     teacher = get_object_or_404(Teacher, user__id=user_id)
     return render(request, 'dashboards/all_admin_pages/teacher_details.html', {'teacher': teacher})
 
+
 def myStudent(request):
     student = Student.objects.all()
     return render(request, 'dashboards/all_admin_pages/myStudents.html', {'student': student})
+
 
 def studentDetails(request, user_id):
     student = get_object_or_404(Student, user__id=user_id)

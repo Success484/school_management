@@ -19,5 +19,6 @@ urlpatterns = [
     path('admin_dashboard/mystudents/details/<int:student_id>/grade/clear/', views.clear_grade_form, name='clear_grades'),
     path('admin_dashboard/mystudents/grade-student-position/<int:student_id>/student_position_and_comment/', views.student_position_and_comment, name='student_position_and_comment'),
     path('admin_dashboard/mystudents/grade-student-position/<int:student_id>/clear/student_position_and_comment/', views.clear_student_position_and_comment_form, name='clear_student_position'),
-    path('admin_dashboard/annoucements/',views. annoucement, name='annoucements'),
+    path('admin_dashboard/all-annoucement/',views. annoucement, name='annoucements'),
+    path('admin_dashboard/teacher/details/<int:teacher_id>/clear/student_position_and_comment/', views.teacher_detail, name='teacher_detail'),
 ]
