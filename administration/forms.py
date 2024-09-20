@@ -25,7 +25,6 @@ class StudentForm(forms.ModelForm):
         model = Student
         fields = [
             'student_class',
-            'phone_number',  
             'home_address', 
             'parent_or_guardian_name', 
             'parent_or_guardian_phone_number', 
@@ -33,7 +32,6 @@ class StudentForm(forms.ModelForm):
         ]
         widgets = {
             'student_class': forms.Select(attrs={'class': 'final-grade'}),
-            'phone_number': forms.TextInput(attrs={'class': 'final-grade'}),
             'home_address': forms.TextInput(attrs={'class': 'final-grade'}),
             'parent_or_guardian_name': forms.TextInput(attrs={'class': 'final-grade'}),
             'parent_or_guardian_phone_number': forms.TextInput(attrs={'class': 'final-grade'}),

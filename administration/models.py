@@ -22,7 +22,6 @@ class Teacher(models.Model):
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile")
     student_class = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, related_name='students')
-    phone_number = models.CharField(max_length=15)
     home_address = models.TextField()
     parent_or_guardian_name = models.CharField(max_length=100)
     parent_or_guardian_phone_number = models.CharField(max_length=15)

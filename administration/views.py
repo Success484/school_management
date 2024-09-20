@@ -56,6 +56,7 @@ def add_teacher(request, user_id):
             teacher.user = user
             teacher.save()
             form.save_m2m()
+            messages.success(request, 'Successfully joined, You are welcome!.')
             return redirect('teacher_dashboard') 
         else:
             print(form.errors)
@@ -115,6 +116,7 @@ def add_student(request, user_id):
             student = form.save(commit=False)
             student.user = user
             student.save()
+            messages.success(request, 'Successfully joined, You are welcome!.')
             return redirect('student_dashboard')
         else:
             print(form.errors)
@@ -166,7 +168,7 @@ def annoucement(request):
 
 
 @login_required
-def create_annoucement(request):
+def create_all_annoucement(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden('You do not have permission to access this page.')
     if request.method == 'POST':
@@ -174,7 +176,7 @@ def create_annoucement(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Annoucement created successfully')
-            return redirect('annoucement')
+            return redirect('all_annoucement')
     else:
         form = AnnoucementForm()
     return render(request, 'dashboards/all_admin_pages/create_annoucement.html', {'form':form})
@@ -190,7 +192,7 @@ def edit_annoucement(request, post_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Annoucement updated successfully')
-            return redirect('annoucement')
+            return redirect('all_annoucement')
     else:
         form = AnnoucementForm(instance=post)
     return render(request, 'dashboards/all_admin_pages/create_annoucement.html', {'form':form})
@@ -203,7 +205,7 @@ def delete_annoucement(request, post_id):
     post = get_object_or_404(Annoucement, id=post_id)
     post.delete()
     messages.success(request, 'Announcement delete successfully')
-    return redirect('annoucement')
+    return redirect('all_annoucement')
 
 
 @login_required

@@ -159,7 +159,6 @@ def attendance_detail(request, class_id, year, month):
 
 @login_required
 def create_attendance(request, class_id):
-    
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
 
@@ -209,7 +208,7 @@ def create_attendance(request, class_id):
             status20 = request.POST.get(f'status20_{student.id}')
             status21 = request.POST.get(f'status21_{student.id}')
             status22 = request.POST.get(f'status22_{student.id}')
-            Attendance.objects.create(
+            Attendance.objects.update_or_create(
                 student=student,
                 class_info=classes,
                 status1=status1,

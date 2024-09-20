@@ -1,29 +1,37 @@
 {% extends 'dashboards/all_admin_pages/base.html' %}
 {% load static %}
+{% load custom_filters %} <!-- Ensure you load any custom filters if needed -->
 {% block section %}
 <div class="m-3 rounded-lg">
-    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">ALL STUDENT</p>
+    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">ALL STUDENTS</p>
+    
     {% if messages %}
-    {% for message in messages %}
-    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
-    {% endfor %}
+        {% for message in messages %}
+            <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+        {% endfor %}
     {% endif %}
-    <div class="order flex">
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {%if student%}
-            {%for students in student%}
-            <a href="{% url 'student_detail' user_id=students.user.id %}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
-                    <div>
-                        <img src="{{students.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{students.user.first_name}} {{students.user.last_name}}">
-                        <p>{{students.user.first_name}} {{students.user.last_name}}</p>
-                        <p class="text-sm">{{students.student_class}}</p>
-                    </div>
-                </div>
-                </div>
-            </a>
-            {%endfor%}
-            {%endif%}
+    
+    <div class="order flex justify-center">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {% if student %}
+                {% for student_item in student %}
+                    <a href="{% url 'student_detail' user_id=student_item.user.id %}">
+                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                            <div>
+                                {% if student_item.user.profile_photo %}
+                                    <img src="{{ student_item.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ student_item.user.first_name }} {{ student_item.user.last_name }}">
+                                {% else %}
+                                    <img src="{% static 'path/to/default_photo.jpg' %}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="Default Photo">
+                                {% endif %}
+                                <p>{{ student_item.user.first_name }} {{ student_item.user.last_name }}</p>
+                                <p class="text-sm">{{ student_item.student_class.name }}</p> <!-- Assuming student_class is a ForeignKey to a Class model with a 'name' field -->
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-gray-500">No students available.</p>
+            {% endif %}
         </div>
     </div>
 </div>

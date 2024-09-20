@@ -125,7 +125,11 @@
                     </span>
                 </li>
             </ul>
-            
+                    {% if messages %}
+                    {% for message in messages %}
+                    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+                    {% endfor %}
+                    {% endif %}
             <div class="table-data">
                 <div class="order">
                     <h2 id="welcome">WELCOME {{ user.first_name|upper }}</h2>

@@ -205,6 +205,16 @@
         $(document).ready(function() {
           $('.select2-multiple').select2();
         });
+
+        function openLoader() {
+            document.getElementById("loadingModal").style.display = "block";
+            const hide = document.getElementById("NoloadingModal");
+            hide.style.display = 'none';
+        }
+
+        function CloseLoader() {
+        }
+
       </script>
 </body>
 
