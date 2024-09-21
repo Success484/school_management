@@ -11,8 +11,8 @@
         {% endfor %}
     {% endif %}
     
-    <div class="order flex justify-center">
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+    <div class="order">
+        <div class="flex flex-wrap gap-3">
             {% if student %}
                 {% for student_item in student %}
                     <a href="{% url 'student_detail' user_id=student_item.user.id %}">

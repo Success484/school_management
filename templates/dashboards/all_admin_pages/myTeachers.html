@@ -8,8 +8,8 @@
     <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
     {% endfor %}
     {% endif %}
-    <div class="order flex justify-center">
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+    <div class="order">
+        <div class="flex flex-wrap gap-3">
             {%if teacher%}
             {%for teachers in teacher%}
             <a href="{% url 'teacher_detail' user_id=teachers.user.id %}">

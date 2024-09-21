@@ -47,21 +47,20 @@
                     <span class="text">My grades</span>
                 </a>
             </li>
-        </ul>
-        
-        <ul class="side-menu top">
             <li class="{%if request.path == my_report_card%} active {%else%}{%endif%}">
                 <a href="{%url 'my_report_card'%}">
                     <i class='bx bxs-book-open' ></i>
                     <span class="text">My Report Card</span>
                 </a>
             </li>
-    </ul>
+        </ul>
+        
+       
 
     <ul class="side-menu">
         <li class="{%if request.path == annoucement%} active {%else%}{%endif%}">
             <a href="{{annoucement}}">
-                <i class='bx bxs-book-reader' ></i>
+                <i class='bx bxs-volume-full' ></i>
                 <span class="text">Announcements</span>
             </a>
         </li>

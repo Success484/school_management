@@ -10,7 +10,7 @@
     <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
     {% endfor %}
     {% endif %}
-    <ul class="grid grid-cols sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-6 gap-3 text-center">
+    <ul class="flex flex-wrap gap-3 text-center">
         {%if class%}
         {%for classes in class%}
         <a href="{%url 'class_details' user_id=classes.id%}">

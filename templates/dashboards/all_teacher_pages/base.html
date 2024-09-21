@@ -33,7 +33,7 @@
             </li>
             <li class="{%if request.path == select_class_attendance%}active{%else%}{%endif%}">
                 <a href="{% url 'select_class_attendance'%}">
-                    <i class='bx bxs-book-open' ></i>
+                    <i class='bx bx-table' ></i>
                     <span class="text">Attendance Record</span>
                 </a>
             </li>
@@ -43,19 +43,19 @@
                     <span class="text">Grade Student</span>
                 </a>
             </li>
+            <li class="{%if request.path == annoucements%}active{%else%}{%endif%}">
+                <a href="{{annoucements}}">
+                    <i class='bx bxs-volume-full' ></i>
+                    <span class="text">Announcements</span>
+                </a>
+            </li>
         </ul>
         <!--  -->
 
     <ul class="side-menu">
-        <li class="{%if request.path == annoucements%}active{%else%}{%endif%}">
-            <a href="{{annoucements}}">
-                <i class='bx bxs-book-reader' ></i>
-                <span class="text">Announcements</span>
-            </a>
-        </li>
         <li class="{%if request.path == teacher_details_page%}active{%else%}{%endif%}">
             <a href="{%url 'teacher_details_page'%}">
-                <i class='bx bxs-book-reader' ></i>
+                <i class='bx bxs-user-circle' ></i>
                 <span class="text">My Profile</span>
             </a>
         </li>
