@@ -4,6 +4,7 @@ from django.http import HttpResponseForbidden
 from administration.models import Teacher, Student
 
 
+
 # Create your views here.
 
 def homePage(request):
@@ -38,16 +39,34 @@ def contact(request):
 def teacher_dashboard(request):
     if not request.user.is_teacher:
         return HttpResponseForbidden("You do not have permission to access this page.")
+    teacher = get_object_or_404(Teacher, user=request.user)
+    classes = teacher.classes.all()
+    classes_count = teacher.classes.count()
+    all_teachers = Teacher.objects.count()
     user = request.user
-    return render(request, 'dashboards/all_teacher_pages/teachers.html', {'user':user})
+    context={
+        'classes':classes,
+        'classes_count':classes_count,
+        'all_teachers' :all_teachers,
+        'user':user
+    }
+    return render(request, 'dashboards/all_teacher_pages/teachers.html', context)
 
 
 @login_required
 def student_dashboard(request):
+    student = request.user.student_profile
+    student_class = student.student_class
+    student_teachers = Teacher.objects.filter(classes = student_class)
+    total_teachers = student_teachers.count
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
     user = request.user
-    return render(request, 'dashboards/all_student_pages/students.html', {'user': user})
+    context={
+        'total_teachers':total_teachers,
+        'user': user
+    }
+    return render(request, 'dashboards/all_student_pages/students.html', context)
 
 
 # All admin pages

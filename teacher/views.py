@@ -37,7 +37,12 @@ def teacher_class_list(request):
         return HttpResponseForbidden('You do not have permission to access this page.')
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
-    return render(request, 'dashboards/all_teacher_pages/teacher_classes.html', {'classes':classes})
+    classes_count = teacher.classes.count()
+    context={
+        'classes':classes,
+        'classes_count':classes_count
+    }
+    return render(request, 'dashboards/all_teacher_pages/teacher_classes.html', context)
 
 
 @login_required

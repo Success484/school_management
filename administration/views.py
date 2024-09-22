@@ -9,6 +9,9 @@ from teacher.models import TeacherClass, StudentPosition, StudentGradeModel
 from datetime import datetime
 from teacher.forms import TeacherClassForm
 from django.urls import reverse
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 # Create your views here.
 
 
@@ -16,8 +19,18 @@ from django.urls import reverse
 def admin_dashboard(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("You do not have permission to access this page.")
+    all_students = Student.objects.count()
+    all_teachers = Teacher.objects.count()
+    all_users = User.objects.count()
+    print(all_users)
     pending_users = CustomUser.objects.filter(is_approved=False)
-    return render(request, 'administration/dashboard.html', {'pending_users': pending_users})
+    context={
+        'pending_users': pending_users,
+        'all_users': all_users,
+        'all_teachers': all_teachers,
+        'all_students':all_students
+    }
+    return render(request, 'administration/dashboard.html', context)
 
 
 @login_required
