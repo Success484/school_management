@@ -23,7 +23,7 @@ def teacher_details_page(request):
     teacher = request.user.teacher_profile
     return render(request, 'dashboards/all_teacher_pages/teacher_details.html', {'teacher': teacher})
 
-
+@login_required
 def teacher_detail(request, teacher_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')

@@ -9,11 +9,11 @@
     <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
     {% endfor %}
     {% endif %}
-    <ul class="grid grid-cols sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-6 gap-3 text-center" >        
+    <ul class="flex flex-wrap gap-3 text-center">
         {% if classes %}
         {% for class in classes %}
         <a href="{%url 'create_class_timetable' class_id=class.id%}">
-            <li class="p-5 rounded-lg font-medium text-gray-700" style="background-color: #F9F9F9;">{{ class.name }}</li>
+            <li class="p-5 rounded-lg font-medium text-gray-700 w-32" style="background-color: #F9F9F9;">{{ class.name }}</li>
         </a>
         {% endfor %}
         {% else %}

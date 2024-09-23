@@ -12,18 +12,26 @@ import calendar
 from datetime import datetime
 
 
-
+@login_required
 def student_details_page(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = request.user.student_profile
     return render(request, 'dashboards/all_student_pages/student_details.html', {'student': student})
 
 
+@login_required
 def create_timetable(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     classes = Class.objects.all()
     return render(request, 'dashboards/all_admin_pages/timetable.html', {'classes': classes})
 
 
+@login_required
 def create_class_timetable(request, class_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     selected_class = get_object_or_404(Class, id=class_id)
     if request.method == 'POST':
         form = TimetableForm(request.POST)
@@ -53,7 +61,10 @@ def create_class_timetable(request, class_id):
     return render(request, 'dashboards/all_admin_pages/create_class_timetable.html', context)
 
 
+@login_required
 def edit_timetable(request, table_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     table = get_object_or_404(Timetable, id=table_id)
     selected_class = table.class_info
     if request.method == 'POST':
@@ -82,7 +93,10 @@ def edit_timetable(request, table_id):
     return render(request, 'dashboards/all_admin_pages/edit_timetable.html', context)
 
 
+@login_required
 def view_class_timetable(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = request.user.student_profile
     student_class = student.student_class
     timetable = Timetable.objects.filter(class_info=student_class)
@@ -93,7 +107,10 @@ def view_class_timetable(request):
     return render(request, 'dashboards/all_student_pages/timetable.html', context)
 
 
+@login_required
 def student_teacher(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = request.user.student_profile
     student_class = student.student_class
     teachers = Teacher.objects.filter(classes = student_class)
@@ -110,13 +127,18 @@ def student_teacher(request):
     return render(request, 'dashboards/all_student_pages/student_teachers.html', context)
 
 
-
+@login_required
 def student_teacher_details(request, teacher_id):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     teachers = get_object_or_404(Teacher, user__id=teacher_id)
     return render(request, 'dashboards/all_student_pages/student_teachers_details.html', {'teacher':teachers})
 
 
+@login_required
 def view_class_attendance(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = request.user.student_profile
     student_class = student.student_class
     attendance_by_month = (
@@ -131,7 +153,10 @@ def view_class_attendance(request):
     return render(request, 'dashboards/all_student_pages/attendance_list.html', context)
 
 
+@login_required
 def attendance_detail_record(request, year, month):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     # Fetch the class
     student = request.user.student_profile
     student_class = student.student_class
@@ -167,7 +192,10 @@ def attendance_detail_record(request, year, month):
     return render(request, 'dashboards/all_student_pages/view_attendance.html', context)
 
 
+@login_required
 def view_student_grades(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = request.user.student_profile
     student_grade = StudentGradeModel.objects.filter(student=student).order_by('-year')
     context = {
@@ -177,12 +205,18 @@ def view_student_grades(request):
     return render(request, 'dashboards/all_student_pages/view_student_grade.html', context)
 
 
+@login_required
 def annoucement(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     post = Annoucement.objects.all().order_by('-date_posted')
     return render(request, 'dashboards/all_student_pages/annoucement.html', {'posts':post})
 
 
+@login_required
 def my_report_card(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = request.user.student_profile
     student_position_and_comment_view = StudentPosition.objects.filter(student=student)
     student_grade = StudentGradeModel.objects.filter(student=student)

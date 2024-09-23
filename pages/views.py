@@ -2,10 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from administration.models import Teacher, Student
-
-
-
 # Create your views here.
+
+
 
 def homePage(request):
     return render(request, 'main/index.html')
@@ -55,14 +54,17 @@ def teacher_dashboard(request):
 
 @login_required
 def student_dashboard(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = request.user.student_profile
     student_class = student.student_class
     student_teachers = Teacher.objects.filter(classes = student_class)
-    total_teachers = student_teachers.count
-    if not request.user.is_student:
-        return HttpResponseForbidden("You do not have permission to access this page.")
+    total_teachers = student_teachers.count()
+    all_students = Student.objects.filter(student_class=student_class)
+    total_student = all_students.count()
     user = request.user
     context={
+        'total_student':total_student,
         'total_teachers':total_teachers,
         'user': user
     }
@@ -71,21 +73,33 @@ def student_dashboard(request):
 
 # All admin pages
 
+@login_required
 def myTeacher(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     teacher = Teacher.objects.all()
     return render(request, 'dashboards/all_admin_pages/myTeachers.html', {'teacher': teacher})
 
 
+@login_required
 def teacherDetails(request, user_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     teacher = get_object_or_404(Teacher, user__id=user_id)
     return render(request, 'dashboards/all_admin_pages/teacher_details.html', {'teacher': teacher})
 
 
+@login_required
 def myStudent(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = Student.objects.all()
     return render(request, 'dashboards/all_admin_pages/myStudents.html', {'student': student})
 
 
+@login_required
 def studentDetails(request, user_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     student = get_object_or_404(Student, user__id=user_id)
     return render(request, 'dashboards/all_admin_pages/student_details.html', {'student': student})
