@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin_dashboard/mystudents/grade-student-position/<int:student_id>/clear/student_position_and_comment/', views.clear_student_position_and_comment_form, name='clear_student_position'),
     path('admin_dashboard/all-annoucement/',views. annoucement, name='annoucements'),
     path('admin_dashboard/teacher/details/<int:teacher_id>/clear/student_position_and_comment/', views.teacher_detail, name='teacher_detail'),
+    path('attendance/delete/<int:class_id>/<int:year>/<int:month>/', views.delete_attendance_record, name='delete_attendance_record'),    
 ]

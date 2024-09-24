@@ -21,7 +21,6 @@ def get_month_name(month_number):
 
 
 
-
 @register.filter
 def first_paragraph(text):
     if not text:

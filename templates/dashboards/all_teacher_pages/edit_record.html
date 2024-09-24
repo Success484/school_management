@@ -15,7 +15,7 @@
             <tr>
                 <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME</th>
                 {% for day, weekday_name in weekdays %}
-                <th class="border border-zinc-400 bg-blue-200 p-1">{{ day }}</th>
+                <th class="border border-zinc-400 bg-blue-200 p-1">{{ day }} </th>
                 {% endfor %}
             </tr>
         </thead>
@@ -24,161 +24,161 @@
             <tr>
                 <td class="border border-gray-300 p-1">{{ record.student }}</td>
                 <td class="border border-gray-300">
-                    <select name="status1_{{ record.student.id }}" class="custom-select">
+                    <select name="status1_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status1 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status1 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status1 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status2_{{ record.student.id }}" class="custom-select">
+                    <select name="status2_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status2 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status2 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status2 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status3_{{ record.student.id }}" class="custom-select">
+                    <select name="status3_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status3 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status3 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status3 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status4_{{ record.student.id }}" class="custom-select">
+                    <select name="status4_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status4 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status4 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status4 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status5_{{ record.student.id }}" class="custom-select">
+                    <select name="status5_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status5 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status5 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status5 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status6_{{ record.student.id }}" class="custom-select">
+                    <select name="status6_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status6 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status6 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status6 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status7_{{ record.student.id }}" class="custom-select">
+                    <select name="status7_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status7 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status7 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status7 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status8_{{ record.student.id }}" class="custom-select">
+                    <select name="status8_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status8 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status8 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status8 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status9_{{ record.student.id }}" class="custom-select">
+                    <select name="status9_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status9 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status9 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status9 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status10_{{ record.student.id }}" class="custom-select">
+                    <select name="status10_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status10 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status10 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status10 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status11_{{ record.student.id }}" class="custom-select">
+                    <select name="status11_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status11 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status11 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status11 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status12_{{ record.student.id }}" class="custom-select">
+                    <select name="status12_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status12 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status12 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status12 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status13_{{ record.student.id }}" class="custom-select">
+                    <select name="status13_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status13 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status13 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status13 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status14_{{ record.student.id }}" class="custom-select">
+                    <select name="status14_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status14 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status14 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status14 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status15_{{ record.student.id }}" class="custom-select">
+                    <select name="status15_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status15 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status15 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status15 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status16_{{ record.student.id }}" class="custom-select">
+                    <select name="status16_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status16 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status16 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status16 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status17_{{ record.student.id }}" class="custom-select">
+                    <select name="status17_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status17 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status17 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status17 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status18_{{ record.student.id }}" class="custom-select">
+                    <select name="status18_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status18 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status18 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status18 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status19_{{ record.student.id }}" class="custom-select">
+                    <select name="status19_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status19 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status19 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status19 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status20_{{ record.student.id }}" class="custom-select">
+                    <select name="status20_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status20 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status20 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status20 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status21_{{ record.student.id }}" class="custom-select">
+                    <select name="status21_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status21 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status21 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status21 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status22_{{ record.student.id }}" class="custom-select">
+                    <select name="status22_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status22 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status22 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status22 == "D" %}selected{% endif %}>--</option>
                     </select>
                 </td>
                 <td class="border border-gray-300">
-                    <select name="status23_{{ record.student.id }}" class="custom-select">
+                    <select name="status23_{{ record.student.id }}" class="px-3 md:px-1">
                         <option value="P" {% if record.status23 == "P" %}selected{% endif %}>&#10003;</option>
                         <option value="A" {% if record.status23 == "A" %}selected{% endif %}>X</option>
                         <option value="D" {% if record.status23 == "D" %}selected{% endif %}>--</option>

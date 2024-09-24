@@ -181,13 +181,13 @@ def create_attendance(request, class_id):
     
     weekdays_in_month = []
     weekday_labels = ['M', 'T', 'W', 'T', 'F']
-    weekday_count = 0  
+    
+    # No need to track weekday_count unless you need it elsewhere
     for day in range(1, days_in_month + 1):
         day_date = date(current_year, current_month, day)
-        if day_date.weekday() < 5:  
-            weekday_count += 1
-            weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
-
+        if day_date.weekday() < 5:  # Monday to Friday
+            weekday_label = weekday_labels[day_date.weekday()]
+            weekdays_in_month.append((day, weekday_label))  # day and weekday label
 
     if request.method == "POST":
         for student in students:
@@ -213,6 +213,7 @@ def create_attendance(request, class_id):
             status20 = request.POST.get(f'status20_{student.id}')
             status21 = request.POST.get(f'status21_{student.id}')
             status22 = request.POST.get(f'status22_{student.id}')
+            status23 = request.POST.get(f'status23_{student.id}')
             Attendance.objects.update_or_create(
                 student=student,
                 class_info=classes,
@@ -238,6 +239,7 @@ def create_attendance(request, class_id):
                 status20=status20,
                 status21=status21,
                 status22=status22,
+                status23=status23,
             )
         messages.success(request, 'Attendance record successfully created')
         return redirect('teacher_class_details',class_id=class_id)
@@ -259,89 +261,136 @@ def create_attendance(request, class_id):
 def update_attendance(request, class_id, year, month):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
-    classes = get_object_or_404(Class, id=class_id)
-    student = Student.objects.filter(student_class=classes)
     
-    # Filter attendance record by class, student, year, and month
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+    
+    # Correct the filter to use student__in=students
     attendance_records = Attendance.objects.filter(
         class_info=classes,
+        student__in=students,
         date__year=year,
         date__month=month
     )
-
+    
+    # Create a dictionary for easy lookup
+    existing_records = {record.student.id: record for record in attendance_records}
+    
     cal = calendar.Calendar()
     days_in_month = cal.itermonthdays2(year, month)
     weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
 
-
     if request.method == "POST":
-        for record in attendance_records:
-            # Retrieve values from the POST request
-            status1 = request.POST.get(f'status1_{record.student.id}', record.status1)
-            status2 = request.POST.get(f'status2_{record.student.id}', record.status2)
-            status3 = request.POST.get(f'status3_{record.student.id}', record.status3)
-            status4 = request.POST.get(f'status4_{record.student.id}', record.status4)
-            status5 = request.POST.get(f'status5_{record.student.id}', record.status5)
-            status6 = request.POST.get(f'status6_{record.student.id}', record.status6)
-            status7 = request.POST.get(f'status7_{record.student.id}', record.status7)
-            status8 = request.POST.get(f'status8_{record.student.id}', record.status8)
-            status9 = request.POST.get(f'status9_{record.student.id}', record.status9)
-            status10 = request.POST.get(f'status10_{record.student.id}', record.status10)
-            status11 = request.POST.get(f'status11_{record.student.id}', record.status11)
-            status12 = request.POST.get(f'status12_{record.student.id}', record.status12)
-            status13 = request.POST.get(f'status13_{record.student.id}', record.status13)
-            status14 = request.POST.get(f'status14_{record.student.id}', record.status14)
-            status15 = request.POST.get(f'status15_{record.student.id}', record.status15)
-            status16 = request.POST.get(f'status16_{record.student.id}', record.status16)
-            status17 = request.POST.get(f'status17_{record.student.id}', record.status17)
-            status18 = request.POST.get(f'status18_{record.student.id}', record.status18)
-            status19 = request.POST.get(f'status19_{record.student.id}', record.status19)
-            status20 = request.POST.get(f'status20_{record.student.id}', record.status20)
-            status21 = request.POST.get(f'status21_{record.student.id}', record.status21)
-            status22 = request.POST.get(f'status22_{record.student.id}', record.status22)
-            status23 = request.POST.get(f'status22_{record.student.id}', record.status23)
-            # Assign the values to the record fields
-            record.status1 = status1
-            record.status2 = status2
-            record.status3 = status3
-            record.status4 = status4
-            record.status5 = status5
-            record.status6 = status6
-            record.status7 = status7
-            record.status8 = status8
-            record.status9 = status9
-            record.status10 = status10
-            record.status11 = status11
-            record.status12 = status12
-            record.status13 = status13
-            record.status14 = status14
-            record.status15 = status15
-            record.status16 = status16
-            record.status17 = status17
-            record.status18 = status18
-            record.status19 = status19
-            record.status20 = status20
-            record.status21 = status21
-            record.status22 = status22
-            record.status23 = status23
-            record.save()
+        for student in students:
+            # Get or create the Attendance record for the student
+            attendance = existing_records.get(student.id)
+            if not attendance:
+                # Assuming the date represents the first day of the month
+                attendance = Attendance.objects.create(
+                    student=student,
+                    class_info=classes,
+                    date=date(year, month, 1)
+                )
+            
+            # Update all status fields
+            attendance.status1 = request.POST.get(f'status1_{student.id}', attendance.status1)
+            attendance.status2 = request.POST.get(f'status2_{student.id}', attendance.status2)
+            attendance.status3 = request.POST.get(f'status3_{student.id}', attendance.status3)
+            attendance.status4 = request.POST.get(f'status4_{student.id}', attendance.status4)
+            attendance.status5 = request.POST.get(f'status5_{student.id}', attendance.status5)
+            attendance.status6 = request.POST.get(f'status6_{student.id}', attendance.status6)
+            attendance.status7 = request.POST.get(f'status7_{student.id}', attendance.status7)
+            attendance.status8 = request.POST.get(f'status8_{student.id}', attendance.status8)
+            attendance.status9 = request.POST.get(f'status9_{student.id}', attendance.status9)
+            attendance.status10 = request.POST.get(f'status10_{student.id}', attendance.status10)
+            attendance.status11 = request.POST.get(f'status11_{student.id}', attendance.status11)
+            attendance.status12 = request.POST.get(f'status12_{student.id}', attendance.status12)
+            attendance.status13 = request.POST.get(f'status13_{student.id}', attendance.status13)
+            attendance.status14 = request.POST.get(f'status14_{student.id}', attendance.status14)
+            attendance.status15 = request.POST.get(f'status15_{student.id}', attendance.status15)
+            attendance.status16 = request.POST.get(f'status16_{student.id}', attendance.status16)
+            attendance.status17 = request.POST.get(f'status17_{student.id}', attendance.status17)
+            attendance.status18 = request.POST.get(f'status18_{student.id}', attendance.status18)
+            attendance.status19 = request.POST.get(f'status19_{student.id}', attendance.status19)
+            attendance.status20 = request.POST.get(f'status20_{student.id}', attendance.status20)
+            attendance.status21 = request.POST.get(f'status21_{student.id}', attendance.status21)
+            attendance.status22 = request.POST.get(f'status22_{student.id}', attendance.status22)
+            attendance.status23 = request.POST.get(f'status23_{student.id}', attendance.status23)
+            
+            attendance.save()
+        
         messages.success(request, 'Student Attendance Record Successfully Updated')
         return redirect(reverse('attendance_detail', kwargs={'class_id': class_id, 'year': year, 'month': month}))
 
-    forms = {}
-    for record in attendance_records:
-        forms[record.student.id] = AttendanceForm(instance=record)
-
+    else:
+        # Ensure all students have attendance records for the specified month
+        for student in students:
+            if student.id not in existing_records:
+                Attendance.objects.create(
+                    student=student,
+                    class_info=classes,
+                    date=date(year, month, 1),
+                    status1='D',
+                    status2='D',
+                    status3='D',
+                    status4='D',
+                    status5='D',
+                    status6='D',
+                    status7='D',
+                    status8='D',
+                    status9='D',
+                    status10='D',
+                    status11='D',
+                    status12='D',
+                    status13='D',
+                    status14='D',
+                    status15='D',
+                    status16='D',
+                    status17='D',
+                    status18='D',
+                    status19='D',
+                    status20='D',
+                    status21='D',
+                    status22='D',
+                    status23='D',
+                )
+        
+        # Re-fetch attendance records after ensuring all exist
+        attendance_records = Attendance.objects.filter(
+            class_info=classes,
+            student__in=students,
+            date__year=year,
+            date__month=month
+        )
+        
     context = {
-        'student': student,
+        'student': students,  # Changed to 'students' to reflect multiple students
         'class': classes,
         'attendance_records': attendance_records,
         'year': year,
         'month': month,
-        'weekdays':weekdays
+        'weekdays': weekdays
     }
     
     return render(request, 'dashboards/all_teacher_pages/edit_record.html', context)
+
+
+@login_required
+def delete_attendance_record(request, class_id, year, month):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+    attendance_records = Attendance.objects.filter(
+        class_info=classes,
+        student__in=students,
+        date__year=year,
+        date__month=month
+    )
+
+    attendance_records.delete()
+    messages.success(request, 'Successfull deleted attendance record')
+    return redirect('teacher_class_details',class_id=class_id)
 
 
 @login_required
