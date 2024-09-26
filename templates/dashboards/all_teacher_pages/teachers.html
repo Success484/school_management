@@ -7,9 +7,7 @@
 {% url 'annoucements' as annoucements%}
 {% url 'grade_student_nav' as grade_student_nav %}
 {% url 'teacher_details_page' as teacher_details_page%}
-
-
-
+{% url 'Choose_class_to_mark' as Choose_class_to_mark %}
 
     <!-- SIDEBAR -->
     <section id="sidebar">
@@ -46,6 +44,12 @@
                 <a href="{{annoucements}}">
                     <i class='bx bxs-volume-full' ></i>
                     <span class="text">Announcements</span>
+                </a>
+            </li>
+            <li class="{%if request.path == Choose_class_to_mark%}active{%else%}{%endif%}">
+                <a href="{% url 'Choose_class_to_mark'%}">
+                    <i class='bx bx-table' ></i>
+                    <span class="text">Mark Attendance</span>
                 </a>
             </li>
         </ul>

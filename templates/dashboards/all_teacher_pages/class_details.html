@@ -90,21 +90,6 @@
     <p class="text-right p-3 mt-3  font-normal text-white"><a href="{%url 'edit_class' class_id=class.id%}" class="bg-blue-500 p-3 rounded-lg">Edit Class</a></p>
     <p class="text-right p-3 mt-3  font-normal text-white"><a href="{%url 'delete_class' class_id=class.id%}" class="bg-red-500 p-3 rounded-lg">Delete Class</a></p>
     {%else%}
-    {%endif%}
-    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 mt-3" style="background-color: #F9F9F9;">{{class.name}} Attendance Record</p>
-    <div class="p-3 rounded-lg" style="background-color: #F9F9F9;">
-        <h1 class="text-2xl font-bold mb-4">MONTHLY ATTENDANCE RECORD LISTS</h1>
-        <div>
-            {% for record in attendance_by_month %}
-                <li class="my-3">
-                    <a class="text-2xl border-b-2 border-gray-400" href="{% url 'attendance_detail' class_id=class.id year=record.date__year month=record.date__month %}">
-                        {{ record.date__month|get_month_name }} {{ record.date__year }} Attendance Records {{record.term}}
-                    </a>
-                </li>
-            {% empty %}
-                <li>No attendance records found.</li>
-            {% endfor %}
-        </div>         
-    </div>            
+    {%endif%}            
 </div>
 {%endblock section%}

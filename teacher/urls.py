@@ -2,11 +2,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # path('attendance/<int:class_id>/<int:month>/', views.attendance_summary_view, name='attendance_detail'),
-    path('attendance/<int:class_id>/<int:year>/<int:month>/', views.attendance_detail, name='attendance_detail'),
+    path('attendance/sudents/<int:class_id>/<int:year>/<int:month>/', views.attendance_detail, name='attendance_detail'),
     path('teacher-class-list/', views.teacher_class_list, name='teacher_class_list'),
     path('create-attendance/<int:class_id>/', views.create_attendance, name='create_attendance'),
-    path('attendance/update/<int:class_id>/<int:year>/<int:month>/', views.update_attendance, name='update_attendance'),    
+    path('mark-attendance/<int:class_id>/', views.Class_record_list, name='Class_record_list'),
+    path('attendance/update/<int:class_id>/<int:year>/<int:month>/', views.update_attendance, name='update_attendance'),
+    path('teacher-class-list/mark/class/', views.Choose_class_to_mark, name='Choose_class_to_mark'),
     path('teacher-class-list/details/<int:class_id>/', views.teacher_class_details, name='teacher_class_details'),
     path('teacher/details/', views.teacher_details_page, name='teacher_details_page'),
     path('attendance/record/classes/', views.select_class_attendance, name='select_class_attendance'),

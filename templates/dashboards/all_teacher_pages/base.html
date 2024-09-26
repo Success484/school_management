@@ -8,6 +8,8 @@
 {% url 'grade_student_nav' as grade_student_nav %}
 {% url 'annoucements' as annoucements%}
 {% url 'teacher_details_page' as teacher_details_page %}
+{% url 'Choose_class_to_mark' as Choose_class_to_mark %}
+
 
 
 
@@ -49,7 +51,14 @@
                     <span class="text">Announcements</span>
                 </a>
             </li>
+            <li class="{%if request.path == Choose_class_to_mark%}active{%else%}{%endif%}">
+                <a href="{% url 'Choose_class_to_mark'%}">
+                    <i class='bx bx-table' ></i>
+                    <span class="text">Mark Attendance</span>
+                </a>
+            </li>
         </ul>
+        
         <!--  -->
 
     <ul class="side-menu">

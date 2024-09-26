@@ -23,6 +23,7 @@ def teacher_details_page(request):
     teacher = request.user.teacher_profile
     return render(request, 'dashboards/all_teacher_pages/teacher_details.html', {'teacher': teacher})
 
+
 @login_required
 def teacher_detail(request, teacher_id):
     if not request.user.is_teacher:
@@ -46,32 +47,31 @@ def teacher_class_list(request):
 
 
 @login_required
-def teacher_class_details(request, class_id):
+def Choose_class_to_mark(request):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    teacher = get_object_or_404(Teacher, user=request.user)
+    classes = teacher.classes.all()
+    classes_count = teacher.classes.count()
+    context={
+        'classes':classes,
+        'classes_count':classes_count
+    }
+    return render(request, 'dashboards/all_teacher_pages/mark_class.html', context)
+
+
+@login_required
+def Class_record_list(request, class_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
-    teachers = Teacher.objects.filter(classes=classes)
-    timetables = Timetable.objects.filter(class_info=classes)
 
     attendance_records = {}
     for student in students:
         records = Attendance.objects.filter(student=student, class_info=student.student_class)
         attendance_records[student.id] = records
 
-    current_year = date.today().year
-    current_month = date.today().month
-    days_in_month = monthrange(current_year, current_month)[1]
-    
-    weekdays_in_month = []
-    weekday_labels = ['M', 'T', 'W', 'T', 'F']
-    weekday_count = 0  
-    for day in range(1, days_in_month + 1):
-        day_date = date(current_year, current_month, day)
-        if day_date.weekday() < 5:  
-            weekday_count += 1
-            weekdays_in_month.append((day, weekday_labels[day_date.weekday()], weekday_count))
-    
     attendance_by_month = (
     Attendance.objects.filter(student__student_class_id=class_id)
     .values('date__year', 'date__month')
@@ -82,14 +82,27 @@ def teacher_class_details(request, class_id):
     
     context = {
         'class': classes,
+        'attendance_by_month': attendance_by_month,
+    }
+    return render(request, 'dashboards/all_teacher_pages/class_record_list.html', context)
+
+
+@login_required
+def teacher_class_details(request, class_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+    teachers = Teacher.objects.filter(classes=classes)
+    timetables = Timetable.objects.filter(class_info=classes)
+    
+    context = {
+        'class': classes,
         'students': students,
         'teachers': teachers,
         'timetables': timetables,
-        'weekdays_in_month': weekdays_in_month,
-        'attendance_records': attendance_records,
-        'attendance_by_month': attendance_by_month,
-
     }
+
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
 
 
@@ -108,7 +121,6 @@ def select_class_attendance(request):
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     return render(request, 'dashboards/all_teacher_pages/class_attendance.html', {'classes': classes})
-
 
 
 def generate_weekdays(year, month):
@@ -242,7 +254,7 @@ def create_attendance(request, class_id):
                 status23=status23,
             )
         messages.success(request, 'Attendance record successfully created')
-        return redirect('teacher_class_details',class_id=class_id)
+        return redirect('Class_record_list',class_id=class_id)
     else:
         form = AttendanceForm()
     context = {
@@ -390,7 +402,7 @@ def delete_attendance_record(request, class_id, year, month):
 
     attendance_records.delete()
     messages.success(request, 'Successfull deleted attendance record')
-    return redirect('teacher_class_details',class_id=class_id)
+    return redirect('Class_record_list',class_id=class_id)
 
 
 @login_required
