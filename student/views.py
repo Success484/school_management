@@ -250,13 +250,11 @@ def pdf_report_card(request):
     return render(request, 'dashboards/all_student_pages/pdf_report_card.html', context)
 
 
-
 # Django view to generate a PDF
 @login_required
 def generate_pdf(request):
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
-    
     student = request.user.student_profile
     student_position_and_comment_view = StudentPosition.objects.filter(student=student)
     student_grade = StudentGradeModel.objects.filter(student=student)
