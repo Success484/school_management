@@ -48,7 +48,7 @@
             </li>
             <li class="{%if request.path == Choose_class_to_mark%}active{%else%}{%endif%}">
                 <a href="{% url 'Choose_class_to_mark'%}">
-                    <i class='bx bx-table' ></i>
+                    <i class='bx bxs-calendar-check'></i>
                     <span class="text">Mark Attendance</span>
                 </a>
             </li>
@@ -108,21 +108,17 @@
                         </li>
                     </ul>
                 </div>
-                <a href="#" class="btn-download">
-                    <i class='bx bxs-cloud-download'></i>
-                    <span class="text">Download PDF</span>
-                </a>
             </div>
             <ul class="box-info">
                 <li>
-                    <i class='bx bxs-calendar-check'></i>
+                    <i class='bx bxs-building-house' ></i>
                     <span class="text">
                         <h3>{{classes_count}}</h3>
                         <p>Total Classes</p>
                     </span>
                 </li>
                 <li>
-                    <i class='bx bxs-group'></i>
+                    <i class='bx bxs-user-rectangle'></i>
                     <span class="text">
                         <h3>{{all_teachers}}</h3>
                         <p>Total Teachers</p>

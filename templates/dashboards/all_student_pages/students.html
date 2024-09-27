@@ -37,7 +37,7 @@
             </li>
             <li class="{%if request.path == view_class_attendance%} active {%else%}{%endif%}">
                 <a href="{%url 'view_class_attendance'%}">
-                    <i class='bx bxs-book-open' ></i>
+                    <i class='bx bxs-calendar-check'></i>
                     <span class="text">Attendance Record</span>
                 </a>
             </li>
@@ -66,7 +66,7 @@
         </li>
         <li class="{%if request.path == student_details_page%} active {%else%}{%endif%}">
             <a href="{{student_details_page}}">
-                <i class='bx bxs-book-reader' ></i>
+                <i class='bx bxs-user-circle' ></i>
                 <span class="text">My Profile</span>
             </a>
         </li>
@@ -117,21 +117,17 @@
                         </li>
                     </ul>
                 </div>
-                <a href="#" class="btn-download">
-                    <i class='bx bxs-cloud-download'></i>
-                    <span class="text">Download PDF</span>
-                </a>
             </div>
             <ul class="box-info">
                 <li>
-                    <i class='bx bxs-calendar-check'></i>
+                    <i class='bx bxs-user-rectangle'></i>
                     <span class="text">
                         <h3>{{total_teachers}}</h3>
                         <p>Total Class Teachers</p>
                     </span>
                 </li>
                 <li>
-                    <i class='bx bxs-group'></i>
+                    <i class='bx bxs-group' ></i>
                     <span class="text">
                         <h3>{{total_student}}</h3>
                         <p>Total Students In Your Class</p>
@@ -147,39 +143,10 @@
                 <div class="order">
                     <h2 id="welcome">WELCOME {{ user.first_name|upper }}</h2>
                     <div id="welcome">
-                        <div>
+                        <div class="mb-10">
                             <h1>HELLO {{ user.first_name|upper }} WELCOME TO YOUR SCHOOL DASHBOARD</h1>
                         </div>
                     </div>
-            </div>
-                <div class="todo">
-                    <div class="head">
-                        <h3>Todos</h3>
-                        <i class='bx bx-plus'></i>
-                        <i class='bx bx-filter'></i>
-                    </div>
-                    <ul class="todo-list">
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </main>

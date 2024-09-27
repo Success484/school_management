@@ -16,4 +16,5 @@ urlpatterns = [
     path('dashboard/student/grades', views.view_student_grades, name='view_student_grades'),
     path('dashboard/annoucement/', views.annoucement, name='annoucement'),
     path('dashboard/student/report/card/', views.my_report_card, name='my_report_card'),
+    path('generate-pdf/', views.generate_pdf, name='generate_pdf'),
 ]

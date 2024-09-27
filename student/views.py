@@ -10,6 +10,9 @@ from django.db.models import Count
 from administration.models import Teacher,Student, Annoucement
 import calendar
 from datetime import datetime
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 
 @login_required
@@ -228,3 +231,45 @@ def my_report_card(request):
         'student_position_and_comment_view':student_position_and_comment_view
     }
     return render(request, 'dashboards/all_student_pages/my_report_card.html', context)
+
+
+
+# Django view to generate a PDF
+@login_required
+def generate_pdf(request):
+    # Ensure only students can access the report card
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    
+    # Get the student's data
+    student = request.user.student_profile
+    student_position_and_comment_view = StudentPosition.objects.filter(student=student)
+    student_grade = StudentGradeModel.objects.filter(student=student)
+    current_year = datetime.now().year
+    
+    # Pass the same context as in 'my_report_card' view
+    context = {
+        'current_year': current_year,
+        'student': student,
+        'grades': student_grade,
+        'student_position_and_comment_view': student_position_and_comment_view
+    }
+
+    # Render the HTML template with the context data
+    template_path = 'dashboards/all_student_pages/my_report_card.html'
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # Create a Django HttpResponse object with PDF content type
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report_card.pdf"'
+
+    # Convert the HTML to PDF and write it to the response
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    # If there is an error, show an error message
+    if pisa_status.err:
+        return HttpResponse('An error occurred while generating the PDF', status=500)
+
+    # Return the generated PDF
+    return response
