@@ -233,21 +233,35 @@ def my_report_card(request):
     return render(request, 'dashboards/all_student_pages/my_report_card.html', context)
 
 
+@login_required
+def pdf_report_card(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    student = request.user.student_profile
+    student_position_and_comment_view = StudentPosition.objects.filter(student=student)
+    student_grade = StudentGradeModel.objects.filter(student=student)
+    current_year = datetime.now().year
+    context = {
+        'current_year':current_year,
+        'student':student,
+        'grades':student_grade,
+        'student_position_and_comment_view':student_position_and_comment_view
+    }
+    return render(request, 'dashboards/all_student_pages/pdf_report_card.html', context)
+
+
 
 # Django view to generate a PDF
 @login_required
 def generate_pdf(request):
-    # Ensure only students can access the report card
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
     
-    # Get the student's data
     student = request.user.student_profile
     student_position_and_comment_view = StudentPosition.objects.filter(student=student)
     student_grade = StudentGradeModel.objects.filter(student=student)
     current_year = datetime.now().year
     
-    # Pass the same context as in 'my_report_card' view
     context = {
         'current_year': current_year,
         'student': student,
@@ -256,7 +270,7 @@ def generate_pdf(request):
     }
 
     # Render the HTML template with the context data
-    template_path = 'dashboards/all_student_pages/my_report_card.html'
+    template_path = 'dashboards/all_student_pages/pdf_report_card.html'
     template = get_template(template_path)
     html = template.render(context)
 

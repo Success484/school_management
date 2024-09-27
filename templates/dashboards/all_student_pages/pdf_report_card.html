@@ -1,0 +1,103 @@
+{% load static %}
+{% load custom_filters %}
+{% block section %}
+
+{% if student and grades and student_position_and_comment_view %}
+<div style="background-color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin: 1rem; padding: 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+    <div style="text-align: right; margin-right: 1rem;">
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center; width: 100%; background-color: #EBF8FF; padding: 1rem;">
+        <div style="padding: 1rem; display: flex; align-items: center;">
+            <div>
+                <img src="{% static 'img/school-logo.png' %}" alt="school-logo" loading="lazy" style="height: 130px; width: 130px;">
+            </div>
+            <div style="margin-left: 1rem; margin-top: 1rem;">
+                <h1 style="font-size: 2rem; font-weight: bold; color: #3B82F6;">REPORT CARD</h1>
+                <h2 style="font-size: 1.25rem; color: #3B82F6;">Salford High School</h2>
+            </div>
+        </div>
+    </div>
+    <div style="padding: 1.5rem;">
+        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;">
+
+            <div>
+                <label style="display: block; font-size: 1rem; font-weight: 500; color: #4A5568;">Student Name:</label>
+                <div style="border-bottom: 2px solid #E2E8F0; padding: 0.5rem; background-color: white;">
+                    {{ student.user.first_name|upper }} {{ student.user.last_name|upper }}
+                </div>
+            </div>
+            <div>
+                <label style="display: block; font-size: 1rem; font-weight: 500; color: #4A5568;">Class:</label>
+                <div style="border-bottom: 2px solid #E2E8F0; padding: 0.5rem; background-color: white;">
+                    {{ student.student_class|upper }}
+                </div>
+            </div>
+            <div>
+                <label style="display: block; font-size: 1rem; font-weight: 500; color: #4A5568;">Year:</label>
+                <div style="border-bottom: 2px solid #E2E8F0; padding: 0.5rem; background-color: white;">
+                    {{ current_year }}
+                </div>
+            </div>
+            <div>
+                <label style="display: block; font-size: 1rem; font-weight: 500; color: #4A5568;">Term:</label>
+                <div style="border-bottom: 2px solid #E2E8F0; padding: 0.5rem; background-color: white;">
+                    {{ grades.first.term }}
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 1.5rem;">
+            <table style="width: 100%; border-collapse: collapse; background-color: white;">
+                <thead>
+                    <tr style="background-color: #F1F5F9; color: #4A5568;">
+                        <th style="border: 2px solid #E2E8F0; padding: 0.5rem; font-weight: bold;">Subject</th>
+                        <th style="border: 2px solid #E2E8F0; padding: 0.5rem; font-weight: bold;">First Test</th>
+                        <th style="border: 2px solid #E2E8F0; padding: 0.5rem; font-weight: bold;">Second Test</th>
+                        <th style="border: 2px solid #E2E8F0; padding: 0.5rem; font-weight: bold;">Exam</th>
+                        <th style="border: 2px solid #E2E8F0; padding: 0.5rem; font-weight: bold;">Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for grade in grades %}
+                        <tr>
+                            <td style="border: 2px solid #E2E8F0; padding: 0.5rem; text-align: center;">{{ grade.subject }}</td>
+                            <td style="border: 2px solid #E2E8F0; padding: 0.5rem; text-align: center;">{{ grade.first_test_score }}</td>
+                            <td style="border: 2px solid #E2E8F0; padding: 0.5rem; text-align: center;">{{ grade.second_test_score }}</td>
+                            <td style="border: 2px solid #E2E8F0; padding: 0.5rem; text-align: center;">{{ grade.exam_score }}</td>
+                            <td style="border: 2px solid #E2E8F0; padding: 0.5rem; text-align: center;">{{ grade.final_grade }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% for position in student_position_and_comment_view %}
+    <div style="padding: 1.5rem;">
+        <div>
+            <label style="display: block; font-size: 1rem; font-weight: 500; color: #4A5568;">Position:</label>
+            <div style="border-bottom: 2px solid #E2E8F0; padding: 0.5rem; background-color: white;">
+                {% if position.position %}
+                    {{ position.position }}
+                {% endif %}
+            </div>
+        </div>
+        <div style="margin-top: 1.75rem;">
+            <h3 style="font-size: 1rem; font-weight: 500; color: #4A5568;">GRADING SCALE:</h3>
+            <p>A = 90% - 100% | B = 80% - 89% | C = 60% - 79% | D = 0% - 59%</p>
+        </div>
+        <label style="display: block; font-size: 1rem; font-weight: 500; color: #4A5568;">Comment:</label>
+        <div style="border-bottom: 2px solid #E2E8F0; padding: 0.5rem; background-color: white;">
+            {{ position.comment }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p style="background-color: white; color: #4A5568; padding: 1rem; margin: 1rem; text-align: center; font-size: 1.25rem; border-radius: 0.5rem;">
+        Sorry, No Student Report Card Yet. 
+        <br>
+        <span style="font-size: 1rem;">All Student Grades Must Be Filled To Reveal Full Student Report Card</span>
+    </p>
+{% endif %}
+
+{% endblock section %}
