@@ -141,35 +141,38 @@ def generate_weekdays(year, month):
 def attendance_detail(request, class_id, year, month):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
-    # Fetch the class
+
+    # Fetch the class and students
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes)
 
-    # Fetch the attendance records for the specified class, year, and month
+    # Fetch attendance records for the specified class, year, and month
     attendance_qs = Attendance.objects.filter(
         class_info=classes,
         date__year=year,
         date__month=month
     )
     
-    #dictionary where keys are student IDs and values are attendance records
+    # Prepare attendance records for each student
     attendance_records = {}
     for record in attendance_qs:
         attendance_records[record.student.id] = record
 
-    # Get the weekdays for the month
+    # Generate weekdays with abbreviations (Mon-Fri)
     cal = calendar.Calendar()
     days_in_month = cal.itermonthdays2(year, month)
-    weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
+    
+    weekday_abbr = ['M', 'T', 'W', 'T', 'F']
+    weekdays = [(day, weekday_abbr[weekday]) for day, weekday in days_in_month if day != 0 and weekday < 5]
 
-
+    # Pass all relevant data to the template
     context = {
         'students': students,
         'classes': classes,
         'year': year,
         'month': month,
         'attendance_records': attendance_records,
-        'weekdays':weekdays
+        'weekdays': weekdays,
     }
     return render(request, 'dashboards/all_teacher_pages/attendance_month_detail.html', context)
 
@@ -288,9 +291,12 @@ def update_attendance(request, class_id, year, month):
     # Create a dictionary for easy lookup
     existing_records = {record.student.id: record for record in attendance_records}
     
+     # Generate weekdays with abbreviations (Mon-Fri)
     cal = calendar.Calendar()
     days_in_month = cal.itermonthdays2(year, month)
-    weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
+    
+    weekday_abbr = ['M', 'T', 'W', 'T', 'F']
+    weekdays = [(day, weekday_abbr[weekday]) for day, weekday in days_in_month if day != 0 and weekday < 5]
 
     if request.method == "POST":
         for student in students:

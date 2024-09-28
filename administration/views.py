@@ -350,4 +350,3 @@ def view_attendance_detail(request, class_id, year, month):
         'weekdays':weekdays
     }
     return render(request, 'dashboards/all_admin_pages/view_attendance_record.html', context)
-
