@@ -1,0 +1,27 @@
+{% extends 'dashboards/all_admin_pages/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block section %}
+<div class="p-3 rounded-lg m-3" style="background-color: #F9F9F9;">
+    <h1 class="md:text-2xl text-1xl font-bold mb-4 text-center mt-2">MONTHLY ATTENDANCE RECORD LISTS</h1> 
+</div>
+{% if messages %}
+    {% for message in messages %}
+    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+    {% endfor %}
+    {% endif %}
+<div class="p-3 rounded-lg m-3" style="background-color: #F9F9F9;">
+    <ul class="md:text-2xl text-normal">
+        {% for record in attendance_by_month %}
+            <li class="my-3">
+                <a class="border-b-2 border-gray-400" href="{%url 'view_attendance_detail' class_id=class.id year=record.date__year month=record.date__month%}">
+                    {{ record.date__month|get_month_name }} {{ record.date__year }} Attendance Records
+                </a>
+            </li>
+        {% empty %}
+            <li>No attendance records found.</li>
+        {% endfor %}
+    </ul> 
+</div>
+{% endblock section %}

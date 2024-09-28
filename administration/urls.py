@@ -5,7 +5,8 @@ from .views import (add_teacher, add_student,
                     delete_teacher, edit_student, 
                     delete_student, create_all_annoucement, 
                     annoucement, edit_annoucement, delete_annoucement,
-                    assign_teacher, student_report_card)
+                    assign_teacher, student_report_card, view_attendance_class,
+                    view_record_list, view_attendance_detail)
 
 urlpatterns = [
     path('admin_dashboard/', admin_dashboard, name='admin_dashboard'),
@@ -23,4 +24,7 @@ urlpatterns = [
     path('admin_dashboard/annoucement/delete/<int:post_id>/', delete_annoucement, name='delete_annoucement'),
     path('admin_dashboard/teacher/assign/<int:teacher_id>/', assign_teacher, name='assign_teacher'),
     path('admin_dashboard/student/report/card/<int:student_id>/', student_report_card, name='student_report_card'),
+    path('admin_dashboard/view_attendance_class/', view_attendance_class, name='view_attendance_class'),
+    path('admin_dashboard/student/view_record_list/<int:class_id>/', view_record_list, name='view_record_list'),
+    path('admin_dashboard/student/view_attendance_detail/<int:class_id>/<int:year>/<int:month>/', view_attendance_detail, name='view_attendance_detail'),
 ]

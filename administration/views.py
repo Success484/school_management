@@ -10,7 +10,12 @@ from datetime import datetime
 from teacher.forms import TeacherClassForm
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from classes.models import Class
 User = get_user_model()
+from teacher.models import Attendance
+from django.db.models import Count
+import calendar
+
 
 # Create your views here.
 
@@ -274,3 +279,75 @@ def student_report_card(request, student_id):
         'student_position_and_comment_view':student_position_and_comment_view
     }
     return render(request, 'dashboards/all_admin_pages/report_card.html', context)
+
+
+@login_required
+def view_attendance_class(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    classes = Class.objects.all()
+    return render(request, 'dashboards/all_admin_pages/attendance_record_class.html', {'class': classes})
+
+
+@login_required
+def view_record_list(request, class_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+
+    attendance_records = {}
+    for student in students:
+        records = Attendance.objects.filter(student=student, class_info=student.student_class)
+        attendance_records[student.id] = records
+
+    attendance_by_month = (
+    Attendance.objects.filter(student__student_class_id=class_id)
+    .values('date__year', 'date__month')
+    .annotate(total=Count('id'))
+    .order_by('date__year', 'date__month')
+    )
+
+    
+    context = {
+        'class': classes,
+        'attendance_by_month': attendance_by_month,
+    }
+    return render(request, 'dashboards/all_admin_pages/view_class_record_list.html', context)
+
+
+@login_required
+def view_attendance_detail(request, class_id, year, month):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    # Fetch the class
+    classes = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(student_class=classes)
+
+    # Fetch the attendance records for the specified class, year, and month
+    attendance_qs = Attendance.objects.filter(
+        class_info=classes,
+        date__year=year,
+        date__month=month
+    )
+    
+    #dictionary where keys are student IDs and values are attendance records
+    attendance_records = {}
+    for record in attendance_qs:
+        attendance_records[record.student.id] = record
+
+    # Get the weekdays for the month
+    cal = calendar.Calendar()
+    days_in_month = cal.itermonthdays2(year, month)
+    weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
+
+    context = {
+        'students': students,
+        'classes': classes,
+        'year': year,
+        'month': month,
+        'attendance_records': attendance_records,
+        'weekdays':weekdays
+    }
+    return render(request, 'dashboards/all_admin_pages/view_attendance_record.html', context)
+
