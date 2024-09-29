@@ -3,8 +3,8 @@ from django.http import HttpResponseForbidden
 from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from administration.forms import TeacherForm, StudentForm, AnnoucementForm
-from administration.models import Student, Teacher, Annoucement
+from administration.forms import TeacherForm, StudentForm, AnnoucementForm, TodosListForm
+from administration.models import Student, Teacher, Annoucement, TodosList
 from teacher.models import TeacherClass, StudentPosition, StudentGradeModel
 from datetime import datetime
 from teacher.forms import TeacherClassForm
@@ -24,17 +24,39 @@ import calendar
 def admin_dashboard(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("You do not have permission to access this page.")
+    
+    # Count the number of students, teachers, and users
     all_students = Student.objects.count()
     all_teachers = Teacher.objects.count()
     all_users = User.objects.count()
-    print(all_users)
     pending_users = CustomUser.objects.filter(is_approved=False)
-    context={
+    current_user = request.user
+    if request.method == 'POST':
+        form = TodosListForm(request.POST)
+        if form.is_valid():
+            new_todo = form.save(commit=False)
+            new_todo.user = current_user
+            new_todo.save()
+            messages.success(request, 'Task Created Successfully')
+            return redirect('admin_dashboard')
+        else:
+            messages.error(request, 'There was an error with your submission')
+    
+    form = TodosListForm()
+
+    # display all task
+    current_user = request.user
+    tasks = TodosList.objects.filter(user=current_user)
+    context = {
+        'form': form,
+        'tasks': tasks,
         'pending_users': pending_users,
         'all_users': all_users,
         'all_teachers': all_teachers,
-        'all_students':all_students
+        'all_students': all_students,
     }
+    
+    # Render the admin dashboard with the context
     return render(request, 'administration/dashboard.html', context)
 
 
@@ -350,3 +372,13 @@ def view_attendance_detail(request, class_id, year, month):
         'weekdays':weekdays
     }
     return render(request, 'dashboards/all_admin_pages/view_attendance_record.html', context)
+
+
+@login_required
+def delete_todo(request, task_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    task = get_object_or_404(TodosList, id=task_id)
+    task.delete()
+    messages.success(request, 'Task deleted successfully')
+    return redirect('admin_dashboard')

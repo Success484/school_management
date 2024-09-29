@@ -6,7 +6,7 @@ from .views import (add_teacher, add_student,
                     delete_student, create_all_annoucement, 
                     annoucement, edit_annoucement, delete_annoucement,
                     assign_teacher, student_report_card, view_attendance_class,
-                    view_record_list, view_attendance_detail)
+                    view_record_list, view_attendance_detail, delete_todo, )
 
 urlpatterns = [
     path('admin_dashboard/', admin_dashboard, name='admin_dashboard'),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('admin_dashboard/view_attendance_class/', view_attendance_class, name='view_attendance_class'),
     path('admin_dashboard/student/view_record_list/<int:class_id>/', view_record_list, name='view_record_list'),
     path('admin_dashboard/student/view_attendance_detail/<int:class_id>/<int:year>/<int:month>/', view_attendance_detail, name='view_attendance_detail'),
+    path('admin_dashboard/todo/delete_todo/<int:task_id>/', delete_todo, name='delete_todo'),
 ]

@@ -1,7 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from administration.models import Teacher, Student
+from administration.models import TodosList
+from administration.forms import TodosListForm
+from django.contrib import messages
 # Create your views here.
 
 
@@ -43,7 +46,22 @@ def teacher_dashboard(request):
     classes_count = teacher.classes.count()
     all_teachers = Teacher.objects.count()
     user = request.user
+    current_user = request.user
+    if request.method == 'POST':
+        forms = TodosListForm(request.POST)
+        if forms.is_valid():
+            new_todo = forms.save(commit=False)
+            new_todo.user = current_user
+            new_todo.save()
+            messages.success(request, 'Task Created Successfully')
+            return redirect('teacher_dashboard')
+        else:
+            messages.error(request, 'There was an error with your submission')
+    forms = TodosListForm()
+    task = TodosList.objects.filter(user=user).order_by('-name')
     context={
+        'forms': forms,
+        'task': task,
         'classes':classes,
         'classes_count':classes_count,
         'all_teachers' :all_teachers,
@@ -51,6 +69,14 @@ def teacher_dashboard(request):
     }
     return render(request, 'dashboards/all_teacher_pages/teachers.html', context)
 
+
+def delete_teacher_todo(request, task_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    task = get_object_or_404(TodosList, id=task_id)
+    task.delete()
+    messages.success(request, 'Task deleted successfully')
+    return redirect('teacher_dashboard')
 
 @login_required
 def student_dashboard(request):

@@ -88,11 +88,38 @@
 
     $(function() {
     $("#accordion").accordion({
-        collapsible: true, // Allows all sections to be collapsible
-        active: false,     // Starts with all sections collapsed
-        heightStyle: "content" // Adjusts height based on content
+        collapsible: true,
+        active: false,   
+        heightStyle: "content" 
     });
-});
+
+    $(document).ready(function() {
+            $('#dialog').dialog({
+                autoOpen: false, 
+                modal: true  
+            });
+            
+            $('.bx-plus').click(function() {
+                $('#dialog').dialog('open'); 
+            });
+
+            $('#delete-dialog').dialog({
+                autoOpen: false, 
+                modal: true  
+            });
+
+            $('.bx-dots-vertical-rounded').click(function() {
+                $('#delete-dialog').dialog('open'); 
+            });
+        });
+    });
+
+ 
+// <div id="dialog" title="Basic dialog">
+//   <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+// </div>
+
+bx-plus
 </script>
 
 </body>

@@ -1,5 +1,5 @@
 from django import forms
-from administration.models import Teacher, Student, Annoucement
+from administration.models import Teacher, Student, Annoucement, TodosList
 
 class TeacherForm(forms.ModelForm):
     class Meta:
@@ -48,3 +48,13 @@ class AnnoucementForm(forms.ModelForm):
             'subject' : forms.TextInput(attrs={'class': 'final-grade'}),
             'description' : forms.Textarea(attrs={'class': 'final-grade'}),
         }
+
+
+
+class TodosListForm(forms.ModelForm):
+    class Meta:
+        model = TodosList
+        fields = ['name']
+        widgets = {
+            'name' : forms.TextInput(attrs={'class': 'final-grade'}),
+         }

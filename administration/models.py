@@ -27,7 +27,6 @@ class Student(models.Model):
     parent_or_guardian_phone_number = models.CharField(max_length=15)
     parent_email = models.EmailField(blank=True, null=True, default=None)
 
-
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
 
@@ -40,3 +39,11 @@ class Annoucement(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.date_posted}"
+    
+
+class TodosList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.name
