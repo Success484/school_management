@@ -5,6 +5,8 @@ from administration.models import Teacher, Student
 from administration.models import TodosList
 from administration.forms import TodosListForm
 from django.contrib import messages
+from .forms import SearchForm
+from django.db.models import Q
 # Create your views here.
 
 
@@ -129,3 +131,39 @@ def studentDetails(request, user_id):
         return HttpResponseForbidden("You do not have permission to access this page.")
     student = get_object_or_404(Student, user__id=user_id)
     return render(request, 'dashboards/all_admin_pages/student_details.html', {'student': student})
+
+
+@login_required
+def search_form_view(request):
+    form = SearchForm()
+    return render(request, 'dashboards/all_admin_pages/base.html', {'form': form})
+
+
+@login_required
+def search_results_view(request):
+    query = None
+    teacher_results = []
+    student_results = []
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            
+            teacher_results = Teacher.objects.filter(
+                Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query)
+            )
+            student_results = Student.objects.filter(
+                Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query)
+            )
+    else:
+        form = SearchForm()
+
+    context = {
+        'form': form,
+        'query': query,
+        'teacher_results': teacher_results,
+        'student_results': student_results
+    }
+
+    return render(request, 'dashboards/all_admin_pages/search_result.html', context)

@@ -1,6 +1,6 @@
 {% extends 'dashboards/all_admin_pages/base.html' %}
 {% load static %}
-{% load custom_filters %} <!-- Ensure you load any custom filters if needed -->
+{% load custom_filters %} 
 {% block section %}
 <div class="m-3 rounded-lg">
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">ALL STUDENTS</p>
@@ -24,7 +24,7 @@
                                     <img src="{% static 'path/to/default_photo.jpg' %}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="Default Photo">
                                 {% endif %}
                                 <p>{{ student_item.user.first_name }} {{ student_item.user.last_name }}</p>
-                                <p class="text-sm">{{ student_item.student_class.name }}</p> <!-- Assuming student_class is a ForeignKey to a Class model with a 'name' field -->
+                                <p class="text-sm">{{ student_item.student_class.name }}</p> 
                             </div>
                         </div>
                     </a>
