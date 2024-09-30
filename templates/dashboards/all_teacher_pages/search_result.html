@@ -2,44 +2,52 @@
 {% load static %}
 {% block section %}
 <div class="m-3 p-3 rounded-lg" style="background-color: #F9F9F9;">
-{% if query %}
-<h2 class="text-blue-600 pb-5">Search Results for "{{ query }}"</h2>
 
-{% if not teacher_results and not student_results %}
-<p class="text-center font-bold text-lg">Sorry, No Results Found</p>
-{% else %}
-    {% if teacher_results %}
-        <h3 class="text-lg font-medium text-gray-700">Teachers:</h3>
-        <ul>
-            {% for teacher in teacher_results %}
-            <a href="{% url 'teacher_detail' teacher_id=teacher.user.id %}">
-                <div class="p-2 rounded-lg font-medium" style="background-color: #F9F9F9;">
-                    <img src="{{ teacher.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ teacher.user.first_name }} {{ teacher.user.last_name }}">
-                    <p>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</p>
-                    <p class="text-sm">{{ teacher.classes.all|join:", " }}</p>
+    {% if query %}
+        <h2 class="text-blue-600 pb-5">Search Results for "{{ query }}"</h2>
+
+        {% if not teacher_results and not student_results %}
+            <p class="text-center font-bold text-lg bg-white p-3">Sorry, No Results Found</p>
+        {% else %}
+        
+            <!-- Teacher Search Results -->
+            {% if teacher_results %}
+                <h3 class="text-lg font-medium text-gray-700">Teachers:</h3>
+                <div class="flex flex-wrap gap-3">
+                    {% for teacher in teacher_results %}
+                    <a href="{% url 'teacher_detail' teacher_id=teacher.user.id %}">
+                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                            <div>
+                                <img src="{{ teacher.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ teacher.user.first_name }} {{ teacher.user.last_name }}">
+                                <p>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
                 </div>
-            </a>
-            {% endfor %}
-        </ul>
+            {% endif %}
+            
+            <!-- Student Search Results -->
+            {% if student_results %}
+                <h3 class="mt-2 text-lg font-medium text-gray-700">Students:</h3>
+                <div class="flex flex-wrap gap-3">
+                    {% for student in student_results %}
+                    <a href="{% url 'teacher_class_student_details' student_id=student.user.id %}">
+                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                            <div>
+                                <img src="{{ student.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ student.user.first_name }} {{ student.user.last_name }}">
+                                <p>{{ student.user.first_name }} {{ student.user.last_name }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        {% endif %}
+    {% else %}
+        <p>No search query entered.</p>
     {% endif %}
 
-    {% if student_results %}
-        <h3 class="mt-5 text-lg font-medium text-gray-700 pb-3">Students:</h3>
-        <ul>
-            {% for student in student_results %}
-            <a href="{% url 'teacher_class_student_details' student_id=student.user.id %}">
-                <div class="font-medium">
-                    <img src="{{ student.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ student.user.first_name }} {{ student.user.last_name }}">
-                    <p>{{ student.user.first_name }} {{ student.user.last_name }}</p>
-                    <p class="text-sm">{{ student.student_class.name }}</p>
-                </div>
-            </a>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endif %}
-{% else %}
-    <p>No search query entered.</p>
-{% endif %}
 </div>
 {% endblock %}
