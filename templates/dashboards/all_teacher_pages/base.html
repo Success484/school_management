@@ -85,10 +85,10 @@
          <nav>
             <i class='bx bx-menu'></i>
             <a href="#" class="nav-link">Categories</a>
-            <form action="#">
+            <form method="GET" action="{% url 'teacher_search_results_view' %}">
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+                    <input type="search" name="query" placeholder="Search students or teachers">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
                 </div>
             </form>
             <a href="#" class="notification">
@@ -99,11 +99,8 @@
                 <img src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
             </a>
          </nav>
-        <!-- END OF NAVBAR -->
-        <!-- MAIN -->
         {%block section%}
         {%endblock section%}
-        <!-- END OF MAIN -->
     </section>
     <!-- END OF CONTENT -->
 

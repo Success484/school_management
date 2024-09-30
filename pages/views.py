@@ -133,12 +133,14 @@ def studentDetails(request, user_id):
     return render(request, 'dashboards/all_admin_pages/student_details.html', {'student': student})
 
 
+# for admin
 @login_required
 def search_form_view(request):
     form = SearchForm()
     return render(request, 'dashboards/all_admin_pages/base.html', {'form': form})
 
 
+# for admin
 @login_required
 def search_results_view(request):
     query = None
@@ -167,3 +169,44 @@ def search_results_view(request):
     }
 
     return render(request, 'dashboards/all_admin_pages/search_result.html', context)
+
+
+# for teacher
+@login_required
+def teacher_search_form_view(request):
+    form = SearchForm()
+    return render(request, 'dashboards/all_teacher_pages/base.html', {'form': form})
+
+
+# for teachers
+@login_required
+def teacher_search_results_view(request):
+    query = None
+    teacher_results = []
+    student_results = []
+    teacher = Teacher.objects.get(user=request.user)
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            
+            teacher_classes = teacher.classes.all()
+            
+            student_results = Student.objects.filter(
+                Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query),
+                student_class__in=teacher_classes
+            )
+            teacher_results = Teacher.objects.filter(
+                Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query)
+            )
+    else:
+        form = SearchForm()
+
+    context = {
+        'form': form,
+        'query': query,
+        'student_results': student_results,
+        'teacher_results': teacher_results
+    }
+    return render(request, 'dashboards/all_teacher_pages/search_result.html', context)

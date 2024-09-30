@@ -19,8 +19,6 @@ def register(request):      # REGISTER VIEW FUNCTION
     return render(request, 'accounts/register.html', {'form': form})
 
 
-
-
 def user_login(request):  # LOGIN VIEW FUNCTION
     if request.method == 'POST':
         form = EmailAuthenticationForm(request.POST, request=request)
@@ -55,8 +53,6 @@ def user_login(request):  # LOGIN VIEW FUNCTION
     else:
         form = EmailAuthenticationForm(request=request)
     return render(request, 'accounts/login.html', {'form': form})
-
-
 
 
 def user_logout(request):

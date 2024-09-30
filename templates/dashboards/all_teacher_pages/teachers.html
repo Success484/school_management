@@ -78,10 +78,10 @@
          <nav>
             <i class='bx bx-menu'></i>
             <a href="#" class="nav-link">Categories</a>
-            <form action="#">
+            <form method="GET" action="{% url 'teacher_search_results_view' %}">
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+                    <input type="search" name="query" placeholder="Search students or teachers">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
                 </div>
             </form>
             <a href="#" class="notification">

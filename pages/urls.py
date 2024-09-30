@@ -4,7 +4,8 @@ from pages.views import (homePage, aboutPage,
                          testimonial, contact, teacher_dashboard, 
                          student_dashboard, myTeacher, teacherDetails,
                          myStudent, studentDetails, delete_teacher_todo, 
-                         search_form_view, search_results_view)
+                         search_form_view, search_results_view, teacher_search_form_view, 
+                         teacher_search_results_view)
 
 urlpatterns = [
     path('', homePage, name='home_page'),
@@ -23,4 +24,6 @@ urlpatterns = [
     path('teacher_dashboard/delete-todos/<int:task_id>/', delete_teacher_todo, name='delete_teacher_todo'),
     path('dashboard/search/', search_form_view, name='search_form_view'),
     path('dashboard/search/result/', search_results_view, name='search_results_view'),
+    path('dashboard/teacher/search/', teacher_search_form_view, name='teacher_search_form_view'),
+    path('dashboard/teacher/search/result/', teacher_search_results_view, name='teacher_search_results_view'),
 ]
