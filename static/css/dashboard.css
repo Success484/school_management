@@ -532,7 +532,7 @@ body {
 /* END CONTENT */
 
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
     #sidebar {
         width: 200px;
     }
@@ -581,4 +581,4 @@ body {
     #content nav form.show ~ .profile {
         display: none;
     }
-}
+} */
