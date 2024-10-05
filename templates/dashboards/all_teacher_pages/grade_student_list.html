@@ -8,7 +8,7 @@
             {%if students%}
             {%for student in students%}
             <a href="{%url 'grade_student' student_id=student.id%}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium hover:bg-blue-300 bg-white hover:text-white">
                     <div>
                         <img src="{{student.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{student.user.first_name}} {{student.user.last_name}}">
                         <p>{{student.user.first_name}} {{student.user.last_name}}</p>

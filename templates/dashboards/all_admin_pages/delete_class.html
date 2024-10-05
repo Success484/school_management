@@ -11,8 +11,8 @@
     <form action="{% url 'delete_class' class_id=classes.id %}" method="post" enctype="multipart/form-data" class="rounded-lg w-full max-w-md">
         {% csrf_token %}
         <div class="flex justify-between my-8">
-            <a href="{%url 'class_details' user_id=classes.id%}" class="bg-blue-500 text-white py-2 px-4 rounded-md mb-3"><i class="fa-solid fa-arrow-left"></i><span class="pl-1">Go Back</span></a>
-            <button class="bg-red-500 text-white py-2 px-4 rounded-md mb-3"><i class="fa-solid fa-trash-can fa-sm"></i> <span class="pl-1">Delete Class</span></button>  
+            <a href="{%url 'class_details' user_id=classes.id%}" class="bg-blue-500 text-white py-2 px-4 rounded-md mb-3 hover:bg-blue-300"><i class="fa-solid fa-arrow-left"></i><span class="pl-1">Go Back</span></a>
+            <button class="bg-red-500 text-white py-2 px-4 rounded-md mb-3 hover:bg-red-300"><i class="fa-solid fa-trash-can fa-sm"></i> <span class="pl-1">Delete Class</span></button>  
         </div>
     </form>
   </div>

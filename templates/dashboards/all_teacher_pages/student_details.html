@@ -10,7 +10,7 @@
             {% endfor %}
             {% endif %}
             <div class="py-8 px-4" style="background-color: #F9F9F9;">
-                <div class="text-left text-right mb-5 text-sm md:text-base text-white text-center"><a href="{%url 'report_card' student_id=student.id %}" class="bg-blue-500 p-2 rounded-lg"><i class='bx bx-card'></i><span class="pl-1">Report Card</span></a></div>
+                <div class="text-left text-right mb-5 text-sm md:text-base text-white text-center"><a href="{%url 'report_card' student_id=student.id %}" class="bg-blue-500 p-2 rounded-lg hover:bg-blue-300"><i class='bx bx-card'></i><span class="pl-1">Report Card</span></a></div>
                 <a href="{{ student.user.profile_photo.url }}" data-lightbox="user-image" data-title="{{student.user.first_name}} {{student.user.last_name}}">
                     <img src="{{ student.user.profile_photo.url }}" alt="{{ student.user.first_name }} {{ student.user.last_name }}" style="height: 200px; width: 300px;" class="rounded-lg mx-auto border-4 border-background" />
                 </a>
@@ -24,8 +24,8 @@
                         <li>Class: {{ student.student_class }}</li>
                     </ul>
                 </div>                
-                <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'view_student_grades' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg"><i class="fa-regular fa-eye"></i><span class="pl-1">View Student Grades</span></a></div>
-                <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'student_position_and_comment' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg"><i class="fa-solid fa-plus"></i><span class="pl-1">Add Position And Comment</span></a></div>
+                <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'view_student_grades' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg hover:bg-blue-300"><i class="fa-regular fa-eye"></i><span class="pl-1">View Student Grades</span></a></div>
+                <div class="text-left p-3 mb-3 font-normal text-white"><a href="{%url 'student_position_and_comment' student_id=student.id%}" class="bg-blue-500 p-3 rounded-lg hover:bg-blue-300"><i class="fa-solid fa-plus"></i><span class="pl-1">Add Position And Comment</span></a></div>
 
                 {%if request.user.is_superuser%}
                 <div class="bg-card p-4 rounded-lg my-4">

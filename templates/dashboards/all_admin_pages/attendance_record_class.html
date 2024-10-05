@@ -13,7 +13,7 @@
         {%if class%}
         {%for classes in class%}
         <a href="{%url 'view_record_list' class_id=classes.id%}">
-            <li class="p-5 rounded-lg font-medium text-gray-700 w-32" style="background-color: #F9F9F9;">{{classes.name}}</li>
+            <li class="p-5 rounded-lg font-medium text-gray-700 w-32 hover:bg-blue-300 hover:text-white bg-white">{{classes.name}}</li>
         </a>
         {%endfor%}
         {%endif%}

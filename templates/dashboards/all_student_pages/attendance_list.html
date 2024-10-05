@@ -11,7 +11,7 @@
     <ul class="md:text-2xl text-normal">
         {% for record in attendance_by_month %}
             <li class="my-3">
-                <a class="border-b-2 border-gray-400" href="{%url 'attendance_detail_record' year=record.date__year month=record.date__month%}">
+                <a class="border-b-2 border-gray-400 hover:bg-gray-300 hover:text-white" href="{%url 'attendance_detail_record' year=record.date__year month=record.date__month%}">
                     {{ record.date__month|get_month_name }} {{ record.date__year }} Attendance Records
                 </a>
             </li>

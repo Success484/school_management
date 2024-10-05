@@ -15,7 +15,7 @@
                 <div class="flex flex-wrap gap-3">
                     {% for teacher in teacher_results %}
                     <a href="{% url 'teacher_detail' user_id=teacher.user.id %}">
-                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
                             <div>
                                 <img src="{{ teacher.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ teacher.user.first_name }} {{ teacher.user.last_name }}">
                                 <p>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</p>
@@ -33,7 +33,7 @@
                 <div class="flex flex-wrap gap-3">
                     {% for student in student_results %}
                     <a href="{% url 'student_detail' user_id=student.user.id %}">
-                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium" style="background-color: #F9F9F9;">
+                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
                             <div>
                                 <img src="{{ student.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ student.user.first_name }} {{ student.user.last_name }}">
                                 <p>{{ student.user.first_name }} {{ student.user.last_name }}</p>
