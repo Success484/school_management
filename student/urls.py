@@ -18,4 +18,6 @@ urlpatterns = [
     path('dashboard/student/report/card/', views.my_report_card, name='my_report_card'),
     path('generate-pdf/', views.generate_pdf, name='generate_pdf'),
     path('dashboard/student/report/card-pdf/', views.pdf_report_card, name='pdf_report_card'),
+    path('dashboard/teacher/search/', views.student_search_form_view, name='student_search_form_view'),
+    path('dashboard/teacher/search/result/', views.student_search_results_view, name='student_search_results_view'),
 ]

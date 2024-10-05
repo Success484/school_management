@@ -13,6 +13,8 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from pages.forms import SearchForm
+from django.db.models import Q
 
 
 @login_required
@@ -285,3 +287,45 @@ def generate_pdf(request):
 
     # Return the generated PDF
     return response
+
+
+@login_required
+def student_search_form_view(request):
+    form = SearchForm()
+    return render(request, 'dashboards/all_student_pages/base.html', {'form': form})
+
+
+@login_required
+def student_search_results_view(request):
+    query = None
+    teacher_results = []
+    student_results = []
+    
+    student = Student.objects.get(user=request.user)
+    student_class = student.student_class
+    
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            
+            student_results = Student.objects.filter(
+                Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query),
+                student_class=student_class
+            )
+            
+            teacher_results = Teacher.objects.filter(
+                Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query),
+                classes=student_class
+            )
+    else:
+        form = SearchForm()
+
+    context = {
+        'form': form,
+        'query': query,
+        'student_results': student_results,
+        'teacher_results': teacher_results
+    }
+    
+    return render(request, 'dashboards/all_student_pages/search_result.html', context)
