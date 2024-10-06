@@ -174,6 +174,8 @@ def search_results_view(request):
 # for teacher
 @login_required
 def teacher_search_form_view(request):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     form = SearchForm()
     return render(request, 'dashboards/all_teacher_pages/base.html', {'form': form})
 
@@ -181,6 +183,8 @@ def teacher_search_form_view(request):
 # for teachers
 @login_required
 def teacher_search_results_view(request):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     query = None
     teacher_results = []
     student_results = []

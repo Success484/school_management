@@ -133,6 +133,15 @@ def student_teacher(request):
 
 
 @login_required
+def student_details(request, student_id):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    student = get_object_or_404(Student, user__id=student_id)
+    return render(request, 'dashboards/all_student_pages/student_details.html', {'student':student})
+    
+
+
+@login_required
 def student_teacher_details(request, teacher_id):
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
@@ -291,16 +300,19 @@ def generate_pdf(request):
 
 @login_required
 def student_search_form_view(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     form = SearchForm()
     return render(request, 'dashboards/all_student_pages/base.html', {'form': form})
 
 
 @login_required
 def student_search_results_view(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
     query = None
     teacher_results = []
     student_results = []
-    
     student = Student.objects.get(user=request.user)
     student_class = student.student_class
     

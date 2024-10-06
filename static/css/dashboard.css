@@ -532,8 +532,8 @@ body {
 /* END CONTENT */
 
 
-/* @media screen and (max-width: 768px) {
-    #sidebar {
+ @media screen and (max-width: 768px) {
+    /* #sidebar {
         width: 200px;
     }
 
@@ -548,11 +548,14 @@ body {
     
     #content nav .nav-link {
         display: none;
-    }
+    } */
 }
 
 @media screen and (max-width: 576px) {
-    #content nav form .form-input input {
+    #content nav form .form-input input{
+        width: 50px;
+    }
+    /* #content nav form .form-input input {
         display: none;
     }
 
@@ -580,5 +583,5 @@ body {
     #content nav form.show ~ .notification,
     #content nav form.show ~ .profile {
         display: none;
-    }
-} */
+    } */
+}

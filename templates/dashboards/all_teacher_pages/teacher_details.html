@@ -24,7 +24,7 @@
                         <li>Classes: {{ teacher.classes.all|join:", " }}</li>
                     </ul>
                 </div>
-                {% if request.user.is_superuser or request.user == teacher.user %}
+                {% if request.user == teacher.user %}
                 <div class="bg-card p-4 rounded-lg my-4">
                     <h2 class="text-lg font-bold">Contact</h2>
                     <ul class="text-sm mt-2">
