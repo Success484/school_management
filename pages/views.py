@@ -7,6 +7,8 @@ from administration.forms import TodosListForm
 from django.contrib import messages
 from .forms import SearchForm
 from django.db.models import Q
+from pages.models import Notification
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -43,12 +45,14 @@ def contact(request):
 def teacher_dashboard(request):
     if not request.user.is_teacher:
         return HttpResponseForbidden("You do not have permission to access this page.")
+    
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     classes_count = teacher.classes.count()
     all_teachers = Teacher.objects.count()
     user = request.user
     current_user = request.user
+
     if request.method == 'POST':
         forms = TodosListForm(request.POST)
         if forms.is_valid():
@@ -60,16 +64,40 @@ def teacher_dashboard(request):
         else:
             messages.error(request, 'There was an error with your submission')
     forms = TodosListForm()
+
     task = TodosList.objects.filter(user=user).order_by('-name')
+
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    unread_notifications_count = Notification.objects.filter(user=request.user, is_read=False).count()  # Updated variable name
+
     context={
         'forms': forms,
         'task': task,
         'classes':classes,
         'classes_count':classes_count,
         'all_teachers' :all_teachers,
-        'user':user
+        'user':user,
+        'notifications': notifications,
+        'unread_notifications_count': unread_notifications_count,
     }
     return render(request, 'dashboards/all_teacher_pages/teachers.html', context)
+
+
+def mark_notifications_as_read(request):
+    if request.method == 'POST':
+        Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        return JsonResponse({'message': 'Notifications marked as read'})
+    return HttpResponseForbidden('Invalid request method')
+
+
+def delete_notification(request, notification_id):
+    if request.method == 'POST':
+        notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+        notification.delete()
+        messages.success(request, 'Notification deleted successfully')
+        return redirect(request.META.get('HTTP_REFERER', 'notifications'))  # Redirect back to the referring page or notifications page
+    return HttpResponseForbidden('Invalid request method')
+            
 
 
 def delete_teacher_todo(request, task_id):

@@ -53,6 +53,26 @@
         border-radius: 5px; /* Apply rounded corners */
         padding: 4px;
     }
+    .notification-dropdown {
+    position: absolute; /* Adjust positioning as needed */
+    background-color: #3C91E6;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    right: 0;
+    border-radius: 8px;
+    top: 60px;
+    color: white;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    overflow-y: scroll;
+    height: 300px;
+}
+
+.notification-dropdown h2 {
+    font-size: 20px;   
+}
 
 </style>
 <body>
@@ -70,7 +90,7 @@
 <script>
     $(document).ready(function(){
         $('.timepicker').timepicker({
-            timeFormat: 'HH:mm', // 24-hour format
+            timeFormat: 'HH:mm',
             interval: 60,
             minTime: '00:00',
             maxTime: '23:59',
@@ -114,6 +134,19 @@
         });
     });
 
+    document.getElementById('notificationBell').addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('Notification bell clicked');
+    const dropdown = document.getElementById('notificationDropdown');
+    dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
+    
+    fetch("{% url 'mark_notifications_as_read' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(response => console.log('Notifications marked as read'));
+});
 </script>
 
 </body>

@@ -90,10 +90,26 @@
                     <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
                 </div>
             </form>
-            <a href="#" class="notification">
-                <i class='bx bxs-bell' ></i>
-                <span class="num">8</span>
+            <a href="#" class="notification" id="notificationBell">
+                <i class='bx bxs-bell'></i>
+                <span class="num">{{ unread_notifications_count }}</span>
             </a>
+
+            <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                <h2>Notifications :</h2><br>
+                {% if notifications %}
+                    <ul>
+                        {% for notification in notifications %}
+                            <li>
+                                <p>{{ notification.message }}</p>
+                                <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No notifications</p>
+                {% endif %}
+            </div>
             <a href="{%url 'teacher_details_page'%}" class="profile">
                 <img src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
             </a>
