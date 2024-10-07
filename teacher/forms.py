@@ -7,9 +7,9 @@ from classes.models import Subject
 class TeacherClassForm(forms.ModelForm):
     class Meta:
         model = TeacherClass
-        fields = ['teacher', 'class_name', 'subjects']
+        fields = ['class_name', 'subjects']
         widgets = {
-            'teacher': forms.Select(attrs={'class': 'final-grade'}),
+            # 'teacher': forms.Select(attrs={'class': 'final-grade'}),
             'class_name': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
             'subjects': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
         }

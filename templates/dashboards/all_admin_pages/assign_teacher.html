@@ -13,8 +13,8 @@
 <form action="" method="post">
     {%csrf_token%}
     <div class="mb-4">
-        <p class="text-lg font-medium text-gray-700 mb-1">{{form.teacher.label_tag}}</p>
-        {{form.teacher}}
+        <p class="text-lg font-medium text-gray-700 mb-1">Teacher Name</p>
+        <p class="border rounded-lg border-gray-400 p-2 w-full">{{teacher.user.first_name}} {{teacher.user.last_name}}</p>
     </div>
     <div class="mb-4">
         <p class="text-lg font-medium text-gray-700 mb-1">{{form.subjects.label_tag}}</p>
