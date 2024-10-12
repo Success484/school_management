@@ -11,3 +11,12 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.email}"
+
+class GradeNotification(models.Model):
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='grade_notifications')
+    message = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Grade Notification for {self.recipient.email}"

@@ -7,7 +7,7 @@ from administration.forms import TodosListForm
 from django.contrib import messages
 from .forms import SearchForm
 from django.db.models import Q
-from pages.models import Notification
+from pages.models import Notification, GradeNotification
 from django.http import JsonResponse
 # Create your views here.
 
@@ -45,61 +45,73 @@ def contact(request):
 def teacher_dashboard(request):
     if not request.user.is_teacher:
         return HttpResponseForbidden("You do not have permission to access this page.")
-    
+
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     classes_count = teacher.classes.count()
     all_teachers = Teacher.objects.count()
     user = request.user
-    current_user = request.user
 
     if request.method == 'POST':
         forms = TodosListForm(request.POST)
         if forms.is_valid():
             new_todo = forms.save(commit=False)
-            new_todo.user = current_user
+            new_todo.user = user
             new_todo.save()
             messages.success(request, 'Task Created Successfully')
             return redirect('teacher_dashboard')
         else:
             messages.error(request, 'There was an error with your submission')
+
     forms = TodosListForm()
-
     task = TodosList.objects.filter(user=user).order_by('-name')
+    notifications, grade_notifications, unread_notifications_count = get_user_notifications(request.user)
 
-    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
-    unread_notifications_count = Notification.objects.filter(user=request.user, is_read=False).count()  # Updated variable name
-
-    context={
+    context = {
         'forms': forms,
         'task': task,
-        'classes':classes,
-        'classes_count':classes_count,
-        'all_teachers' :all_teachers,
-        'user':user,
+        'classes': classes,
+        'classes_count': classes_count,
+        'all_teachers': all_teachers,
+        'user': user,
         'notifications': notifications,
         'unread_notifications_count': unread_notifications_count,
+        'grade_notifications': grade_notifications,
     }
     return render(request, 'dashboards/all_teacher_pages/teachers.html', context)
 
 
+@login_required
 def mark_notifications_as_read(request):
     if request.method == 'POST':
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        GradeNotification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
         return JsonResponse({'message': 'Notifications marked as read'})
     return HttpResponseForbidden('Invalid request method')
 
-
+@login_required
 def delete_notification(request, notification_id):
     if request.method == 'POST':
         notification = get_object_or_404(Notification, id=notification_id, user=request.user)
         notification.delete()
         messages.success(request, 'Notification deleted successfully')
-        return redirect(request.META.get('HTTP_REFERER', 'notifications'))  # Redirect back to the referring page or notifications page
+        return redirect(request.META.get('HTTP_REFERER', 'notifications'))
     return HttpResponseForbidden('Invalid request method')
-            
 
 
+def get_user_notifications(user):
+    notifications = Notification.objects.filter(user=user).order_by('-created_at')
+    grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-date_created')
+
+    # Combine unread counts from both notification types
+    total_unread_count = (
+        notifications.filter(is_read=False).count() +
+        grade_notifications.filter(is_read=False).count()
+    )
+
+    return notifications, grade_notifications, total_unread_count
+
+@login_required
 def delete_teacher_todo(request, task_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
@@ -112,20 +124,40 @@ def delete_teacher_todo(request, task_id):
 def student_dashboard(request):
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
+
     student = request.user.student_profile
     student_class = student.student_class
-    student_teachers = Teacher.objects.filter(classes = student_class)
+    student_teachers = Teacher.objects.filter(classes=student_class)
     total_teachers = student_teachers.count()
     all_students = Student.objects.filter(student_class=student_class)
     total_student = all_students.count()
     user = request.user
-    context={
-        'total_student':total_student,
-        'total_teachers':total_teachers,
-        'user': user
+
+    notifications, grade_notifications, unread_notifications_count = get_user_notifications(request.user)
+
+    context = {
+        'total_student': total_student,
+        'total_teachers': total_teachers,
+        'user': user,
+        'notifications': notifications,
+        'unread_notifications_count': unread_notifications_count,
+        'grade_notifications': grade_notifications,
     }
     return render(request, 'dashboards/all_student_pages/students.html', context)
 
+
+
+@login_required
+def delete_student_notification(request, notification_id):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    if request.method == 'POST':
+        notification = get_object_or_404(GradeNotification, id=notification_id, recipient=request.user)
+        notification.delete()
+        messages.success(request, 'Notification deleted successfully')
+        return redirect(request.META.get('HTTP_REFERER', 'notifications'))
+    return HttpResponseForbidden('Invalid request method')
+        
 
 # All admin pages
 

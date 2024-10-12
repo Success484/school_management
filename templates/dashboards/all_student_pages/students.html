@@ -84,7 +84,7 @@
     <!-- CONTENT -->
     <section id="content">
         <!-- NAVBAR -->
-         <nav>
+        <nav>
             <i class='bx bx-menu' style="font-size: 32px; color: rgb(58, 58, 58);"></i>
             <form method="GET" action="{% url 'student_search_results_view' %}">
                 <div class="form-input">
@@ -92,65 +92,103 @@
                     <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
                 </div>
             </form>
-            <a href="#" class="notification">
-                <i class='bx bxs-bell' ></i>
-                <span class="num">8</span>
+    
+            <a href="#" class="notification" id="notificationBell">
+                <i class='bx bxs-bell'></i>
+                <span class="num">{{ unread_notifications_count }}</span>
             </a>
-            <a href="{%url 'student_details_page' %}" class="profile">
+    
+            <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                <h2>Notifications</h2><br>
+                {% if notifications or notification_grade %}
+                    <ul>
+                        {% for notification in notifications %}
+                            <li class="border-b-2 border-white pb-1">
+                                <p>{{ notification.message }}</p>
+                                <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+                                <form action="{% url 'delete_notification' notification.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-notification pl-1" title="Delete">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        {% empty %}
+                        {% endfor %}
+    
+                        {% for grade_notification in notification_grade %}
+                            <li class="border-b-2 border-white pb-1">
+                                <p>{{ grade_notification.message }}</p>
+                                <small>{{ grade_notification.date_created|date:"Y-m-d H:i" }}</small>
+                                <form action="{% url 'delete_student_notification' grade_notification.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-notification pl-1" title="Delete">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        {% empty %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No notifications</p>
+                {% endif %}
+            </div>
+    
+            <a href="{% url 'student_details_page' %}" class="profile">
                 <img src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
             </a>
         </nav>
         <!-- END OF NAVBAR -->
+    
         <!-- MAIN -->
         <main>
             <div class="head-title">
                 <div class="left">
                     <h1>Dashboard</h1>
                     <ul class="breadcrumb">
-                        <li>
-                            <a href="#">Dashboard</a>
-                        </li>
+                        <li><a href="#">Dashboard</a></li>
                         <li><i class='bx bx-chevron-right'></i></li>
-                        <li>
-                            <a class="active" href="#">Home</a>
-                        </li>
+                        <li><a class="active" href="#">Home</a></li>
                     </ul>
                 </div>
             </div>
+    
             <ul class="box-info">
                 <li>
                     <i class='bx bxs-user-rectangle'></i>
                     <span class="text">
-                        <h3>{{total_teachers}}</h3>
+                        <h3>{{ total_teachers }}</h3>
                         <p>Total Class Teachers</p>
                     </span>
                 </li>
                 <li>
-                    <i class='bx bxs-group' ></i>
+                    <i class='bx bxs-group'></i>
                     <span class="text">
-                        <h3>{{total_student}}</h3>
+                        <h3>{{ total_student }}</h3>
                         <p>Total Students In Your Class</p>
                     </span>
                 </li>
             </ul>
-                    {% if messages %}
-                    {% for message in messages %}
-                    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
-                    {% endfor %}
-                    {% endif %}
+    
             <div class="table-data">
                 <div class="order">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+                        {% endfor %}
+                    {% endif %}
+                    
                     <h2 id="welcome">WELCOME {{ user.first_name|upper }}</h2>
-                    <div id="welcome">
-                        <div class="mb-10">
-                            <h1>HELLO {{ user.first_name|upper }} WELCOME TO YOUR SCHOOL DASHBOARD</h1>
-                        </div>
+                    <div class="mb-10 text-center pt-5">
+                        <h1>HELLO {{ user.first_name|upper }}, WELCOME TO YOUR SCHOOL DASHBOARD</h1>
                     </div>
                 </div>
             </div>
         </main>
         <!-- END OF MAIN -->
     </section>
+    
     <!-- END OF CONTENT -->
 
 
