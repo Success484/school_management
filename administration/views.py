@@ -361,8 +361,10 @@ def view_attendance_detail(request, class_id, year, month):
     # Get the weekdays for the month
     cal = calendar.Calendar()
     days_in_month = cal.itermonthdays2(year, month)
-    weekdays = [(day, calendar.day_name[weekday]) for day, weekday in days_in_month if day != 0 and weekday not in [calendar.SATURDAY, calendar.SUNDAY]]
-
+    
+    weekday_abbr = ['M', 'T', 'W', 'T', 'F']
+    weekdays = [(day, weekday_abbr[weekday]) for day, weekday in days_in_month if day != 0 and weekday < 5]
+    
     context = {
         'students': students,
         'classes': classes,
@@ -382,3 +384,4 @@ def delete_todo(request, task_id):
     task.delete()
     messages.success(request, 'Task deleted successfully')
     return redirect('admin_dashboard')
+

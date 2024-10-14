@@ -17,8 +17,8 @@
             <thead>
                 <tr>
                     <th class="border border-zinc-400 bg-blue-200 p-1">STUDENT NAME</th>
-                    {% for day, weekday_name in weekdays %}
-                    <th class="border border-zinc-400 bg-blue-200 p-2">{{ day }}</th>
+                    {% for day, weekday in weekdays %}
+                    <th class="bg-blue-200 border border-zinc-400">{{ weekday }}<br>{{ day }}</th>
                     {% endfor %}
                 </tr>
             </thead>
