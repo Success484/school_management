@@ -80,7 +80,6 @@ def teacher_dashboard(request):
     }
     return render(request, 'dashboards/all_teacher_pages/teachers.html', context)
 
-
 @login_required
 def mark_notifications_as_read(request):
     if request.method == 'POST':
@@ -98,7 +97,6 @@ def delete_notification(request, notification_id):
         return redirect(request.META.get('HTTP_REFERER', 'notifications'))
     return HttpResponseForbidden('Invalid request method')
 
-
 def get_user_notifications(user):
     notifications = Notification.objects.filter(user=user).order_by('-created_at')
     grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-date_created')
@@ -110,15 +108,6 @@ def get_user_notifications(user):
     )
 
     return notifications, grade_notifications, total_unread_count
-
-@login_required
-def delete_teacher_todo(request, task_id):
-    if not request.user.is_teacher:
-        return HttpResponseForbidden('You do not have permission to access this page.')
-    task = get_object_or_404(TodosList, id=task_id)
-    task.delete()
-    messages.success(request, 'Task deleted successfully')
-    return redirect('teacher_dashboard')
 
 @login_required
 def student_dashboard(request):
@@ -145,8 +134,6 @@ def student_dashboard(request):
     }
     return render(request, 'dashboards/all_student_pages/students.html', context)
 
-
-
 @login_required
 def delete_student_notification(request, notification_id):
     if not request.user.is_student:
@@ -158,6 +145,15 @@ def delete_student_notification(request, notification_id):
         return redirect(request.META.get('HTTP_REFERER', 'notifications'))
     return HttpResponseForbidden('Invalid request method')
         
+
+@login_required
+def delete_teacher_todo(request, task_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    task = get_object_or_404(TodosList, id=task_id)
+    task.delete()
+    messages.success(request, 'Task deleted successfully')
+    return redirect('teacher_dashboard')
 
 # All admin pages
 
