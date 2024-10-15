@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from administration.models import Teacher, Student
-from administration.models import TodosList
+from administration.models import TodosList, Teacher, Student, StudentNotification, TeacherNotification
 from administration.forms import TodosListForm
 from django.contrib import messages
 from .forms import SearchForm
@@ -85,6 +84,9 @@ def mark_notifications_as_read(request):
     if request.method == 'POST':
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
         GradeNotification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
+        if request.user.is_staff:
+            StudentNotification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+            TeacherNotification.objects.filter(user=request.user, is_read=False).update(is_read=True)
         return JsonResponse({'message': 'Notifications marked as read'})
     return HttpResponseForbidden('Invalid request method')
 

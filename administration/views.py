@@ -4,7 +4,7 @@ from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from administration.forms import TeacherForm, StudentForm, AnnoucementForm, TodosListForm
-from administration.models import Student, Teacher, Annoucement, TodosList
+from administration.models import Student, Teacher, Annoucement, TodosList, StudentNotification, TeacherNotification
 from teacher.models import TeacherClass, StudentPosition, StudentGradeModel
 from datetime import datetime
 from teacher.forms import TeacherClassForm
@@ -15,6 +15,7 @@ User = get_user_model()
 from teacher.models import Attendance
 from django.db.models import Count
 import calendar
+from itertools import chain
 
 
 # Create your views here.
@@ -24,8 +25,6 @@ import calendar
 def admin_dashboard(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("You do not have permission to access this page.")
-    
-    # Count the number of students, teachers, and users
     all_students = Student.objects.count()
     all_teachers = Teacher.objects.count()
     all_users = User.objects.count()
@@ -41,12 +40,9 @@ def admin_dashboard(request):
             return redirect('admin_dashboard')
         else:
             messages.error(request, 'There was an error with your submission')
-    
     form = TodosListForm()
-
-    # display all task
-    current_user = request.user
     tasks = TodosList.objects.filter(user=current_user)
+    all_notifications, total_notifications = get_admin_notification(request.user)
     context = {
         'form': form,
         'tasks': tasks,
@@ -54,10 +50,43 @@ def admin_dashboard(request):
         'all_users': all_users,
         'all_teachers': all_teachers,
         'all_students': all_students,
+        'total_notifications': total_notifications,
+        'all_notifications': all_notifications
     }
-    
-    # Render the admin dashboard with the context
     return render(request, 'administration/dashboard.html', context)
+
+def get_admin_notification(user):
+    if user.is_staff:
+        teacher_notifications = TeacherNotification.objects.filter(user=user).order_by('-created_at')
+        student_notifications = StudentNotification.objects.filter(user=user).order_by('-created_at')
+
+        # Combine and sort notifications
+        all_notifications = sorted(
+            chain(teacher_notifications, student_notifications),
+            key=lambda x: x.created_at,
+            reverse=True
+        )
+        
+        total_notifications = (
+            teacher_notifications.filter(is_read=False).count() +
+            student_notifications.filter(is_read=False).count()
+        )
+        
+        return all_notifications, total_notifications
+    return [], 0
+
+@login_required
+def delete_admin_notification(request, notification_id):
+    notification = get_object_or_404(
+        TeacherNotification.objects.filter(user=request.user) | 
+        StudentNotification.objects.filter(user=request.user), 
+        id=notification_id
+    )
+    
+    notification.delete()
+    messages.success(request, 'Notification deleted successfully.')
+    return redirect('')
+
 
 
 @login_required
@@ -385,3 +414,6 @@ def delete_todo(request, task_id):
     messages.success(request, 'Task deleted successfully')
     return redirect('admin_dashboard')
 
+
+# @login_required
+# def 
