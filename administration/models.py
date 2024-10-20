@@ -1,6 +1,7 @@
 from django.db import models
 from classes.models import Class, Subject
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
 User = get_user_model()
 
@@ -31,24 +32,20 @@ class Student(models.Model):
         return f"{self.user.first_name} {self.user.last_name}"
 
 
-class TeacherNotification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='teacher_notifications')
+class BaseNotification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
-    is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Notification for {self.user.email}"
-
-
-class StudentNotification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='student_notifications')
-    message = models.TextField()
     is_read = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"Notification for {self.user.email}"
+    class Meta:
+        abstract = True
+
+class TeacherNotification(BaseNotification):
+    pass
+
+class StudentNotification(BaseNotification):
+    pass
 
 
 class Annoucement(models.Model):

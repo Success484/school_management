@@ -4,7 +4,9 @@ from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from administration.forms import TeacherForm, StudentForm, AnnoucementForm, TodosListForm
-from administration.models import Student, Teacher, Annoucement, TodosList, StudentNotification, TeacherNotification
+from administration.models import (Student, Teacher, Annoucement, TodosList, 
+                                   StudentNotification, TeacherNotification, 
+                                   BaseNotification)
 from teacher.models import TeacherClass, StudentPosition, StudentGradeModel
 from datetime import datetime
 from teacher.forms import TeacherClassForm
@@ -77,16 +79,10 @@ def get_admin_notification(user):
 
 @login_required
 def delete_admin_notification(request, notification_id):
-    notification = get_object_or_404(
-        TeacherNotification.objects.filter(user=request.user) | 
-        StudentNotification.objects.filter(user=request.user), 
-        id=notification_id
-    )
-    
+    notification = get_object_or_404(BaseNotification, id=notification_id, user=request.user)
     notification.delete()
     messages.success(request, 'Notification deleted successfully.')
-    return redirect('')
-
+    return redirect('admin_dashboard')
 
 
 @login_required

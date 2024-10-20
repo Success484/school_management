@@ -99,11 +99,11 @@ def delete_notification(request, notification_id):
         return redirect(request.META.get('HTTP_REFERER', 'notifications'))
     return HttpResponseForbidden('Invalid request method')
 
+
 def get_user_notifications(user):
     notifications = Notification.objects.filter(user=user).order_by('-created_at')
     grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-date_created')
 
-    # Combine unread counts from both notification types
     total_unread_count = (
         notifications.filter(is_read=False).count() +
         grade_notifications.filter(is_read=False).count()
