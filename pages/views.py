@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
 from administration.models import TodosList, Teacher, Student, StudentNotification, TeacherNotification
 from administration.forms import TodosListForm
 from django.contrib import messages
@@ -75,7 +75,7 @@ def teacher_dashboard(request):
         'classes_count': classes_count,
         'all_teachers': all_teachers,
         'user': user,
-        'notifications': all_notifications,
+        'all_notifications': all_notifications,
         'unread_notifications_count': unread_notifications_count,
     }
     return render(request, 'dashboards/all_teacher_pages/teachers.html', context)
@@ -93,18 +93,37 @@ def mark_notifications_as_read(request):
 
 @login_required
 def delete_notification(request, notification_id):
-    if request.method == 'POST':
-        notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+    notification = None
+    
+    try:
+        notification = Notification.objects.get(id=notification_id, user=request.user)
+    except Notification.DoesNotExist:
+        pass
+    
+    try:
+        if not notification:
+            notification = GradeNotification.objects.get(id=notification_id, recipient=request.user)
+    except GradeNotification.DoesNotExist:
+        pass
+
+    try:
+        if not notification:
+            notification = TeacherNotification.objects.get(id=notification_id, user=request.user)
+    except TeacherNotification.DoesNotExist:
+        pass
+
+    if notification:
         notification.delete()
         messages.success(request, 'Notification deleted successfully')
         return redirect(request.META.get('HTTP_REFERER', 'notifications'))
-    return HttpResponseForbidden('Invalid request method')
+    else:
+        raise Http404("Notification not found.")
 
 
 def get_user_notifications(user):
     notifications = Notification.objects.filter(user=user).order_by('-created_at')
     if user.is_student:
-        grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-date_created')
+        grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-created_at')
     else:
         grade_notifications = []
     all_notifications = sorted(
@@ -138,7 +157,7 @@ def student_dashboard(request):
         'total_student': total_student,
         'total_teachers': total_teachers,
         'user': user,
-        'notifications': all_notifications,
+        'all_notifications': all_notifications,
         'unread_notifications_count': unread_notifications_count,
     }
     return render(request, 'dashboards/all_student_pages/students.html', context)
@@ -147,11 +166,14 @@ def student_dashboard(request):
 def delete_student_notification(request, notification_id):
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
-    if request.method == 'POST':
-        notification = get_object_or_404(GradeNotification, id=notification_id, recipient=request.user)
-        notification.delete()
-        messages.success(request, 'Notification deleted successfully')
-        return redirect(request.META.get('HTTP_REFERER', 'notifications'))
+    try:
+        if request.method == 'POST':
+            notification = get_object_or_404(GradeNotification, id=notification_id, recipient=request.user)
+            notification.delete()
+            messages.success(request, 'Notification deleted successfully')
+            return redirect(request.META.get('HTTP_REFERER', 'notifications'))
+    except GradeNotification.DoesNotExist:
+        raise Http404("Notification not found.")
     return HttpResponseForbidden('Invalid request method')
         
 
