@@ -5,5 +5,4 @@ def notifications(request):
     return {
         'notifications': notifications,
         'unread_notifications_count': unread_notifications_count,
-        'grade_notifications': grade_notifications,
     }

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
 from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -21,7 +21,6 @@ from itertools import chain
 
 
 # Create your views here.
-
 
 @login_required
 def admin_dashboard(request):
@@ -57,6 +56,7 @@ def admin_dashboard(request):
     }
     return render(request, 'administration/dashboard.html', context)
 
+
 def get_admin_notification(user):
     if user.is_staff:
         teacher_notifications = TeacherNotification.objects.filter(user=user).order_by('-created_at')
@@ -77,9 +77,17 @@ def get_admin_notification(user):
         return all_notifications, total_notifications
     return [], 0
 
+
 @login_required
 def delete_admin_notification(request, notification_id):
-    notification = get_object_or_404(BaseNotification, id=notification_id, user=request.user)
+    try:
+        notification = TeacherNotification.objects.get(id=notification_id, user=request.user)
+    except TeacherNotification.DoesNotExist:
+        try:
+            notification = StudentNotification.objects.get(id=notification_id, user=request.user)
+        except StudentNotification.DoesNotExist:
+            raise Http404("Notification not found.")
+    
     notification.delete()
     messages.success(request, 'Notification deleted successfully.')
     return redirect('admin_dashboard')

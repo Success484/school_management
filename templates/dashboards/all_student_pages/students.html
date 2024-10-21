@@ -100,7 +100,7 @@
     
             <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
                 <h2>Notifications</h2><br>
-                {% if notifications or notification_grade %}
+                {% if notifications or grade_notifications %}
                     <ul>
                         {% for notification in notifications %}
                             <li class="border-b-2 border-white pb-1">
@@ -114,9 +114,10 @@
                                 </form>
                             </li>
                         {% empty %}
+                            <p>No announcement notifications</p>
                         {% endfor %}
-    
-                        {% for grade_notification in notification_grade %}
+            
+                        {% for grade_notification in grade_notifications %}
                             <li class="border-b-2 border-white pb-1">
                                 <p>{{ grade_notification.message }}</p>
                                 <small>{{ grade_notification.date_created|date:"Y-m-d H:i" }}</small>
@@ -128,12 +129,14 @@
                                 </form>
                             </li>
                         {% empty %}
+                            <p>No grade notifications</p>
                         {% endfor %}
                     </ul>
                 {% else %}
                     <p>No notifications</p>
                 {% endif %}
             </div>
+            
     
             <a href="{% url 'student_details_page' %}" class="profile">
                 <img src="{{ request.user.profile_photo.url }}" alt="Profile Photo">

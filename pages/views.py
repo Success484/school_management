@@ -8,6 +8,8 @@ from .forms import SearchForm
 from django.db.models import Q
 from pages.models import Notification, GradeNotification
 from django.http import JsonResponse
+from itertools import chain
+from operator import attrgetter
 # Create your views here.
 
 
@@ -64,7 +66,7 @@ def teacher_dashboard(request):
 
     forms = TodosListForm()
     task = TodosList.objects.filter(user=user).order_by('-name')
-    notifications, grade_notifications, unread_notifications_count = get_user_notifications(request.user)
+    all_notifications, unread_notifications_count = get_user_notifications(request.user)
 
     context = {
         'forms': forms,
@@ -73,9 +75,8 @@ def teacher_dashboard(request):
         'classes_count': classes_count,
         'all_teachers': all_teachers,
         'user': user,
-        'notifications': notifications,
+        'notifications': all_notifications,
         'unread_notifications_count': unread_notifications_count,
-        'grade_notifications': grade_notifications,
     }
     return render(request, 'dashboards/all_teacher_pages/teachers.html', context)
 
@@ -102,14 +103,21 @@ def delete_notification(request, notification_id):
 
 def get_user_notifications(user):
     notifications = Notification.objects.filter(user=user).order_by('-created_at')
-    grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-date_created')
-
+    if user.is_student:
+        grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-date_created')
+    else:
+        grade_notifications = []
+    all_notifications = sorted(
+        chain(notifications, grade_notifications), 
+        key=attrgetter('created_at'), 
+        reverse=True
+    )
     total_unread_count = (
         notifications.filter(is_read=False).count() +
-        grade_notifications.filter(is_read=False).count()
+        (grade_notifications.filter(is_read=False).count() if user.is_student else 0)
     )
+    return all_notifications, total_unread_count
 
-    return notifications, grade_notifications, total_unread_count
 
 @login_required
 def student_dashboard(request):
@@ -124,15 +132,14 @@ def student_dashboard(request):
     total_student = all_students.count()
     user = request.user
 
-    notifications, grade_notifications, unread_notifications_count = get_user_notifications(request.user)
+    all_notifications, unread_notifications_count = get_user_notifications(request.user)
 
     context = {
         'total_student': total_student,
         'total_teachers': total_teachers,
         'user': user,
-        'notifications': notifications,
+        'notifications': all_notifications,
         'unread_notifications_count': unread_notifications_count,
-        'grade_notifications': grade_notifications,
     }
     return render(request, 'dashboards/all_student_pages/students.html', context)
 

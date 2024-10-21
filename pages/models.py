@@ -15,7 +15,7 @@ class Notification(models.Model):
 class GradeNotification(models.Model):
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='grade_notifications')
     message = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
     def __str__(self):
