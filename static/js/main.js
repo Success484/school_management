@@ -114,3 +114,10 @@ $(document).ready(function() {
     
 })(jQuery);
 
+
+document.querySelector('a').addEventListener('click', function(e) {
+    e.preventDefault();
+    const newPath = this.getAttribute('href');
+    history.pushState(null, '', newPath);
+    console.log(`Navigated to: ${newPath}`);
+});

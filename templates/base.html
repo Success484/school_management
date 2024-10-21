@@ -39,8 +39,8 @@
 <style>
     .final-grade {
         width: 100%;
-        border: 1px solid rgb(142, 141, 141); /* Corrected border property */
-        border-radius: 5px; /* Apply rounded corners */
+        border: 1px solid rgb(142, 141, 141);
+        border-radius: 5px;
         padding: 4px;
     }
 </style>
@@ -214,6 +214,13 @@
 
         function CloseLoader() {
         }
+
+        document.querySelector('a').addEventListener('click', function(e) {
+    e.preventDefault();
+    const newPath = this.getAttribute('href');
+    history.pushState(null, '', newPath);
+    console.log(`Navigated to: ${newPath}`);
+});
 
       </script>
 </body>

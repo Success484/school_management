@@ -88,6 +88,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 <script src="{% static 'js/script.js' %}"></script>
 <script>
+
+document.querySelector('a').addEventListener('click', function(e) {
+    e.preventDefault();
+    const newPath = this.getAttribute('href');
+    history.pushState(null, '', newPath);
+    console.log(`Navigated to: ${newPath}`);
+});
+
     $(document).ready(function(){
         $('.timepicker').timepicker({
             timeFormat: 'HH:mm',

@@ -5,8 +5,24 @@ from pages.models import Notification, GradeNotification
 from .models import Annoucement
 from teacher.models import StudentGradeModel
 from administration.models import StudentNotification, TeacherNotification, Teacher, Student
+from django.contrib.auth.models import Group
 
 User = get_user_model()
+
+
+@receiver(post_save, sender=Teacher)
+def add_teacher_to_group(sender, instance, created, **kwargs):
+    if created:
+        teacher_group, created = Group.objects.get_or_create(name='Teacher')
+        instance.user.groups.add(teacher_group)
+
+@receiver(post_save, sender=Student)
+def add_student_to_group(sender, instance, created, **kwargs):
+    if created:
+        student_group, created = Group.objects.get_or_create(name='Student')
+        instance.user.groups.add(student_group)
+
+
 
 @receiver(post_save, sender=Annoucement)
 def create_notifications(sender, instance, created, **kwargs):
