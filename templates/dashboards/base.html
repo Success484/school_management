@@ -144,7 +144,6 @@ document.querySelector('a').addEventListener('click', function(e) {
 
     document.getElementById('notificationBell').addEventListener('click', function(event) {
     event.preventDefault();
-    console.log('Notification bell clicked');
     const dropdown = document.getElementById('notificationDropdown');
     dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
     
@@ -153,7 +152,7 @@ document.querySelector('a').addEventListener('click', function(e) {
             headers: {
                 'X-CSRFToken': '{{ csrf_token }}'
             }
-        }).then(response => console.log('Notifications marked as read'));
+        }).then(response => console.log(''));
 });
 </script>
 

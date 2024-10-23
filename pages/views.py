@@ -161,21 +161,7 @@ def student_dashboard(request):
         'unread_notifications_count': unread_notifications_count,
     }
     return render(request, 'dashboards/all_student_pages/students.html', context)
-
-@login_required
-def delete_student_notification(request, notification_id):
-    if not request.user.is_student:
-        return HttpResponseForbidden("You do not have permission to access this page.")
-    try:
-        if request.method == 'POST':
-            notification = get_object_or_404(GradeNotification, id=notification_id, recipient=request.user)
-            notification.delete()
-            messages.success(request, 'Notification deleted successfully')
-            return redirect(request.META.get('HTTP_REFERER', 'notifications'))
-    except GradeNotification.DoesNotExist:
-        raise Http404("Notification not found.")
-    return HttpResponseForbidden('Invalid request method')
-        
+   
 
 @login_required
 def delete_teacher_todo(request, task_id):

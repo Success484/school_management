@@ -8,6 +8,6 @@ def notifications(request):
             'unread_notifications_count': unread_notifications_count,
         }
     return {
-        'notifications': [],
+        'all_notifications': [],
         'unread_notifications_count': 0,
     }

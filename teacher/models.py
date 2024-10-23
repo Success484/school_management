@@ -76,6 +76,7 @@ class StudentGradeModel(models.Model):
     final_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)
     out_of = models.IntegerField(default=100)
     year = models.IntegerField(default=2024)
+    day_created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.student} - {self.term} - {self.year} - {self.subject}"

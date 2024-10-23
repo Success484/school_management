@@ -16,8 +16,8 @@
             {% if student %}
                 {% for student_item in student %}
                     <a href="{% url 'student_detail' user_id=student_item.user.id %}">
-                        <div class="h-[200px] w-[200px] p-2 rounded-lg flex items-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
-                            <div>
+                        <div class="p-2 rounded-lg flex items-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
+                            <div style="width: 150px; height: 220px;">
                                 {% if student_item.user.profile_photo %}
                                     <img src="{{ student_item.user.profile_photo.url }}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{ student_item.user.first_name }} {{ student_item.user.last_name }}">
                                 {% else %}

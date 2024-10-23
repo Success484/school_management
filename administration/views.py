@@ -43,7 +43,7 @@ def admin_dashboard(request):
             messages.error(request, 'There was an error with your submission')
     form = TodosListForm()
     tasks = TodosList.objects.filter(user=current_user)
-    all_notifications, total_notifications = get_admin_notification(request.user)
+    all_notification, total_notifications = get_admin_notification(request.user)
     context = {
         'form': form,
         'tasks': tasks,
@@ -51,8 +51,8 @@ def admin_dashboard(request):
         'all_users': all_users,
         'all_teachers': all_teachers,
         'all_students': all_students,
-        'total_notifications': total_notifications,
-        'all_notifications': all_notifications
+        'all_notification': all_notification,
+        'all_notification': all_notification
     }
     return render(request, 'administration/dashboard.html', context)
 
@@ -63,7 +63,7 @@ def get_admin_notification(user):
         student_notifications = StudentNotification.objects.filter(user=user).order_by('-created_at')
 
         # Combine and sort notifications
-        all_notifications = sorted(
+        all_notification = sorted(
             chain(teacher_notifications, student_notifications),
             key=lambda x: x.created_at,
             reverse=True
@@ -74,7 +74,7 @@ def get_admin_notification(user):
             student_notifications.filter(is_read=False).count()
         )
         
-        return all_notifications, total_notifications
+        return all_notification, total_notifications
     return [], 0
 
 

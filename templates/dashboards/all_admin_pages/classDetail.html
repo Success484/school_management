@@ -8,7 +8,7 @@
             {%if student%}
             {%for students in student%}
             <a href="{% url 'student_detail' user_id=students.user.id %}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
+                <div class="p-2 rounded-lg flex item-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white" style="width: 150px; height: 220px;">
                     <div>
                     <img src="{{students.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{students.user.first_name}} {{students.user.last_name}}">
                     <p>{{students.user.first_name}} {{students.user.last_name}}</p>
@@ -26,7 +26,7 @@
             {%if teacher%}
             {%for teachers in teacher%}
             <a href="{% url 'teacher_detail' user_id=teachers.user.id %}">
-                <div class="h-[200px] w-[200px] p-2 rounded-lg flex item-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
+                <div class="p-2 rounded-lg flex item-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white" style="width: 150px; height: 220px;">
                     <div>
                     <img src="{{teachers.user.profile_photo.url}}" class="object-cover rounded-lg" style="height: 150px; width: 150px;" alt="{{teachers.user.first_name}} {{teachers.user.last_name}}">
                     <p>{{teachers.user.first_name}} {{teachers.user.last_name}}</p>

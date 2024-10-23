@@ -102,9 +102,9 @@
 
             <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
                 <h2>Notifications</h2><br>
-                {% if notifications or notification_grade %}
+                {% if all_notifications %}
                     <ul>
-                        {% for notification in notifications %}
+                        {% for notification in all_notifications %}
                             <li class="border-b-2 border-white pb-1">
                                 <p>{{ notification.message }}</p>
                                 <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
@@ -116,20 +116,7 @@
                                 </form>
                             </li>
                         {% empty %}
-                        {% endfor %}
-    
-                        {% for grade_notification in notification_grade %}
-                            <li class="border-b-2 border-white pb-1">
-                                <p>{{ grade_notification.message }}</p>
-                                <small>{{ grade_notification.date_created|date:"Y-m-d H:i" }}</small>
-                                <form action="{% url 'delete_student_notification' grade_notification.id %}" method="post" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="delete-notification pl-1" title="Delete">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </form>
-                            </li>
-                        {% empty %}
+                            <p>No notifications</p>
                         {% endfor %}
                     </ul>
                 {% else %}

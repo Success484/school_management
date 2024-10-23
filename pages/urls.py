@@ -6,7 +6,7 @@ from pages.views import (homePage, aboutPage,
                          myStudent, studentDetails, delete_teacher_todo, 
                          search_form_view, search_results_view, teacher_search_form_view, 
                          teacher_search_results_view, mark_notifications_as_read, 
-                         delete_notification, delete_student_notification)
+                         delete_notification)
 
 urlpatterns = [
     path('', homePage, name='home_page'),
@@ -29,5 +29,4 @@ urlpatterns = [
     path('dashboard/teacher/search/result/', teacher_search_results_view, name='teacher_search_results_view'),
     path('notifications/mark-read/', mark_notifications_as_read, name='mark_notifications_as_read'),
     path('notifications/mark-read/delete/<int:notification_id>', delete_notification, name='delete_notification'),
-    path('notifications/mark-read/delete-student-notification/<int:notification_id>', delete_student_notification, name='delete_student_notification'),
 ]

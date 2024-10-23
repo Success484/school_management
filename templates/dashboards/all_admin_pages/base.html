@@ -99,13 +99,13 @@
 
             <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
                 <h2>Notifications</h2><br>
-                {% if all_notifications %}
+                {% if all_notification %}
                     <ul>
-                        {% for notification in all_notifications %}
+                        {% for notifications in all_notification %}
                             <li class="border-b-2 border-white pb-1">
-                                <p>{{ notification.message }}</p>
-                                <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
-                                <form action="{% url 'delete_admin_notification' notification.id %}" method="post" style="display:inline;">
+                                <p>{{ notifications.message }}</p>
+                                <small>{{ notifications.created_at|date:"Y-m-d H:i" }}</small>
+                                <form action="{% url 'delete_admin_notification' notifications.id %}" method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <button type="submit" class="delete-notification pl-1" title="Delete">
                                         <i class="fa-solid fa-trash-can"></i>
