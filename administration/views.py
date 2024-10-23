@@ -5,8 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from administration.forms import TeacherForm, StudentForm, AnnoucementForm, TodosListForm
 from administration.models import (Student, Teacher, Annoucement, TodosList, 
-                                   StudentNotification, TeacherNotification, 
-                                   BaseNotification)
+                                   StudentNotification, TeacherNotification,)
 from teacher.models import TeacherClass, StudentPosition, StudentGradeModel
 from datetime import datetime
 from teacher.forms import TeacherClassForm
@@ -417,7 +416,3 @@ def delete_todo(request, task_id):
     task.delete()
     messages.success(request, 'Task deleted successfully')
     return redirect('admin_dashboard')
-
-
-# @login_required
-# def 

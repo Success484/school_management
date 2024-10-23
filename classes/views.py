@@ -7,6 +7,7 @@ from student.models import Timetable
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from pages.views import paginate_objects
 
 
 @login_required
@@ -114,12 +115,14 @@ def classDetail(request, user_id):
         return HttpResponseForbidden('You do not have permission to access this page.')
     classes = get_object_or_404(Class, id=user_id)
     student = Student.objects.filter(student_class=classes)
+    student_page_obj = paginate_objects(request, student, 5)
     teacher = Teacher.objects.filter(classes=classes)
+    teacher_page_obj = paginate_objects(request, teacher, 5)
     timetable = Timetable.objects.filter(class_info=classes)
     context = {
         'class': classes,
-        'student': student,
-        'teacher': teacher,
+        'teacher_page_obj': teacher_page_obj,
+        'student_page_obj': student_page_obj,
         'timetables': timetable,
     }
     return render(request, 'dashboards/all_admin_pages/classDetail.html', context)

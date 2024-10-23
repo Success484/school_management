@@ -13,8 +13,8 @@
     
     <div class="order">
         <div class="flex flex-wrap gap-3">
-            {% if student %}
-                {% for student_item in student %}
+            {% if page_obj %}
+                {% for student_item in page_obj %}
                     <a href="{% url 'student_detail' user_id=student_item.user.id %}">
                         <div class="p-2 rounded-lg flex items-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
                             <div style="width: 150px; height: 220px;">
@@ -29,6 +29,23 @@
                         </div>
                     </a>
                 {% endfor %}
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1" class="bg-blue-500 text-white p-1 rounded-lg">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}" class="bg-blue-500 text-white p-1 rounded-lg">previous</a>
+                        {% endif %}
+            
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+            
+                        {% if page_obj.has_next %}
+                            <a class="bg-blue-500 text-white p-1 rounded-lg" href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a class="bg-blue-500 text-white p-1 rounded-lg" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
             {% else %}
                 <p class="text-center text-gray-500">No students available.</p>
             {% endif %}

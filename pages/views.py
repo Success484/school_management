@@ -10,6 +10,8 @@ from pages.models import Notification, GradeNotification
 from django.http import JsonResponse
 from itertools import chain
 from operator import attrgetter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+# from .utils import paginate_objects
 # Create your views here.
 
 
@@ -174,12 +176,28 @@ def delete_teacher_todo(request, task_id):
 
 # All admin pages
 
+def paginate_objects(request, object_list, items_per_page):
+    paginator = Paginator(object_list, items_per_page)
+    page_number = request.GET.get("page")
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    
+    return page_obj
+
 @login_required
 def myTeacher(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("You do not have permission to access this page.")
     teacher = Teacher.objects.all()
-    return render(request, 'dashboards/all_admin_pages/myTeachers.html', {'teacher': teacher})
+    page_obj=paginate_objects(request, teacher, 10)
+    context = {
+        "page_obj": page_obj
+    }
+    return render(request, 'dashboards/all_admin_pages/myTeachers.html',context)
 
 
 @login_required
@@ -195,7 +213,8 @@ def myStudent(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("You do not have permission to access this page.")
     student = Student.objects.all()
-    return render(request, 'dashboards/all_admin_pages/myStudents.html', {'student': student})
+    page_obj=paginate_objects(request, student, 10)
+    return render(request, 'dashboards/all_admin_pages/myStudents.html', {"page_obj": page_obj})
 
 
 @login_required

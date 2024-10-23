@@ -12,8 +12,8 @@
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">{{class.name}} STUDENTS</p>
     <div class="order">
         <div class="flex flex-wrap gap-3">
-            {%if students%}
-            {%for student in students%}
+            {%if student_page_obj%}
+            {%for student in student_page_obj%}
             <a href="{% url 'teacher_class_student_details' student_id=student.user.id %}">
                 <div style="width: 150px; height: 220px;" class="p-2 rounded-lg flex item-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
                     <div>
@@ -24,15 +24,34 @@
                 </div>
             </a>
             {%endfor%}
-            {%endif%}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if student_page_obj.has_previous %}
+                        <a href="?page=1" class="bg-blue-500 text-white p-1 rounded-lg">&laquo; first</a>
+                        <a href="?page={{ student_page_obj.previous_page_number }}" class="bg-blue-500 text-white p-1 rounded-lg">previous</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Page {{ student_page_obj.number }} of {{ student_page_obj.paginator.num_pages }}.
+                    </span>
+        
+                    {% if student_page_obj.has_next %}
+                        <a class="bg-blue-500 text-white p-1 rounded-lg" href="?page={{ student_page_obj.next_page_number }}">next</a>
+                        <a class="bg-blue-500 text-white p-1 rounded-lg" href="?page={{ student_page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500">No students available.</p>
+        {% endif %}
         </div>
     </div>
 
     <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 mt-3" style="background-color: #F9F9F9;">{{class.name}} TEACHERS</p>
     <div class="order">
         <div class="flex flex-wrap gap-3">
-            {%if teachers%}
-            {%for teacher in teachers%}
+            {%if teacher_page_obj%}
+            {%for teacher in teacher_page_obj%}
             <a href="{% url 'teacher_detail' teacher_id=teacher.user.id%}">
                 <div style="width: 150px; height: 220px;" class="p-2 rounded-lg flex item-center justify-center text-center font-medium hover:bg-blue-300 hover:text-white bg-white">
                     <div>
@@ -42,7 +61,26 @@
                 </div>
             </a>
             {%endfor%}
-            {%endif%}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if teacher_page_obj.has_previous %}
+                        <a href="?page=1" class="bg-blue-500 text-white p-1 rounded-lg">&laquo; first</a>
+                        <a href="?page={{ teacher_page_obj.previous_page_number }}" class="bg-blue-500 text-white p-1 rounded-lg">previous</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Page {{ teacher_page_obj.number }} of {{ teacher_page_obj.paginator.num_pages }}.
+                    </span>
+        
+                    {% if teacher_page_obj.has_next %}
+                        <a class="bg-blue-500 text-white p-1 rounded-lg" href="?page={{ teacher_page_obj.next_page_number }}">next</a>
+                        <a class="bg-blue-500 text-white p-1 rounded-lg" href="?page={{ teacher_page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500">No students available.</p>
+        {% endif %}
         </div>
     </div>
 

@@ -14,6 +14,7 @@ from classes.models import Class
 from student.models import Timetable
 from django.db.models import Count
 from django.urls import reverse
+from pages.views import paginate_objects
 
 # Create your views here.
 @login_required
@@ -95,11 +96,13 @@ def teacher_class_details(request, class_id):
     students = Student.objects.filter(student_class=classes)
     teachers = Teacher.objects.filter(classes=classes)
     timetables = Timetable.objects.filter(class_info=classes)
-    
+    student_page_obj = paginate_objects(request, students, 5)
+    teacher_page_obj = paginate_objects(request, teachers, 5)
+
     context = {
         'class': classes,
-        'students': students,
-        'teachers': teachers,
+        'student_page_obj': student_page_obj,
+        'teacher_page_obj': teacher_page_obj,
         'timetables': timetables,
     }
 
