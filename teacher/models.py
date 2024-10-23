@@ -1,6 +1,8 @@
 from django.db import models
 from administration.models import Teacher, Student
 from classes.models import Subject, Class
+from django.utils import timezone
+
 
 class TeacherClass(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_classes')
@@ -76,7 +78,7 @@ class StudentGradeModel(models.Model):
     final_grade = models.CharField(max_length=1, choices=GRADE_CHOICES, null=True, blank=True)
     out_of = models.IntegerField(default=100)
     year = models.IntegerField(default=2024)
-    day_created = models.DateField(auto_now_add=True)
+    day_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.student} - {self.term} - {self.year} - {self.subject}"

@@ -472,7 +472,7 @@ def view_student_grades(request, student_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
-    student_grade = StudentGradeModel.objects.filter(student=student).order_by('-year')
+    student_grade = StudentGradeModel.objects.filter(student=student).order_by('-day_created')
     context = {
         'student':student,
         'grades':student_grade
