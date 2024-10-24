@@ -3,7 +3,8 @@ from django.http import HttpResponseForbidden, Http404
 from accounts.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from administration.forms import TeacherForm, StudentForm, AnnoucementForm, TodosListForm
+from administration.forms import (TeacherForm, StudentForm, AnnoucementForm, 
+                                  TodosListForm, SchemeOfWorkForm)
 from administration.models import (Student, Teacher, Annoucement, TodosList, 
                                    StudentNotification, TeacherNotification,)
 from teacher.models import TeacherClass, StudentPosition, StudentGradeModel
@@ -418,3 +419,18 @@ def delete_todo(request, task_id):
     return redirect('admin_dashboard')
 
 
+def create_class_scheme_of_work(request, class_id):
+    class_info = get_object_or_404(Class, id=class_id)
+    if request.method == 'POST':
+        form = SchemeOfWorkForm(request.POST)
+        if form.is_valid():
+            scheme_form = form.save(commit=False)
+            scheme_form.classes = class_info
+            scheme_form.save()
+    else:
+        form = SchemeOfWorkForm()
+    context = {
+        'form' : form,
+        'class_info' : class_info
+    }
+    return render(request, 'dashboards/all_admin_pages/scheme.html', context)
