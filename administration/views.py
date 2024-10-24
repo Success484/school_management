@@ -416,3 +416,5 @@ def delete_todo(request, task_id):
     task.delete()
     messages.success(request, 'Task deleted successfully')
     return redirect('admin_dashboard')
+
+
