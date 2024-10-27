@@ -10,6 +10,7 @@
 {%url 'subject_list' as subject_list%}
 {%url 'all_annoucement' as all_annoucement%}
 {%url 'view_attendance_class' as view_attendance_class%}
+{%url 'scheme_of_work_class' as scheme_of_work_class%}
 
 
 <!-- SIDEBAR -->
@@ -53,6 +54,12 @@
                 <a href="{{subject_list}}">
                     <i class='bx bxs-book'></i>
                     <span class="text">Subject</span>
+                </a>
+            </li>
+            <li class="{% if request.path == scheme_of_work_class %}active{% endif %}">
+                <a href="{{scheme_of_work_class}}">
+                    <i class='bx bxs-book'></i>
+                    <span class="text">Scheme of Work</span>
                 </a>
             </li>
             <li class="{% if request.path == view_attendance_class %}active{% endif %}">

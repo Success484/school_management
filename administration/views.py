@@ -419,6 +419,10 @@ def delete_todo(request, task_id):
     return redirect('admin_dashboard')
 
 
+def scheme_of_work_class(request):
+    classes = Class.objects.all()
+    return render(request, 'dashboards/all_admin_pages/scheme_classes.html', {'classes':classes})
+
 def create_class_scheme_of_work(request, class_id):
     class_info = get_object_or_404(Class, id=class_id)
     if request.method == 'POST':
@@ -433,4 +437,4 @@ def create_class_scheme_of_work(request, class_id):
         'form' : form,
         'class_info' : class_info
     }
-    return render(request, 'dashboards/all_admin_pages/scheme.html', context)
+    return render(request, 'dashboards/all_admin_pages/scheme_form.html', context)

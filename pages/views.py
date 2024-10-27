@@ -11,7 +11,6 @@ from django.http import JsonResponse
 from itertools import chain
 from operator import attrgetter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from .utils import paginate_objects
 # Create your views here.
 
 
