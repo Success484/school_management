@@ -64,15 +64,3 @@ class TodosList(models.Model):
 
     def __str__(self):
         return self.name
-    
-class SchemeOfWork(models.Model):
-    TERMS = [
-        ('First Term', 'First Term'),
-        ('Second Term', 'Second Term'),
-        ('Third Term', 'Third Term'),
-    ]
-    term = models.CharField(max_length=20, choices=TERMS, default='First Term',)
-    classes = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, related_name='schemeofwork class +')
-    subject = models.ManyToManyField(Subject, related_name='schemeofwork')
-    subject_date = models.CharField(max_length=200)
-    subject_topics = models.TextField()

@@ -1,9 +1,9 @@
 from django.contrib import admin
-from teacher.models import Attendance, TeacherClass, StudentGradeModel, StudentPosition
+from teacher.models import Attendance, TeacherClass, StudentGradeModel, StudentPosition, SchemeOfWork
 # Register your models here.
 
 admin.site.register(TeacherClass)
-
+admin.site.register(SchemeOfWork)
 
 @admin.register(Attendance)
 class AttendanceAdmin(admin.ModelAdmin):

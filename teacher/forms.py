@@ -1,5 +1,5 @@
 from django import forms
-from .models import TeacherClass, Attendance, StudentGradeModel, StudentPosition
+from teacher.models import Attendance, StudentGradeModel, StudentPosition, SchemeOfWork, TeacherClass
 import calendar
 from classes.models import Subject
 
@@ -9,7 +9,6 @@ class TeacherClassForm(forms.ModelForm):
         model = TeacherClass
         fields = ['class_name', 'subjects']
         widgets = {
-            # 'teacher': forms.Select(attrs={'class': 'final-grade'}),
             'class_name': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
             'subjects': forms.SelectMultiple(attrs={'class': ' select2-multiple class-form'}),
         }
@@ -57,7 +56,6 @@ class AttendanceForm(forms.ModelForm):
         }
 
 
-
 class StudentGradeForm(forms.ModelForm):
     year = forms.ChoiceField(
         choices=[(str(y), y) for y in range(2024, 2034)],
@@ -88,7 +86,6 @@ class StudentGradeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if class_info and teacher:
-            # Filter subjects to only include those taught by the teacher in the specific class
             self.fields['subject'].queryset = Subject.objects.filter(
                 teacher_subject__teacher=teacher,
                 teacher_subject__class_name=class_info
@@ -102,3 +99,30 @@ class StudentPositionForm(forms.ModelForm):
             'position': forms.TextInput(attrs={'class': 'final-grade'}),
             'comment': forms.Textarea(attrs={'class': 'final-grade'}),
         }
+
+
+
+class SchemeOfWorkForm(forms.ModelForm):
+    class Meta:
+        model = SchemeOfWork
+        fields = ['term', 'subject', 'subject_date', 'subject_topics', 'week']
+        widgets = {
+            'term': forms.Select(attrs={'class': 'final-grade'}),
+            'subject': forms.Select(attrs={'class': 'final-grade'}),
+            'subject_date' : forms.TextInput(attrs={'class': 'final-grade'}),
+            'subject_topics' : forms.Textarea(attrs={'class': 'final-grade'}),
+            'week' : forms.TextInput(attrs={'class': 'final-grade'}),
+        }
+
+
+    def __init__(self, *args, **kwargs):
+        class_info = kwargs.pop('class_info', None)
+        teacher = kwargs.pop('teacher', None)
+        super().__init__(*args, **kwargs)
+
+        if class_info and teacher:
+            # Filter subjects to only include those taught by the teacher in the specific class
+            self.fields['subject'].queryset = Subject.objects.filter(
+                teacher_subject__teacher=teacher,
+                teacher_subject__class_name=class_info
+            )

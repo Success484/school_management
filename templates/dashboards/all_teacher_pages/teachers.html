@@ -8,6 +8,8 @@
 {% url 'grade_student_nav' as grade_student_nav %}
 {% url 'teacher_details_page' as teacher_details_page%}
 {% url 'Choose_class_to_mark' as Choose_class_to_mark %}
+{%url 'scheme_of_work_class' as scheme_of_work_class%}
+
 
     <!-- SIDEBAR -->
     <section id="sidebar">
@@ -50,6 +52,12 @@
                 <a href="{% url 'Choose_class_to_mark'%}">
                     <i class='bx bxs-calendar-check'></i>
                     <span class="text">Mark Attendance</span>
+                </a>
+            </li>
+            <li class="{% if request.path == scheme_of_work_class %}active{% endif %}">
+                <a href="{{scheme_of_work_class}}">
+                    <i class='bx bxs-book'></i>
+                    <span class="text">Scheme of Work</span>
                 </a>
             </li>
         </ul>

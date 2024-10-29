@@ -5,11 +5,10 @@ from calendar import monthrange
 from datetime import date, timedelta, datetime
 import calendar
 from django.contrib import messages
-from administration.models import Annoucement
+from administration.models import Annoucement, Teacher, Student
 from django.contrib.auth.decorators import login_required
-from teacher.forms import AttendanceForm, AttendanceMonthForm, StudentGradeForm, StudentPositionForm
-from teacher.models import Attendance, StudentGradeModel, TeacherClass, StudentPosition
-from administration.models import Teacher, Student
+from teacher.forms import AttendanceForm, AttendanceMonthForm, StudentGradeForm, StudentPositionForm, SchemeOfWorkForm
+from teacher.models import Attendance, StudentGradeModel, TeacherClass, StudentPosition, SchemeOfWork
 from classes.models import Class
 from student.models import Timetable
 from django.db.models import Count
@@ -98,12 +97,13 @@ def teacher_class_details(request, class_id):
     timetables = Timetable.objects.filter(class_info=classes)
     student_page_obj = paginate_objects(request, students, 5)
     teacher_page_obj = paginate_objects(request, teachers, 5)
-
+    scheme_of_work = SchemeOfWork.objects.all()
     context = {
         'class': classes,
         'student_page_obj': student_page_obj,
         'teacher_page_obj': teacher_page_obj,
         'timetables': timetables,
+        'scheme_of_work':scheme_of_work
     }
 
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
@@ -420,33 +420,20 @@ def grade_student(request, student_id):
         return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
     class_info = student.student_class
-    teacher = request.user.teacher_profile
-
-    teacher_subject = teacher.subject.first()
-    
-    student_grade = StudentGradeModel.objects.filter(student=student, subject=teacher_subject).first()
-
+    teacher = request.user.teacher_profile    
     if request.method == "POST":
-        if student_grade:
-            gradeForm = StudentGradeForm(request.POST, instance=student_grade, class_info=class_info, teacher=teacher)
-        else:
-            gradeForm = StudentGradeForm(request.POST, class_info=class_info, teacher=teacher)
-
+        gradeForm = StudentGradeForm(request.POST, class_info=class_info, teacher=teacher)
         if gradeForm.is_valid():
             grade_info = gradeForm.save(commit=False)
             grade_info.student = student
-            grade_info.teacher_class = TeacherClass.objects.get(teacher=teacher, class_name=class_info)
-            grade_info.subject = teacher_subject
+            grade_info.teacher_class, _ = TeacherClass.objects.get_or_create(teacher=teacher, class_name=class_info)
             grade_info.save()
-            messages.success(request, 'Successfully Grade student')
+            messages.success(request, 'Successfully graded student')
             return redirect('teacher_class_student_details', student_id=student.user.id)
-
-    else:
-        if student_grade:
-            gradeForm = StudentGradeForm(instance=student_grade, class_info=class_info, teacher=teacher)
         else:
-            gradeForm = StudentGradeForm(class_info=class_info, teacher=teacher)
-
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        gradeForm = StudentGradeForm(class_info=class_info, teacher=teacher)
     context = {
         'student': student,
         'class_info': class_info,
@@ -455,19 +442,46 @@ def grade_student(request, student_id):
     }
     return render(request, 'dashboards/all_teacher_pages/grade_form.html', context)
 
+
 @login_required
-def clear_grade_form(request, student_id):
+def update_grade_student(request, student_id, grade_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
     teacher = request.user.teacher_profile
-    teacher_subject = teacher.subject.first()
-    student_grade = StudentGradeModel.objects.filter(student=student, subject=teacher_subject).first()
-    if student_grade:
-        student_grade.delete()
+    class_info = student.student_class
+    student_grade = get_object_or_404(StudentGradeModel, id=grade_id, student=student, teacher_class__teacher=request.user.teacher_profile)
+    if request.method == "POST":
+        grade_form = StudentGradeForm(request.POST, instance=student_grade, class_info=class_info, teacher=teacher)
+        if grade_form.is_valid():
+            grade_form.save()
+            messages.success(request, 'Grade updated successfully')
+            return redirect('teacher_class_student_details', student_id=student.user.id)
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
-        pass
-    return redirect('grade_student', student_id=student_id)
+        grade_form = StudentGradeForm(instance=student_grade, class_info=class_info, teacher=teacher)
+    context = {
+        'student': student,
+        'class_info': class_info,
+        'teacher': teacher,
+        'gradeForm': grade_form
+    }
+    return render(request, 'dashboards/all_teacher_pages/grade_form.html', context)
+
+
+@login_required
+def clear_grade_form(request, student_id, grade_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    student = get_object_or_404(Student, id=student_id)
+    grade = get_object_or_404(StudentGradeModel, id=grade_id, student=student, teacher_class__teacher=request.user.teacher_profile)
+    if grade:
+        grade.delete()  
+        messages.success(request, 'Grade deleted successfully.')
+    else:
+        messages.error(request, 'Grade not found.')
+    return redirect('view_student_grades', student_id=student_id)
 
 
 @login_required
@@ -476,9 +490,20 @@ def view_student_grades(request, student_id):
         return HttpResponseForbidden('You do not have permission to access this page.')
     student = get_object_or_404(Student, id=student_id)
     student_grade = StudentGradeModel.objects.filter(student=student).order_by('-day_created')
+    if request.user.is_teacher:
+        teacher = get_object_or_404(Teacher, user=request.user)
+        teacher_subjects = teacher.subject.all()
+        teacher_classes = teacher.classes.all()
+    else:
+        teacher = None
+        teacher_subjects = []
+        teacher_classes = []
     context = {
-        'student':student,
-        'grades':student_grade
+        'student': student,
+        'grades': student_grade,
+        'teacher_subjects': teacher_subjects,
+        'teacher_classes': teacher_classes,
+        'teacher': teacher,
     }
     return render(request, 'dashboards/all_teacher_pages/view_grade.html', context)
 
@@ -571,3 +596,43 @@ def annoucement(request):
         return HttpResponseForbidden('You do not have permission to access this page.')
     post = Annoucement.objects.all().order_by('-date_posted')
     return render(request, 'dashboards/all_teacher_pages/annoucements.html', {'posts':post})
+
+
+@login_required
+def scheme_of_work_class(request):
+    teacher = get_object_or_404(Teacher, user=request.user)
+    classes = teacher.classes.all()
+    return render(request, 'dashboards/all_teacher_pages/scheme_classes.html', {'classes':classes})
+
+
+@login_required
+def create_class_scheme_of_work(request, class_id):
+    class_info = get_object_or_404(Class, id=class_id)
+    teacher = get_object_or_404(Teacher, user=request.user)
+    scheme_of_work = SchemeOfWork.objects.all()
+    if request.user.is_teacher:
+        teacher_subjects = teacher.subject.all()
+        teacher_classes = teacher.classes.all()
+    else:
+        teacher = None
+        teacher_subjects = []
+        teacher_classes = []
+    if request.method == 'POST':
+        form = SchemeOfWorkForm(request.POST, class_info=class_info, teacher=teacher)
+        if form.is_valid():
+            scheme_form = form.save(commit=False)
+            scheme_form.classes = class_info
+            scheme_form.save()
+        else:
+            print(form.errors)
+    else:
+        form = SchemeOfWorkForm(class_info=class_info, teacher=teacher)
+    context = {
+        'form' : form,
+        'class_info' : class_info,
+        'scheme_of_works':scheme_of_work,
+        'teacher_subjects': teacher_subjects,
+        'teacher_classes': teacher_classes,
+        'teacher': teacher,
+    }
+    return render(request, 'dashboards/all_teacher_pages/scheme_form.html', context)

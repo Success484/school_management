@@ -91,3 +91,21 @@ class StudentPosition(models.Model):
 
     def __str__(self):
         return f"{self.position} - {self.comment}"
+    
+
+class SchemeOfWork(models.Model):
+    TERMS = [
+        ('First Term', 'First Term'),
+        ('Second Term', 'Second Term'),
+        ('Third Term', 'Third Term'),
+    ]
+    teacher_classes = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="teacher_scheme", null=True)
+    term = models.CharField(max_length=20, choices=TERMS, default='First Term',)
+    classes = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, related_name='schemeofwork class +')
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, related_name='schemeofwork')
+    subject_date = models.CharField(max_length=500)
+    subject_topics = models.TextField()
+    week = models.CharField(max_length=200, default='Week 1')
+
+    def __str__(self):
+        return f"{self.term} {self.classes} {self.subject}"

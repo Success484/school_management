@@ -1,6 +1,7 @@
 from django import forms
 from administration.models import (Teacher, Student, Annoucement, 
-                                   TodosList, SchemeOfWork)
+                                   TodosList)
+from classes.models import Subject
 
 class TeacherForm(forms.ModelForm):
     class Meta:
@@ -59,15 +60,3 @@ class TodosListForm(forms.ModelForm):
         widgets = {
             'name' : forms.TextInput(attrs={'class': 'final-grade'}),
          }
-
-
-class SchemeOfWorkForm(forms.ModelForm):
-    class Meta:
-        model = SchemeOfWork
-        fields = ['term', 'subject', 'subject_date', 'subject_topics']
-        widgets = {
-            'term': forms.Select(attrs={'class': 'final-grade'}),
-            'subject': forms.Select(attrs={'class': 'final-grade'}),
-            'subject_date' : forms.TextInput(attrs={'class': 'final-grade'}),
-            'subject_topics' : forms.Textarea(attrs={'class': 'final-grade'}),
-        }
