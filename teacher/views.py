@@ -14,6 +14,8 @@ from student.models import Timetable
 from django.db.models import Count
 from django.urls import reverse
 from pages.views import paginate_objects
+from collections import defaultdict
+
 
 # Create your views here.
 @login_required
@@ -91,23 +93,30 @@ def Class_record_list(request, class_id):
 def teacher_class_details(request, class_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
+    
     classes = get_object_or_404(Class, id=class_id)
-    students = Student.objects.filter(student_class=classes)
-    teachers = Teacher.objects.filter(classes=classes)
+    students = Student.objects.filter(student_class=classes).order_by('user__last_name')
+    teachers = Teacher.objects.filter(classes=classes).order_by('user__last_name')
     timetables = Timetable.objects.filter(class_info=classes)
     student_page_obj = paginate_objects(request, students, 5)
     teacher_page_obj = paginate_objects(request, teachers, 5)
-    scheme_of_work = SchemeOfWork.objects.all()
+    
+    scheme_of_work = SchemeOfWork.objects.filter(classes=classes)
+
+    # scheme_by_subject_teacher = defaultdict(lambda: defaultdict(list))
+    # for work in scheme_of_work:
+    #     scheme_by_subject_teacher[work.subject][work.teacher].append(work)
+
     context = {
         'class': classes,
         'student_page_obj': student_page_obj,
         'teacher_page_obj': teacher_page_obj,
         'timetables': timetables,
-        'scheme_of_work':scheme_of_work
+        'scheme_of_work': scheme_of_work
+        # 'scheme_by_subject_teacher': scheme_by_subject_teacher,
     }
 
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
-
 
 @login_required
 def teacher_class_student_details(request, student_id):
@@ -622,6 +631,7 @@ def create_class_scheme_of_work(request, class_id):
         if form.is_valid():
             scheme_form = form.save(commit=False)
             scheme_form.classes = class_info
+            scheme_form.teacher = teacher
             scheme_form.save()
         else:
             print(form.errors)

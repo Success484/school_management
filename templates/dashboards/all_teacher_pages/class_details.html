@@ -125,28 +125,36 @@
 </div>
 <p class="text-center p-5 my-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Scheme Of Work Table</p>
 <div>
-    <table class="min-w-full py-3 rounded-lg" style="background-color: #F9F9F9;">
-        <thead>
-            <tr>
-                <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Week</th>
-                <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Topics</th>
-                <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Discriptions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for scheme_of_work in scheme_of_work %}
-            <tr>
-                <td class="pl-2 border-2 border-gray-300 w-44">{{scheme_of_work.week}}</td>
-                <td class="pl-2 border-2 border-gray-300 w-44">{{scheme_of_work.subject_date}}</td>
-                <td class="pl-2 border-2 border-gray-300 h-28">{{scheme_of_work.subject_topics}}</td>
-            </tr>
-            {%empty%}
-            <p>
-                No scheme of work yet
-            </p>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div id="accordion">
+        {% for scheme_of_work in scheme_of_work %}
+            <h3 class="font-medium">
+                Scheme of work {{scheme_of_work.subject}}
+            </h3>
+            <div>
+                <table class="min-w-full py-3 rounded-lg" style="background-color: #F9F9F9;">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Week</th>
+                            <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Topics</th>
+                            <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Discriptions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pl-2 border-2 border-gray-300 w-44">{{scheme_of_work.week}}</td>
+                            <td class="pl-2 border-2 border-gray-300 w-44">{{scheme_of_work.subject_date}}</td>
+                            <td class="pl-2 border-2 border-gray-300 h-28">{{scheme_of_work.subject_topics}}</td>
+                        </tr>
+                        {%empty%}
+                        <p>
+                            No scheme of work yet
+                        </p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    
 </div>
     </div>            
 </div>

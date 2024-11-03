@@ -100,6 +100,7 @@ class SchemeOfWork(models.Model):
         ('Third Term', 'Third Term'),
     ]
     teacher_classes = models.ForeignKey(TeacherClass, on_delete=models.CASCADE, related_name="teacher_scheme", null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="schemes_of_work", null=True)
     term = models.CharField(max_length=20, choices=TERMS, default='First Term',)
     classes = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, related_name='schemeofwork class +')
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, related_name='schemeofwork')
