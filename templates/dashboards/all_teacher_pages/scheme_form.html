@@ -10,30 +10,36 @@
     {% endfor %}
     {% endif %}
     <div>
-        <table class="min-w-full py-3 rounded-lg" style="background-color: #F9F9F9;">
-            <thead>
+        {% for subject, schemes in schemes_by_subject.items %}
+    <table class="min-w-full py-3 rounded-lg" style="background-color: #F9F9F9;">
+        <thead>
+            <tr>
+                <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Week</th>
+                <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Topics</th>
+                <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Descriptions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="3" class="font-bold">{{ subject }}</td>
+            </tr>
+            {% for scheme_of_work in schemes %}
                 <tr>
-                    <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Week</th>
-                    <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Topics</th>
-                    <th class="py-2 px-2 border-2 border-r  border-gray-300 text-gray-600">Subject Discriptions</th>
+                    <td class="pl-2 border-2 border-gray-300 w-44">{{ scheme_of_work.week }}</td>
+                    <td class="pl-2 border-2 border-gray-300 w-44">{{ scheme_of_work.subject_date }}</td>
+                    <td class="pl-2 border-2 border-gray-300 h-28">{{ scheme_of_work.subject_topics }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for scheme_of_work in scheme_of_works %}
-                {% if request.user == teacher.user and scheme_of_work.subject in teacher_subjects %}
+            {% empty %}
                 <tr>
-                    <td class="pl-2 border-2 border-gray-300 w-44">{{scheme_of_work.week}}</td>
-                    <td class="pl-2 border-2 border-gray-300 w-44">{{scheme_of_work.subject_date}}</td>
-                    <td class="pl-2 border-2 border-gray-300 h-28">{{scheme_of_work.subject_topics}}</td>
+                    <td colspan="3">No scheme of work available for this subject.</td>
                 </tr>
-                {%endif%}
-                {%empty%}
-                <p>
-                    No scheme of work yet
-                </p>
-                {% endfor %}
-            </tbody>
-        </table>
+            {% endfor %}
+        </tbody>
+    </table>
+{% empty %}
+    <p>No schemes of work available.</p>
+{% endfor %}
+
     </div>
     <div>
         <p class="text-center p-5 my-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Scheme Of Work Form</p>

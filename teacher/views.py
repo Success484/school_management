@@ -614,18 +614,25 @@ def scheme_of_work_class(request):
     return render(request, 'dashboards/all_teacher_pages/scheme_classes.html', {'classes':classes})
 
 
+from collections import defaultdict
+
 @login_required
 def create_class_scheme_of_work(request, class_id):
     class_info = get_object_or_404(Class, id=class_id)
     teacher = get_object_or_404(Teacher, user=request.user)
-    scheme_of_work = SchemeOfWork.objects.all()
-    if request.user.is_teacher:
-        teacher_subjects = teacher.subject.all()
-        teacher_classes = teacher.classes.all()
-    else:
-        teacher = None
-        teacher_subjects = []
-        teacher_classes = []
+    
+    # Retrieve schemes for the selected class and filter by teacher's subjects
+    scheme_of_work = SchemeOfWork.objects.filter(classes=class_info, teacher=teacher)
+
+    # Group schemes by subject
+    schemes_by_subject = {}
+    for scheme in scheme_of_work:
+        if scheme.subject not in schemes_by_subject:
+            schemes_by_subject[scheme.subject] = []
+        schemes_by_subject[scheme.subject].append(scheme)
+    
+    teacher_subjects = teacher.subject.all() if request.user.is_teacher else []
+
     if request.method == 'POST':
         form = SchemeOfWorkForm(request.POST, class_info=class_info, teacher=teacher)
         if form.is_valid():
@@ -633,16 +640,18 @@ def create_class_scheme_of_work(request, class_id):
             scheme_form.classes = class_info
             scheme_form.teacher = teacher
             scheme_form.save()
+            return redirect('create_class_scheme_of_work', class_id=class_id)
         else:
             print(form.errors)
     else:
         form = SchemeOfWorkForm(class_info=class_info, teacher=teacher)
+
     context = {
-        'form' : form,
-        'class_info' : class_info,
-        'scheme_of_works':scheme_of_work,
+        'form': form,
+        'class_info': class_info,
+        'schemes_by_subject': schemes_by_subject,
         'teacher_subjects': teacher_subjects,
-        'teacher_classes': teacher_classes,
         'teacher': teacher,
     }
+    
     return render(request, 'dashboards/all_teacher_pages/scheme_form.html', context)
