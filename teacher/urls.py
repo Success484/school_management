@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin_dashboard/teacher/details/<int:teacher_id>/clear/student_position_and_comment/', views.teacher_detail, name='teacher_detail'),
     path('attendance/delete/<int:class_id>/<int:year>/<int:month>/', views.delete_attendance_record, name='delete_attendance_record'), 
     path('dashboard/choose/schemeofwork/classes/', views.scheme_of_work_class, name='scheme_of_work_class'),
-    path('dashboard/choose/schemeofwork/classes/<int:class_id>/', views.create_class_scheme_of_work, name='create_class_scheme_of_work'),   
+    path('dashboard/choose/schemeofwork/classes/<int:class_id>/', views.create_class_scheme_of_work, name='create_class_scheme_of_work'), 
+    path('dashboard/choose/schemeofwork/classes/<int:class_id>/update/<int:scheme_id>/', views.update_class_scheme_of_work, name='update_class_scheme_of_work'),   
 ]

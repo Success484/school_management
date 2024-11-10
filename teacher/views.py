@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
 from calendar import monthrange
 from datetime import date, timedelta, datetime
 import calendar
@@ -14,7 +14,6 @@ from student.models import Timetable
 from django.db.models import Count
 from django.urls import reverse
 from pages.views import paginate_objects
-from collections import defaultdict
 
 
 # Create your views here.
@@ -93,29 +92,20 @@ def Class_record_list(request, class_id):
 def teacher_class_details(request, class_id):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
-    
     classes = get_object_or_404(Class, id=class_id)
     students = Student.objects.filter(student_class=classes).order_by('user__last_name')
     teachers = Teacher.objects.filter(classes=classes).order_by('user__last_name')
     timetables = Timetable.objects.filter(class_info=classes)
     student_page_obj = paginate_objects(request, students, 5)
     teacher_page_obj = paginate_objects(request, teachers, 5)
-    
     scheme_of_work = SchemeOfWork.objects.filter(classes=classes)
-
-    # scheme_by_subject_teacher = defaultdict(lambda: defaultdict(list))
-    # for work in scheme_of_work:
-    #     scheme_by_subject_teacher[work.subject][work.teacher].append(work)
-
     context = {
         'class': classes,
         'student_page_obj': student_page_obj,
         'teacher_page_obj': teacher_page_obj,
         'timetables': timetables,
         'scheme_of_work': scheme_of_work
-        # 'scheme_by_subject_teacher': scheme_by_subject_teacher,
     }
-
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
 
 @login_required
@@ -614,25 +604,17 @@ def scheme_of_work_class(request):
     return render(request, 'dashboards/all_teacher_pages/scheme_classes.html', {'classes':classes})
 
 
-from collections import defaultdict
-
 @login_required
 def create_class_scheme_of_work(request, class_id):
     class_info = get_object_or_404(Class, id=class_id)
     teacher = get_object_or_404(Teacher, user=request.user)
-    
-    # Retrieve schemes for the selected class and filter by teacher's subjects
     scheme_of_work = SchemeOfWork.objects.filter(classes=class_info, teacher=teacher)
-
-    # Group schemes by subject
     schemes_by_subject = {}
     for scheme in scheme_of_work:
         if scheme.subject not in schemes_by_subject:
             schemes_by_subject[scheme.subject] = []
         schemes_by_subject[scheme.subject].append(scheme)
-    
     teacher_subjects = teacher.subject.all() if request.user.is_teacher else []
-
     if request.method == 'POST':
         form = SchemeOfWorkForm(request.POST, class_info=class_info, teacher=teacher)
         if form.is_valid():
@@ -640,12 +622,11 @@ def create_class_scheme_of_work(request, class_id):
             scheme_form.classes = class_info
             scheme_form.teacher = teacher
             scheme_form.save()
+            subject = scheme_form.subject
+            messages.success(request, f'Scheme of work successfully created for {subject}')
             return redirect('create_class_scheme_of_work', class_id=class_id)
-        else:
-            print(form.errors)
     else:
         form = SchemeOfWorkForm(class_info=class_info, teacher=teacher)
-
     context = {
         'form': form,
         'class_info': class_info,
@@ -653,5 +634,39 @@ def create_class_scheme_of_work(request, class_id):
         'teacher_subjects': teacher_subjects,
         'teacher': teacher,
     }
-    
+    return render(request, 'dashboards/all_teacher_pages/scheme_form.html', context)
+
+
+@login_required
+def update_class_scheme_of_work(request, class_id, scheme_id):
+    class_info = get_object_or_404(Class, id=class_id)
+    teacher = get_object_or_404(Teacher, user=request.user)
+    scheme_of_work = get_object_or_404(SchemeOfWork, classes=class_info, id=scheme_id, teacher=teacher)
+    schemes_by_subject = {}
+    all_schemes = SchemeOfWork.objects.filter(classes=class_info, teacher=teacher)
+    for scheme in all_schemes:
+        if scheme.subject not in schemes_by_subject:
+            schemes_by_subject[scheme.subject] = []
+        schemes_by_subject[scheme.subject].append(scheme)
+    teacher_subjects = teacher.subject.all() if request.user.is_teacher else []
+    if request.method == 'POST':
+        form = SchemeOfWorkForm(request.POST, instance=scheme_of_work, class_info=class_info, teacher=teacher)
+        if form.is_valid():
+            scheme_form = form.save(commit=False)
+            scheme_form.classes = class_info
+            scheme_form.teacher = teacher
+            scheme_form.save()
+            subject = scheme_form.subject
+            messages.success(request, f'Scheme of work successfully updated for {subject}')
+            return redirect('create_class_scheme_of_work', class_id=class_id)
+    else:
+        form = SchemeOfWorkForm(instance=scheme_of_work, class_info=class_info, teacher=teacher)
+    context = {
+        'form': form,
+        'class_info': class_info,
+        'schemes_by_subject': schemes_by_subject,
+        'teacher_subjects': teacher_subjects,
+        'teacher': teacher,
+        'scheme_of_work': scheme_of_work
+    }
     return render(request, 'dashboards/all_teacher_pages/scheme_form.html', context)
