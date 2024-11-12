@@ -99,12 +99,18 @@ def teacher_class_details(request, class_id):
     student_page_obj = paginate_objects(request, students, 5)
     teacher_page_obj = paginate_objects(request, teachers, 5)
     scheme_of_work = SchemeOfWork.objects.filter(classes=classes)
+    schemes_by_subject = {}
+    for scheme in scheme_of_work:
+        if scheme.subject not in schemes_by_subject:
+            schemes_by_subject[scheme.subject] = []
+        schemes_by_subject[scheme.subject].append(scheme)
     context = {
         'class': classes,
         'student_page_obj': student_page_obj,
         'teacher_page_obj': teacher_page_obj,
         'timetables': timetables,
-        'scheme_of_work': scheme_of_work
+        # 'scheme_of_work': scheme_of_work,
+        'schemes_by_subject': schemes_by_subject,
     }
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
 

@@ -28,7 +28,7 @@
                             {% for scheme_of_work in schemes %}
                                 <tr>
                                     <td class="pl-2 border-2 border-gray-300 w-44">{{ scheme_of_work.week }} <br> 
-                                        <p class="p-3 font-normal"><a href="{%url 'update_class_scheme_of_work' class_id=class_info.id scheme_id=scheme_of_work.id%}" class="bg-blue-500 p-2 rounded-lg hover:bg-blue-300" style="color: white;"><i class="fa-regular fa-pen-to-square fa-sm"></i><span class="md:pl-1">Edit Scheme</span></a></p>
+                                        <p class="p-1 font-normal"><a href="{%url 'update_class_scheme_of_work' class_id=class_info.id scheme_id=scheme_of_work.id%}" class="bg-blue-500 p-1 rounded-lg hover:bg-blue-300" style="color: white; font-size: 10px;"><span class="md:pl-1">Edit Scheme</span></a></p>
                                     </td>
                                     <td class="pl-2 border-2 border-gray-300 w-44">{{ scheme_of_work.subject_date }}</td>
                                     <td class="pl-2 border-2 border-gray-300 h-28">{{ scheme_of_work.subject_topics }}</td>
