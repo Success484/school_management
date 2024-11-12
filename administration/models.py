@@ -49,7 +49,6 @@ class StudentNotification(BaseNotification):
 
 
 class Annoucement(models.Model):
-    title = models.CharField(max_length=300)
     subject = models.CharField(max_length=300, null=False)
     description = models.CharField(max_length=1000)
     date_posted = models.DateTimeField(auto_now_add=True)

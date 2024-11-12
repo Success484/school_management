@@ -44,9 +44,8 @@ class StudentForm(forms.ModelForm):
 class AnnoucementForm(forms.ModelForm):
     class Meta:
         model = Annoucement
-        fields = ['title', 'subject', 'description']
+        fields = ['subject', 'description']
         widgets = {
-            'title' : forms.TextInput(attrs={'class': 'final-grade'}),
             'subject' : forms.TextInput(attrs={'class': 'final-grade'}),
             'description' : forms.Textarea(attrs={'class': 'final-grade'}),
         }
