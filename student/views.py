@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .forms import TimetableForm
 from classes.models import Class
-from teacher.models import Attendance, StudentGradeModel, StudentPosition
+from teacher.models import Attendance, StudentGradeModel, StudentPosition, SchemeOfWork
 from student.models import Timetable
 from django.contrib import messages
 from django.db.models import Count
@@ -342,3 +342,22 @@ def student_search_results_view(request):
     }
     
     return render(request, 'dashboards/all_student_pages/search_result.html', context)
+
+
+@login_required
+def scheme_of_work(request):
+    if not request.user.is_student:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    student = request.user.student_profile
+    classes = student.student_class
+    scheme_of_work = SchemeOfWork.objects.filter(classes=classes)
+    schemes_by_subject = {}
+    for scheme in scheme_of_work:
+        if scheme.subject not in schemes_by_subject:
+            schemes_by_subject[scheme.subject] = []
+        schemes_by_subject[scheme.subject].append(scheme)
+    context = {
+        'class': classes,
+        'schemes_by_subject': schemes_by_subject,
+    }
+    return render(request, 'dashboards/all_student_pages/scheme_of_work.html', context)

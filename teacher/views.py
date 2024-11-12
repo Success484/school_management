@@ -109,7 +109,6 @@ def teacher_class_details(request, class_id):
         'student_page_obj': student_page_obj,
         'teacher_page_obj': teacher_page_obj,
         'timetables': timetables,
-        # 'scheme_of_work': scheme_of_work,
         'schemes_by_subject': schemes_by_subject,
     }
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
@@ -605,6 +604,8 @@ def annoucement(request):
 
 @login_required
 def scheme_of_work_class(request):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     teacher = get_object_or_404(Teacher, user=request.user)
     classes = teacher.classes.all()
     return render(request, 'dashboards/all_teacher_pages/scheme_classes.html', {'classes':classes})
@@ -612,6 +613,8 @@ def scheme_of_work_class(request):
 
 @login_required
 def create_class_scheme_of_work(request, class_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     class_info = get_object_or_404(Class, id=class_id)
     teacher = get_object_or_404(Teacher, user=request.user)
     scheme_of_work = SchemeOfWork.objects.filter(classes=class_info, teacher=teacher)
@@ -645,6 +648,8 @@ def create_class_scheme_of_work(request, class_id):
 
 @login_required
 def update_class_scheme_of_work(request, class_id, scheme_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
     class_info = get_object_or_404(Class, id=class_id)
     teacher = get_object_or_404(Teacher, user=request.user)
     scheme_of_work = get_object_or_404(SchemeOfWork, classes=class_info, id=scheme_id, teacher=teacher)
@@ -676,3 +681,16 @@ def update_class_scheme_of_work(request, class_id, scheme_id):
         'scheme_of_work': scheme_of_work
     }
     return render(request, 'dashboards/all_teacher_pages/scheme_form.html', context)
+
+
+@login_required
+def delete_scheme_of_work(request, scheme_id, class_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    class_info = get_object_or_404(Class, id=class_id)
+    teacher = get_object_or_404(Teacher, user=request.user)
+    scheme_of_work = get_object_or_404(SchemeOfWork, classes=class_info, id=scheme_id, teacher=teacher)
+    scheme_of_work.delete()
+    subject = scheme_of_work.subject
+    messages.success(request, f'Scheme of work successfully deleted for {subject}')
+    return redirect('create_class_scheme_of_work', class_id=class_id)

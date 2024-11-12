@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from pages.views import paginate_objects
-
+from teacher.models import SchemeOfWork
 
 @login_required
 def create_class(request):
@@ -114,15 +114,22 @@ def classDetail(request, user_id):
     if not request.user.is_superuser:
         return HttpResponseForbidden('You do not have permission to access this page.')
     classes = get_object_or_404(Class, id=user_id)
-    student = Student.objects.filter(student_class=classes)
+    student = Student.objects.filter(student_class=classes).order_by('user__last_name')
     student_page_obj = paginate_objects(request, student, 5)
-    teacher = Teacher.objects.filter(classes=classes)
+    teacher = Teacher.objects.filter(classes=classes).order_by('user__last_name')
     teacher_page_obj = paginate_objects(request, teacher, 5)
     timetable = Timetable.objects.filter(class_info=classes)
+    scheme_of_work = SchemeOfWork.objects.filter(classes=classes)
+    schemes_by_subject = {}
+    for scheme in scheme_of_work:
+        if scheme.subject not in schemes_by_subject:
+            schemes_by_subject[scheme.subject] = []
+        schemes_by_subject[scheme.subject].append(scheme)
     context = {
         'class': classes,
         'teacher_page_obj': teacher_page_obj,
         'student_page_obj': student_page_obj,
         'timetables': timetable,
+        'schemes_by_subject': schemes_by_subject
     }
     return render(request, 'dashboards/all_admin_pages/classDetail.html', context)

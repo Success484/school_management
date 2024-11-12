@@ -9,7 +9,7 @@
 {% url 'view_class_attendance' as view_class_attendance%}
 {% url 'annoucement' as annoucement%}
 {% url 'my_report_card' as my_report_card%}
-
+{% url 'scheme_of_work' as scheme_of_work%}
 
     <section id="sidebar">
         <a href="{%url 'student_dashboard'%}" class="brand">
@@ -41,10 +41,22 @@
                     <span class="text">Attendance Record</span>
                 </a>
             </li>
+            <li class="{%if request.path == scheme_of_work%} active {%else%}{%endif%}">
+                <a href="{{scheme_of_work}}">
+                    <i class='bx bxs-book'></i>
+                    <span class="text">Scheme of work</span>
+                </a>
+            </li>
             <li class="{%if request.path == view_student_grades%} active {%else%}{%endif%}">
                 <a href="{{view_student_grades}}">
                     <i class='bx bxs-edit-alt'></i>
                     <span class="text">My grades</span>
+                </a>
+            </li>
+            <li class="{%if request.path == annoucement%} active {%else%}{%endif%}">
+                <a href="{{annoucement}}">
+                    <i class='bx bxs-volume-full' ></i>
+                    <span class="text">Announcements</span>
                 </a>
             </li>
             <li class="{%if request.path == my_report_card%} active {%else%}{%endif%}">
@@ -58,12 +70,6 @@
        
 
     <ul class="side-menu">
-        <li class="{%if request.path == annoucement%} active {%else%}{%endif%}">
-            <a href="{{annoucement}}">
-                <i class='bx bxs-volume-full' ></i>
-                <span class="text">Announcements</span>
-            </a>
-        </li>
         <li class="{%if request.path == student_details_page%} active {%else%}{%endif%}">
             <a href="{{student_details_page}}">
                 <i class='bx bxs-user-circle' ></i>

@@ -21,4 +21,5 @@ urlpatterns = [
     path('dashboard/student/report/card-pdf/', views.pdf_report_card, name='pdf_report_card'),
     path('dashboard/student/search/', views.student_search_form_view, name='student_search_form_view'),
     path('dashboard/student/search/result/', views.student_search_results_view, name='student_search_results_view'),
+    path('dashboard/student/class/scheme_of_work/', views.scheme_of_work, name='scheme_of_work'),
 ]
