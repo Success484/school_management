@@ -49,12 +49,18 @@ class StudentNotification(BaseNotification):
 
 
 class Annoucement(models.Model):
+    RECIPIENT_CHOICES = [
+        ('teacher', 'Teacher'),
+        ('student', 'Student'),
+        ('both', 'Teacher and Student'),
+    ]
     subject = models.CharField(max_length=300, null=False)
     description = models.CharField(max_length=1000)
+    recipient_type = models.CharField(max_length=10, choices=RECIPIENT_CHOICES, default='both')
     date_posted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} - {self.date_posted}"
+        return f"{self.subject} - {self.date_posted}"
     
 
 class TodosList(models.Model):

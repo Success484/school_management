@@ -27,13 +27,44 @@ def add_student_to_group(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Annoucement)
 def create_notifications(sender, instance, created, **kwargs):
     if created:
-        students_and_teachers = User.objects.filter(groups__name__in=['Student', 'Teacher'])
-        for user in students_and_teachers:
-            Notification.objects.create(
-                user=user,
-                message=f"New announcement posted: {instance.title}"
-            )
+        if instance.recipient_type == 'teacher':
+            # Notify only teachers
+            teachers = User.objects.filter(groups__name__in=['Teacher'])
+            for teacher in teachers:
+                TeacherNotification.objects.create(
+                    user=teacher,
+                    message=f"New announcement posted: {instance.subject}"
+                )
 
+        elif instance.recipient_type == 'student':
+            # Notify only students
+            students = User.objects.filter(groups__name__in=['Student'])
+            for student in students:
+                StudentNotification.objects.create(
+                    user=student,
+                    message=f"New announcement posted: {instance.subject}"
+                )
+
+        elif instance.recipient_type == 'both':
+            # Notify both teachers and students
+            teachers = User.objects.filter(groups__name='Teacher')
+            students = User.objects.filter(groups__name='Student')
+
+            # Create notifications for teachers
+            for teacher in teachers:
+                TeacherNotification.objects.create(
+                    user=teacher,
+                    message=f"New announcement posted: {instance.subject}"
+                )
+
+            # Create notifications for students
+            for student in students:
+                StudentNotification.objects.create(
+                    user=student,
+                    message=f"New announcement posted: {instance.subject}"
+                )
+
+                
 
 @receiver(post_save, sender=StudentGradeModel)
 def create_grade(sender, instance, created, **kwargs):

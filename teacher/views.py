@@ -598,8 +598,8 @@ def clear_student_position_and_comment_form(request, student_id):
 def annoucement(request):
     if not request.user.is_teacher:
         return HttpResponseForbidden('You do not have permission to access this page.')
-    post = Annoucement.objects.all().order_by('-date_posted')
-    return render(request, 'dashboards/all_teacher_pages/annoucements.html', {'posts':post})
+    announcements = Annoucement.objects.filter(recipient_type__in=['teacher', 'both']).order_by('-date_posted')
+    return render(request, 'dashboards/all_teacher_pages/annoucements.html', {'posts':announcements})
 
 
 @login_required

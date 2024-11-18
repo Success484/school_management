@@ -1,7 +1,5 @@
 from django import forms
-from administration.models import (Teacher, Student, Annoucement, 
-                                   TodosList)
-from classes.models import Subject
+from administration.models import (Teacher, Student, Annoucement, TodosList)
 
 class TeacherForm(forms.ModelForm):
     class Meta:
@@ -27,7 +25,7 @@ class StudentForm(forms.ModelForm):
         model = Student
         fields = [
             'student_class',
-            'home_address', 
+            'home_address',
             'parent_or_guardian_name', 
             'parent_or_guardian_phone_number', 
             'parent_email'
@@ -44,10 +42,11 @@ class StudentForm(forms.ModelForm):
 class AnnoucementForm(forms.ModelForm):
     class Meta:
         model = Annoucement
-        fields = ['subject', 'description']
+        fields = ['subject', 'description', 'recipient_type']
         widgets = {
             'subject' : forms.TextInput(attrs={'class': 'final-grade'}),
             'description' : forms.Textarea(attrs={'class': 'final-grade'}),
+            'recipient_type' : forms.RadioSelect(),
         }
 
 

@@ -224,8 +224,8 @@ def view_student_grades(request):
 def annoucement(request):
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
-    post = Annoucement.objects.all().order_by('-date_posted')
-    return render(request, 'dashboards/all_student_pages/annoucement.html', {'posts':post})
+    announcements = Annoucement.objects.filter(recipient_type__in=['student', 'both']).order_by('-date_posted')
+    return render(request, 'dashboards/all_student_pages/annoucement.html', {'posts':announcements})
 
 
 @login_required
