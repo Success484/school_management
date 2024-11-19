@@ -28,43 +28,30 @@ def add_student_to_group(sender, instance, created, **kwargs):
 def create_notifications(sender, instance, created, **kwargs):
     if created:
         if instance.recipient_type == 'teacher':
-            # Notify only teachers
-            teachers = User.objects.filter(groups__name__in=['Teacher'])
+            teachers = User.objects.filter(groups__name='Teacher', is_superuser=False)
             for teacher in teachers:
-                TeacherNotification.objects.create(
+                Notification.objects.create(
                     user=teacher,
                     message=f"New announcement posted: {instance.subject}"
                 )
 
         elif instance.recipient_type == 'student':
-            # Notify only students
-            students = User.objects.filter(groups__name__in=['Student'])
+            students = User.objects.filter(groups__name='Student', is_superuser=False)
             for student in students:
-                StudentNotification.objects.create(
+                Notification.objects.create(
                     user=student,
                     message=f"New announcement posted: {instance.subject}"
                 )
 
         elif instance.recipient_type == 'both':
-            # Notify both teachers and students
-            teachers = User.objects.filter(groups__name='Teacher')
-            students = User.objects.filter(groups__name='Student')
-
-            # Create notifications for teachers
-            for teacher in teachers:
-                TeacherNotification.objects.create(
-                    user=teacher,
+            teachers_and_students = User.objects.filter(groups__name__in=['Teacher', 'Student'], is_superuser=False)
+            for user in teachers_and_students:
+                Notification.objects.create(
+                    user=user,
                     message=f"New announcement posted: {instance.subject}"
                 )
 
-            # Create notifications for students
-            for student in students:
-                StudentNotification.objects.create(
-                    user=student,
-                    message=f"New announcement posted: {instance.subject}"
-                )
 
-                
 
 @receiver(post_save, sender=StudentGradeModel)
 def create_grade(sender, instance, created, **kwargs):

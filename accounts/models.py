@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from PIL import Image
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None, **extra_fields):
@@ -49,11 +50,22 @@ class CustomUser(AbstractUser):
         else:
             return "Unassigned"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.profile_photo.path)
+
+
+        if img.height > 300  or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.profile_photo.path)
 
     def save(self, *args, **kwargs):
         if not self.username:
             self.username = self.email
         super().save(*args, **kwargs)
+
+    
 
     def __str__(self):
         return self.email

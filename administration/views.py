@@ -90,7 +90,7 @@ def delete_admin_notification(request, notification_id):
     
     notification.delete()
     messages.success(request, 'Notification deleted successfully.')
-    return redirect('admin_dashboard')
+    return redirect(request.META.get('HTTP_REFERER', 'notifications'))
 
 
 @login_required
@@ -417,4 +417,3 @@ def delete_todo(request, task_id):
     task.delete()
     messages.success(request, 'Task deleted successfully')
     return redirect('admin_dashboard')
-
