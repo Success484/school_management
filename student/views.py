@@ -37,13 +37,10 @@ def create_timetable(request):
 def create_class_timetable(request, class_id):
     if not request.user.is_superuser:
         return HttpResponseForbidden("You do not have permission to access this page.")
-
     selected_class = get_object_or_404(Class, id=class_id)
-
     # Initialize forms
     timetable_form = TimetableForm()
     subject_time_form = TimetableSubjectTimeForm()
-
     if request.method == 'POST':
         # Check which form was submitted
         if 'create_timetable' in request.POST:
@@ -60,7 +57,6 @@ def create_class_timetable(request, class_id):
                 subject_time_form.save()
                 messages.success(request, 'Subject times added successfully!')
                 return redirect('create_class_timetable', class_id=class_id)
-
     # Update queryset for TimetableForm
     timetable_form.fields['subject_one'].queryset = selected_class.subjects.all()
     timetable_form.fields['subject_two'].queryset = selected_class.subjects.all()
@@ -69,7 +65,6 @@ def create_class_timetable(request, class_id):
     timetable_form.fields['subject_five'].queryset = selected_class.subjects.all()
     timetable_form.fields['subject_six'].queryset = selected_class.subjects.all()
     timetable_form.fields['subject_seven'].queryset = selected_class.subjects.all()
-
     context = {
         'class_info': selected_class,
         'form': timetable_form,

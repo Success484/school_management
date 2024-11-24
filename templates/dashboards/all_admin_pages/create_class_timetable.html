@@ -4,205 +4,88 @@
 
 <!-- Form for Timetable Creation or Editing -->
 <div class="m-3 rounded-lg text-black">
- <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">CREATE TIMETABLE</p>
- <p class="text-center p-2 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Create timetable Subject time</p>
+ <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">CREATE TIMETABLE {{class_info}}</p>
+    {% if messages %}
+    {% for message in messages %}
+    <h3 class="bg-blue-100 text-blue-500 p-3 text-normal font-normal mb-6">{{ message }}</h3>
+    {% endfor %}
+    {% endif %}
+ 
 
-
- <div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span>First subject <br></span>
-    </div>
-
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.subject_one_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.subject_one_end_time}}
-    </div>
-</div>
-
-<div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span>Second subject <br></span>
-    </div>
-
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.subject_two_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.subject_two_end_time}}
-    </div>
-</div>
-
-<div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span>Third subject <br></span>
-    </div>
-
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.subject_three_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.subject_three_end_time}}
-    </div>
-</div>
-
-<div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span>Fourth subject <br></span>
-    </div>
-
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.subject_four_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.subject_four_end_time}}
-    </div>
-</div>
-
-<div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span class="font-medium">Break Time <br></span>
-    </div>
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.break_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.break_end_time}}
-    </div>
-</div>
-
-<div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span>Fifth subject <br></span>
-    </div>
-
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.subject_five_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.subject_five_end_time}}
-    </div>
-</div>
-
-<div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span>Sixth subject <br></span>
-    </div>
-
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.subject_six_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.subject_six_end_time}}
-    </div>
-</div>
-
-<div class="border-2 border-gray-400 p-1">
-    <div class="mb-2">
-        <span>Seventh subject <br></span>
-    </div>
-
-    <div class="mb-2">
-        <span>Start time <br></span>  
-        {{form.subject_seven_start_time}}
-    </div>
-    <div class="mb-2">
-        <span>End time <br></span>
-        {{form.subject_seven_end_time}}
-    </div>
-</div>
-
+ <p class="text-center p-2 my-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Create timetable Subject</p>
 
 <div class="rounded-lg p-3" style="background-color: #F9F9F9;">
     <form action="{% url 'create_class_timetable' class_id=class_info.id %}" method="post">    
         {%csrf_token%}
-    <div class="mb-6">
-        {{ class_info.name }}
-    </div>
-    <div class="mb-6">
-        {{ form.day_of_week.label_tag }}
+    <div class="mb-6 bg-blue-400 rounded-lg">
+        <span class="text-white font-medium p-1">{{ form.day_of_week.label_tag }}</span>
         {{ form.day_of_week }}
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-1">
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span>First subject <br></span>
+            <span class="text-white font-medium">First subject <br></span>
             {{form.subject_one}}
         </div>
     
         
     </div>
 
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span>Second subject <br></span>
+            <span class="text-white font-medium">Second subject <br></span>
             {{form.subject_two}}
         </div>
     
         
     </div>
 
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span>Third subject <br></span>
+            <span class="text-white font-medium">Third subject <br></span>
             {{form.subject_three}}
         </div>
     
         
     </div>
 
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span>Fourth subject <br></span>
+            <span class="text-white font-medium">Fourth subject <br></span>
             {{form.subject_four}}
         </div>
     
         
     </div>
 
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span class="font-medium">Break Time <br></span>
+            <span class="font-medium text-white">Break Time <br></span>
         </div>
     </div>
 
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span>Fifth subject <br></span>
+            <span class="text-white font-medium">Fifth subject <br></span>
             {{form.subject_five}}
         </div>
     
         
     </div>
 
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span>Sixth subject <br></span>
+            <span class="text-white font-medium">Sixth subject <br></span>
             {{form.subject_six}}
         </div>
     
         
     </div>
 
-    <div class="border-2 border-gray-400 p-1">
+    <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
         <div class="mb-2">
-            <span>Seventh subject <br></span>
+            <span class="text-white font-medium">Seventh subject <br></span>
             {{form.subject_seven}}
         </div>
     
@@ -213,6 +96,135 @@
     <button type="submit" name="create_timetable" class="bg-blue-500 p-3 rounded-lg mt-6 text-white hover:bg-blue-300"><i class="fa-solid fa-plus"></i><span class="pl-1">Create Timetable</span></button>
 </form>
 </div>
+
+
+
+<p class="text-center p-2 my-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Create timetable Subject time</p>
+
+ <form action="" method="post">
+    {% csrf_token %}
+ <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-1">
+ <div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">First subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.subject_one_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.subject_one_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">Second subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.subject_two_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.subject_two_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">Third subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.subject_three_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.subject_three_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">Fourth subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.subject_four_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.subject_four_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">Break Time <br></span>
+    </div>
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.break_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.break_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">Fifth subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.subject_five_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.subject_five_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">Sixth subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.subject_six_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.subject_six_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1 bg-blue-400 rounded-lg">
+    <div class="mb-2">
+        <span class="font-medium text-white">Seventh subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span class="text-white">Start time <br></span>  
+        {{time_form.subject_seven_start_time}}
+    </div>
+    <div class="mb-2">
+        <span class="text-white">End time <br></span>
+        {{time_form.subject_seven_end_time}}
+    </div>
+</div>
+</div>
+<button type="submit" name="add_times" class="bg-blue-500 p-3 rounded-lg mt-6 text-white hover:bg-blue-300"><i class="fa-solid fa-plus"></i><span class="pl-1">Create Timetable Time</span></button>
+</form>
 </div>
 
 {% endblock section %}
