@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from .forms import TimetableForm
+from .forms import TimetableForm, TimetableSubjectTimeForm
 from classes.models import Class
 from teacher.models import Attendance, StudentGradeModel, StudentPosition, SchemeOfWork
 from student.models import Timetable
@@ -37,31 +37,43 @@ def create_timetable(request):
 def create_class_timetable(request, class_id):
     if not request.user.is_superuser:
         return HttpResponseForbidden("You do not have permission to access this page.")
+
     selected_class = get_object_or_404(Class, id=class_id)
+
+    # Initialize forms
+    timetable_form = TimetableForm()
+    subject_time_form = TimetableSubjectTimeForm()
+
     if request.method == 'POST':
-        form = TimetableForm(request.POST)
-        if form.is_valid():
-            timetable = form.save(commit=False)
-            timetable.class_info = selected_class
-            timetable.save()
-            messages.success(request, f'Timetable created successfully for {timetable.class_info}')
-            return redirect('create_timetable')
-        else:
-            print(form.errors)
-    else:
-        form = TimetableForm()
-        
-    form.fields['subject_one'].queryset = selected_class.subjects.all()
-    form.fields['subject_two'].queryset = selected_class.subjects.all()
-    form.fields['subject_three'].queryset = selected_class.subjects.all()
-    form.fields['subject_four'].queryset = selected_class.subjects.all()
-    form.fields['subject_five'].queryset = selected_class.subjects.all()
-    form.fields['subject_six'].queryset = selected_class.subjects.all()
-    form.fields['subject_seven'].queryset = selected_class.subjects.all()
+        # Check which form was submitted
+        if 'create_timetable' in request.POST:
+            timetable_form = TimetableForm(request.POST)
+            if timetable_form.is_valid():
+                timetable = timetable_form.save(commit=False)
+                timetable.class_info = selected_class
+                timetable.save()
+                messages.success(request, f'Timetable created successfully for {selected_class}')
+                return redirect('create_class_timetable', class_id=class_id)
+        elif 'add_times' in request.POST:
+            subject_time_form = TimetableSubjectTimeForm(request.POST)
+            if subject_time_form.is_valid():
+                subject_time_form.save()
+                messages.success(request, 'Subject times added successfully!')
+                return redirect('create_class_timetable', class_id=class_id)
+
+    # Update queryset for TimetableForm
+    timetable_form.fields['subject_one'].queryset = selected_class.subjects.all()
+    timetable_form.fields['subject_two'].queryset = selected_class.subjects.all()
+    timetable_form.fields['subject_three'].queryset = selected_class.subjects.all()
+    timetable_form.fields['subject_four'].queryset = selected_class.subjects.all()
+    timetable_form.fields['subject_five'].queryset = selected_class.subjects.all()
+    timetable_form.fields['subject_six'].queryset = selected_class.subjects.all()
+    timetable_form.fields['subject_seven'].queryset = selected_class.subjects.all()
 
     context = {
-        'form': form,
-        'class_info': selected_class
+        'class_info': selected_class,
+        'form': timetable_form,
+        'time_form': subject_time_form,
     }
     return render(request, 'dashboards/all_admin_pages/create_class_timetable.html', context)
 

@@ -17,7 +17,7 @@
             {{ table_form.day_of_week }}
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-1">
-            <div class="border-2 border-gray-300 rounded-lg p-1">
+            <div class="border-2 border-gray-400 rounded-lg p-1">
                 <div class="mb-2">
                     <span>First subject <br></span>
                     {{ table_form.subject_one }}
@@ -33,7 +33,7 @@
                 </div>
             </div>
             
-            <div class="border-2 border-gray-300 rounded-lg p-1">
+            <div class="border-2 border-gray-400 rounded-lg p-1">
                 <div class="mb-2">
                     <span>Second subject <br></span>
                     {{ table_form.subject_two }}
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="border-2 border-gray-300 rounded-lg p-1">
+            <div class="border-2 border-gray-400 rounded-lg p-1">
                 <div class="mb-2">
                     <span>Third subject <br></span>
                     {{ table_form.subject_three }}
@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-            <div class="border-2 border-gray-300 rounded-lg p-1">
+            <div class="border-2 border-gray-400 rounded-lg p-1">
                 <div class="mb-2">
                     <span>Fourth subject <br></span>
                     {{ table_form.subject_four }}
@@ -81,7 +81,21 @@
                 </div>
             </div>
 
-            <div class="border-2 border-gray-300 rounded-lg p-1">
+            <div class="border-2 border-gray-400 p-1 rounded-md">
+                <div class="mb-2">
+                    <span class="font-medium">Break Time <br></span>
+                </div>
+                <div class="mb-2">
+                    <span>Start time <br></span>  
+                    {{table_form.break_start_time}}
+                </div>
+                <div class="mb-2">
+                    <span>End time <br></span>
+                    {{table_form.break_end_time}}
+                </div>
+            </div>
+
+            <div class="border-2 border-gray-400 rounded-lg p-1">
                 <div class="mb-2">
                     <span>Fifth subject <br></span>
                     {{ table_form.subject_five }}
@@ -97,7 +111,7 @@
                 </div>
             </div>
 
-            <div class="border-2 border-gray-300 rounded-lg p-1">
+            <div class="border-2 border-gray-400 rounded-lg p-1">
                 <div class="mb-2">
                     <span>Sixth subject <br></span>
                     {{ table_form.subject_six }}
@@ -113,7 +127,7 @@
                 </div>
             </div>
             
-            <div class="border-2 border-gray-300 rounded-lg p-1">
+            <div class="border-2 border-gray-400 rounded-lg p-1">
                 <div class="mb-2">
                     <span>Seventh subject <br></span>
                     {{ table_form.subject_seven }}

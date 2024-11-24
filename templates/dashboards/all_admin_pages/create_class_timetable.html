@@ -5,6 +5,129 @@
 <!-- Form for Timetable Creation or Editing -->
 <div class="m-3 rounded-lg text-black">
  <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">CREATE TIMETABLE</p>
+ <p class="text-center p-2 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Create timetable Subject time</p>
+
+
+ <div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span>First subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.subject_one_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.subject_one_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span>Second subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.subject_two_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.subject_two_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span>Third subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.subject_three_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.subject_three_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span>Fourth subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.subject_four_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.subject_four_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span class="font-medium">Break Time <br></span>
+    </div>
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.break_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.break_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span>Fifth subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.subject_five_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.subject_five_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span>Sixth subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.subject_six_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.subject_six_end_time}}
+    </div>
+</div>
+
+<div class="border-2 border-gray-400 p-1">
+    <div class="mb-2">
+        <span>Seventh subject <br></span>
+    </div>
+
+    <div class="mb-2">
+        <span>Start time <br></span>  
+        {{form.subject_seven_start_time}}
+    </div>
+    <div class="mb-2">
+        <span>End time <br></span>
+        {{form.subject_seven_end_time}}
+    </div>
+</div>
+
+
 <div class="rounded-lg p-3" style="background-color: #F9F9F9;">
     <form action="{% url 'create_class_timetable' class_id=class_info.id %}" method="post">    
         {%csrf_token%}
@@ -23,14 +146,7 @@
             {{form.subject_one}}
         </div>
     
-        <div class="mb-2">
-            <span>Start time <br></span>  
-            {{form.subject_one_start_time}}
-        </div>
-        <div class="mb-2">
-            <span>End time <br></span>
-            {{form.subject_one_end_time}}
-        </div>
+        
     </div>
 
     <div class="border-2 border-gray-400 p-1">
@@ -39,14 +155,7 @@
             {{form.subject_two}}
         </div>
     
-        <div class="mb-2">
-            <span>Start time <br></span>  
-            {{form.subject_two_start_time}}
-        </div>
-        <div class="mb-2">
-            <span>End time <br></span>
-            {{form.subject_two_end_time}}
-        </div>
+        
     </div>
 
     <div class="border-2 border-gray-400 p-1">
@@ -55,14 +164,7 @@
             {{form.subject_three}}
         </div>
     
-        <div class="mb-2">
-            <span>Start time <br></span>  
-            {{form.subject_three_start_time}}
-        </div>
-        <div class="mb-2">
-            <span>End time <br></span>
-            {{form.subject_three_end_time}}
-        </div>
+        
     </div>
 
     <div class="border-2 border-gray-400 p-1">
@@ -71,13 +173,12 @@
             {{form.subject_four}}
         </div>
     
+        
+    </div>
+
+    <div class="border-2 border-gray-400 p-1">
         <div class="mb-2">
-            <span>Start time <br></span>  
-            {{form.subject_four_start_time}}
-        </div>
-        <div class="mb-2">
-            <span>End time <br></span>
-            {{form.subject_four_end_time}}
+            <span class="font-medium">Break Time <br></span>
         </div>
     </div>
 
@@ -87,14 +188,7 @@
             {{form.subject_five}}
         </div>
     
-        <div class="mb-2">
-            <span>Start time <br></span>  
-            {{form.subject_five_start_time}}
-        </div>
-        <div class="mb-2">
-            <span>End time <br></span>
-            {{form.subject_five_end_time}}
-        </div>
+        
     </div>
 
     <div class="border-2 border-gray-400 p-1">
@@ -103,14 +197,7 @@
             {{form.subject_six}}
         </div>
     
-        <div class="mb-2">
-            <span>Start time <br></span>  
-            {{form.subject_six_start_time}}
-        </div>
-        <div class="mb-2">
-            <span>End time <br></span>
-            {{form.subject_six_end_time}}
-        </div>
+        
     </div>
 
     <div class="border-2 border-gray-400 p-1">
@@ -119,18 +206,11 @@
             {{form.subject_seven}}
         </div>
     
-        <div class="mb-2">
-            <span>Start time <br></span>  
-            {{form.subject_seven_start_time}}
-        </div>
-        <div class="mb-2">
-            <span>End time <br></span>
-            {{form.subject_seven_end_time}}
-        </div>
+        
     </div>
     </div>
 
-    <button type="submit" class="bg-blue-500 p-3 rounded-lg mt-6 text-white hover:bg-blue-300"><i class="fa-solid fa-plus"></i><span class="pl-1">Create Timetable</span></button>
+    <button type="submit" name="create_timetable" class="bg-blue-500 p-3 rounded-lg mt-6 text-white hover:bg-blue-300"><i class="fa-solid fa-plus"></i><span class="pl-1">Create Timetable</span></button>
 </form>
 </div>
 </div>
