@@ -120,9 +120,11 @@ def view_class_timetable(request):
     student = request.user.student_profile
     student_class = student.student_class
     timetable = Timetable.objects.filter(class_info=student_class)
+    timetable_time = TimetableSubjectTime.objects.filter(class_info = student_class)
     context={
         'class': student_class,
-        'timetables': timetable
+        'timetables': timetable,
+        'timetable_time': timetable_time
     }
     return render(request, 'dashboards/all_student_pages/timetable.html', context)
 

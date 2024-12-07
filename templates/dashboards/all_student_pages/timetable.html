@@ -5,37 +5,38 @@
 <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600 mt-3" style="background-color: #F9F9F9;">{{class.name}} TIMETABLE</p>
     <div class="table-data">
     <div>
-    <table class="min-w-full py-3 rounded-lg" style="background-color: #F9F9F9;">
-        <thead>
-            <tr>
-                <th class="py-2 px-2 border-b border-r  border-gray-300 text-gray-600">Days</th>
-                <th class="py-2 px-2 border-b border-gray-300 text-gray-600">Subjects</th>
-                <th class="py-2 px-2 border-b border-gray-300"></th>
-                <th class="py-2 px-2 border-b border-gray-300"></th>
-                <th class="py-2 px-2 border-b border-gray-300"></th>
-                <th class="py-2 px-2 border border-gray-300 text-gray-600">BREAK</th>
-                <th class="py-2 px-2 border-b border-gray-300"></th>
-                <th class="py-2 px-2 border-b border-gray-300"></th>
-                <th class="py-2 px-2 border-b border-gray-300"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for timetable in timetables %}
-            <tr>
-                <td class="py-2 px-2 border-b border-r border-gray-400">{{ timetable.day_of_week }}<br>
-                </td>
-                <td class="p-1 border border-gray-400 ">{{ timetable.subject_one.name }}<br>{{ timetable.subject_one_start_time }}-{{ timetable.subject_one_end_time }}</td>
-                <td class="p-1 border border-gray-400 ">{{ timetable.subject_two.name }}<br>{{ timetable.subject_two_start_time }}-{{ timetable.subject_two_end_time }}</td>
-                <td class="p-1 border border-gray-400 ">{{ timetable.subject_three.name }}<br>{{ timetable.subject_three_start_time }}-{{ timetable.subject_three_end_time }}</td>
-                <td class="p-1 border border-gray-400 ">{{ timetable.subject_four.name }}<br>{{ timetable.subject_four_start_time }}-{{ timetable.subject_four_end_time }}</td>
-                <td class="p-1 border border-gray-400 ">BREAK</td>
-                <td class="p-1 border border-gray-400 ">{{ timetable.subject_five.name }}<br>{{ timetable.subject_five_start_time }}-{{ timetable.subject_five_end_time }}</td>
-                <td class="p-1 border border-gray-400 ">{{ timetable.subject_six.name }}<br>{{ timetable.subject_six_start_time }}-{{ timetable.subject_six_end_time }}</td>
-                <td class="p-1 border border-gray-400 ">{{ timetable.subject_seven.name }}<br>{{ timetable.subject_seven_start_time }}-{{ timetable.subject_seven_end_time }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <table class="min-w-full py-3 rounded-lg" style="background-color: #F9F9F9;">
+            <thead>
+                {%for time in timetable_time%}
+                <tr>
+                    <th class="py-2 px-2 border-2  border-gray-300 text-gray-600">Days</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.subject_one_start_time}} - {{time.subject_one_end_time}}</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.subject_two_start_time}} - {{time.subject_two_end_time}}</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.subject_three_start_time}} - {{time.subject_three_end_time}}</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.subject_four_start_time}} - {{time.subject_four_end_time}}</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.break_start_time}} - {{time.break_end_time}}</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.subject_five_start_time}} - {{time.subject_five_end_time}}</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.subject_six_start_time}} - {{time.subject_six_end_time}}</th>
+                    <th class="py-2 px-2 border-2 border-gray-300 text-gray-600 text-xs">{{time.subject_seven_start_time}} - {{time.subject_seven_end_time}}</th>
+                </tr>
+                {%endfor%}
+            </thead>
+            <tbody>
+                {% for timetable in timetables %}
+                <tr>
+                    <td class="p-1 border-2 border-r border-gray-300">{{ timetable.day_of_week }}</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700">{{ timetable.subject_one.name }}</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700font-medium text-gray-700">{{ timetable.subject_two.name }}</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700">{{ timetable.subject_three.name }}</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700">{{ timetable.subject_four.name }}</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700">BREAK</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700">{{ timetable.subject_five.name }}</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700">{{ timetable.subject_six.name }}</td>
+                    <td class="p-1 border-2 border-gray-300 font-medium text-gray-700">{{ timetable.subject_seven.name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 </div>
 </div>
 </div>

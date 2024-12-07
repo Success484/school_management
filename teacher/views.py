@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from teacher.forms import AttendanceForm, AttendanceMonthForm, StudentGradeForm, StudentPositionForm, SchemeOfWorkForm
 from teacher.models import Attendance, StudentGradeModel, TeacherClass, StudentPosition, SchemeOfWork
 from classes.models import Class
-from student.models import Timetable
+from student.models import Timetable, TimetableSubjectTime
 from django.db.models import Count
 from django.urls import reverse
 from pages.views import paginate_objects
@@ -96,6 +96,7 @@ def teacher_class_details(request, class_id):
     students = Student.objects.filter(student_class=classes).order_by('user__last_name')
     teachers = Teacher.objects.filter(classes=classes).order_by('user__last_name')
     timetables = Timetable.objects.filter(class_info=classes)
+    timetable_time = TimetableSubjectTime.objects.filter(class_info = classes)
     student_page_obj = paginate_objects(request, students, 5)
     teacher_page_obj = paginate_objects(request, teachers, 5)
     scheme_of_work = SchemeOfWork.objects.filter(classes=classes)
@@ -110,6 +111,7 @@ def teacher_class_details(request, class_id):
         'teacher_page_obj': teacher_page_obj,
         'timetables': timetables,
         'schemes_by_subject': schemes_by_subject,
+        'timetable_time': timetable_time
     }
     return render(request, 'dashboards/all_teacher_pages/class_details.html', context)
 
