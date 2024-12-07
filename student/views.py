@@ -4,7 +4,7 @@ from django.http import HttpResponseForbidden
 from .forms import TimetableForm, TimetableSubjectTimeForm
 from classes.models import Class
 from teacher.models import Attendance, StudentGradeModel, StudentPosition, SchemeOfWork
-from student.models import Timetable
+from student.models import Timetable, TimetableSubjectTime
 from django.contrib import messages
 from django.db.models import Count
 from administration.models import Teacher,Student, Annoucement
@@ -54,7 +54,9 @@ def create_class_timetable(request, class_id):
         elif 'add_times' in request.POST:
             subject_time_form = TimetableSubjectTimeForm(request.POST)
             if subject_time_form.is_valid():
-                subject_time_form.save()
+                time_form = subject_time_form.save(commit=False)
+                time_form.class_info = selected_class
+                time_form.save()
                 messages.success(request, 'Subject times added successfully!')
                 return redirect('create_class_timetable', class_id=class_id)
     # Update queryset for TimetableForm
@@ -72,6 +74,12 @@ def create_class_timetable(request, class_id):
     }
     return render(request, 'dashboards/all_admin_pages/create_class_timetable.html', context)
 
+def clear_time(request, class_id):
+    classes = get_object_or_404(Class, id = class_id)
+    class_time = TimetableSubjectTime.objects.filter(class_info=classes.id)
+    class_time.delete()
+    messages.success(request, f'{classes.name} timetable time deleted successfully')
+    return redirect('create_class_timetable', class_id=classes.id)
 
 @login_required
 def edit_timetable(request, table_id):

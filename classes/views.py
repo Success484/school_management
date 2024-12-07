@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ClassForm, SubjectForm
 from .models import Class, Subject
 from administration.models import Student, Teacher
-from student.models import Timetable
+from student.models import Timetable, TimetableSubjectTime
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
@@ -119,6 +119,7 @@ def classDetail(request, user_id):
     teacher = Teacher.objects.filter(classes=classes).order_by('user__last_name')
     teacher_page_obj = paginate_objects(request, teacher, 5)
     timetable = Timetable.objects.filter(class_info=classes)
+    timetable_time = TimetableSubjectTime.objects.filter(class_info = classes)
     scheme_of_work = SchemeOfWork.objects.filter(classes=classes)
     schemes_by_subject = {}
     for scheme in scheme_of_work:
@@ -130,6 +131,7 @@ def classDetail(request, user_id):
         'teacher_page_obj': teacher_page_obj,
         'student_page_obj': student_page_obj,
         'timetables': timetable,
-        'schemes_by_subject': schemes_by_subject
+        'schemes_by_subject': schemes_by_subject,
+        'timetable_time': timetable_time
     }
     return render(request, 'dashboards/all_admin_pages/classDetail.html', context)
