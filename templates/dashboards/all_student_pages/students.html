@@ -10,6 +10,8 @@
 {% url 'annoucement' as annoucement%}
 {% url 'my_report_card' as my_report_card%}
 {% url 'scheme_of_work' as scheme_of_work%}
+{% url 'student_details_page' as student_details_page%}
+
 
     <section id="sidebar">
         <a href="{%url 'student_dashboard'%}" class="brand">
@@ -18,7 +20,7 @@
         </a>
         <ul class="side-menu top">
             <li class="{%if request.path == student_dashboard%} active {%else%}{%endif%}">
-                <a href="{%url 'student_dashboard'%}">
+                <a href="{{student_dashboard}}">
                     <i class='bx bxs-dashboard' ></i>
                     <span class="text">Dashboard</span>
                 </a>
