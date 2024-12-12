@@ -23,10 +23,6 @@ def aboutPage(request):
     return render(request, 'main/about.html')
 
 
-def course_Page(request):
-    return render(request, 'main/courses.html')
-
-
 def team(request):
     return render(request, 'main/team.html')
 
