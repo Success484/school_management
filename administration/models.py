@@ -63,6 +63,18 @@ class Annoucement(models.Model):
         return f"{self.subject} - {self.date_posted}"
     
 
+
+class TeacherAnnouncement(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_announcement')
+    classes = models.ManyToManyField(Class, related_name='teacher_announcement')
+    subject = models.CharField(max_length=300, null=False)
+    description = models.CharField(max_length=1000)
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.subject} - {self.date_posted}"
+    
+
 class TodosList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=250)

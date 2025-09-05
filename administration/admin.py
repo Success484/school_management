@@ -1,5 +1,7 @@
 from django.contrib import admin
-from administration.models import Teacher, Student, Annoucement, TodosList, StudentNotification, TeacherNotification
+from administration.models import (Teacher, Student, Annoucement, TodosList, 
+                                   StudentNotification, TeacherNotification, 
+                                   TeacherAnnouncement)
 # Register your models here.
 
 admin.site.register(Teacher)
@@ -8,3 +10,4 @@ admin.site.register(Annoucement)
 admin.site.register(TodosList)
 admin.site.register(StudentNotification)
 admin.site.register(TeacherNotification)
+admin.site.register(TeacherAnnouncement)

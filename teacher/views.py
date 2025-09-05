@@ -5,7 +5,8 @@ from calendar import monthrange
 from datetime import date, timedelta, datetime
 import calendar
 from django.contrib import messages
-from administration.models import Annoucement, Teacher, Student
+from administration.models import Annoucement, Teacher, Student, TeacherAnnouncement
+from administration.forms import NewsForm
 from django.contrib.auth.decorators import login_required
 from teacher.forms import AttendanceForm, AttendanceMonthForm, StudentGradeForm, StudentPositionForm, SchemeOfWorkForm
 from teacher.models import Attendance, StudentGradeModel, TeacherClass, StudentPosition, SchemeOfWork
@@ -14,7 +15,6 @@ from student.models import Timetable, TimetableSubjectTime
 from django.db.models import Count
 from django.urls import reverse
 from pages.views import paginate_objects
-
 
 # Create your views here.
 @login_required
@@ -696,3 +696,64 @@ def delete_scheme_of_work(request, scheme_id, class_id):
     subject = scheme_of_work.subject
     messages.success(request, f'Scheme of work successfully deleted for {subject}')
     return redirect('create_class_scheme_of_work', class_id=class_id)
+
+
+@login_required
+def student_notification_view(request):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    teacher = get_object_or_404(Teacher, user=request.user)
+    if request.method == 'POST':
+        form = NewsForm(request.POST, teacher=teacher)
+        if form.is_valid():
+            cls_notification = form.save(commit=False)
+            cls_notification.teacher = teacher
+            cls_notification.save()
+            form.save_m2m()
+            messages.success(request, "Class notification created successfully")
+            return redirect('view_teacher_notification')
+        else:
+            print(form.error)
+    else:
+        form = NewsForm(teacher=teacher)
+    context = {
+        'form': form,
+        'teacher': teacher
+    }
+    return render(request, 'dashboards/all_teacher_pages/class_notification.html', context)
+
+
+def view_teacher_notification(request):
+    teacher = get_object_or_404(Teacher, user=request.user)
+    annoucements = TeacherAnnouncement.objects.filter(teacher=teacher).order_by('-date_posted')
+    context = {
+        'posts' : annoucements,
+        'teacher' : teacher
+    }
+    return render(request, 'dashboards/all_teacher_pages/view_teacher_notification.html', context)
+
+
+@login_required
+def edit_teacher_annoucement(request, post_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    post = get_object_or_404(TeacherAnnouncement, id=post_id)
+    if request.method == 'POST':
+        form = NewsForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Annoucement updated successfully')
+            return redirect('view_teacher_notification')
+    else:
+        form = NewsForm(instance=post)
+    return render(request, 'dashboards/all_teacher_pages/class_notification.html', {'form':form})
+
+
+@login_required
+def delete_teacher_annoucement(request, post_id):
+    if not request.user.is_teacher:
+        return HttpResponseForbidden('You do not have permission to access this page.')
+    post = get_object_or_404(TeacherAnnouncement, id=post_id)
+    post.delete()
+    messages.success(request, 'Announcement delete successfully')
+    return redirect('view_teacher_notification')

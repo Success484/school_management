@@ -6,7 +6,7 @@ from administration.forms import TodosListForm
 from django.contrib import messages
 from .forms import SearchForm
 from django.db.models import Q
-from pages.models import Notification, GradeNotification
+from pages.models import Notification, GradeNotification, ClassNotification
 from django.http import JsonResponse
 from itertools import chain
 from operator import attrgetter
@@ -82,6 +82,7 @@ def mark_notifications_as_read(request):
     if request.method == 'POST':
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
         GradeNotification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
+        ClassNotification.objects.filter(user=request.user, is_read=False).update(is_read=True)
         if request.user.is_staff:
             StudentNotification.objects.filter(user=request.user, is_read=False).update(is_read=True)
             TeacherNotification.objects.filter(user=request.user, is_read=False).update(is_read=True)
@@ -104,6 +105,11 @@ def delete_notification(request, notification_id):
         pass
 
     try:
+        notification = ClassNotification.objects.get(id=notification_id, user=request.user)
+    except ClassNotification.DoesNotExist:
+        pass
+
+    try:
         if not notification:
             notification = TeacherNotification.objects.get(id=notification_id, user=request.user)
     except TeacherNotification.DoesNotExist:
@@ -121,16 +127,19 @@ def get_user_notifications(user):
     notifications = Notification.objects.filter(user=user).order_by('-created_at')
     if user.is_student:
         grade_notifications = GradeNotification.objects.filter(recipient=user).order_by('-created_at')
+        class_notifications = ClassNotification.objects.filter(user=user).order_by('-created_at')
     else:
         grade_notifications = []
+        class_notifications = []
     all_notifications = sorted(
-        chain(notifications, grade_notifications), 
+        chain(notifications, grade_notifications, class_notifications), 
         key=attrgetter('created_at'), 
         reverse=True
     )
     total_unread_count = (
         notifications.filter(is_read=False).count() +
-        (grade_notifications.filter(is_read=False).count() if user.is_student else 0)
+        (grade_notifications.filter(is_read=False).count() if user.is_student else 0) +
+        (class_notifications.filter(is_read=False).count() if user.is_student else 0)
     )
     return all_notifications, total_unread_count
 

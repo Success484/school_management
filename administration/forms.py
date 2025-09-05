@@ -1,5 +1,5 @@
 from django import forms
-from administration.models import (Teacher, Student, Annoucement, TodosList)
+from administration.models import (Teacher, Student, Annoucement, TodosList, TeacherAnnouncement)
 
 class TeacherForm(forms.ModelForm):
     class Meta:
@@ -58,3 +58,20 @@ class TodosListForm(forms.ModelForm):
         widgets = {
             'name' : forms.TextInput(attrs={'class': 'final-grade'}),
          }
+        
+
+class NewsForm(forms.ModelForm):
+    class Meta:
+        model = TeacherAnnouncement
+        fields = ['classes', 'subject', 'description']
+        widgets = {
+            'subject' : forms.TextInput(attrs={'class': 'final-grade'}),
+            'description' : forms.Textarea(attrs={'class': 'final-grade'}),
+            'classes': forms.SelectMultiple(attrs={'class': ' select2-multiple final-grade'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        teacher = kwargs.pop("teacher", None)
+        super().__init__(*args, **kwargs)
+        if teacher:
+            self.fields["classes"].queryset = teacher.classes.all()

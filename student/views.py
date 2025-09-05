@@ -7,7 +7,7 @@ from teacher.models import Attendance, StudentGradeModel, StudentPosition, Schem
 from student.models import Timetable, TimetableSubjectTime
 from django.contrib import messages
 from django.db.models import Count
-from administration.models import Teacher,Student, Annoucement
+from administration.models import Teacher,Student, Annoucement, TeacherAnnouncement
 import calendar
 from datetime import datetime
 from django.http import HttpResponse
@@ -241,8 +241,15 @@ def view_student_grades(request):
 def annoucement(request):
     if not request.user.is_student:
         return HttpResponseForbidden("You do not have permission to access this page.")
+    student = get_object_or_404(Student, user=request.user)
     announcements = Annoucement.objects.filter(recipient_type__in=['student', 'both']).order_by('-date_posted')
-    return render(request, 'dashboards/all_student_pages/annoucement.html', {'posts':announcements})
+    teacher_announcements = TeacherAnnouncement.objects.filter(classes = student.student_class).order_by('-date_posted')
+    all_announcement = sorted(
+        list(announcements) + list(teacher_announcements),
+        key = lambda x: x.date_posted,
+        reverse= True
+    )
+    return render(request, 'dashboards/all_student_pages/annoucement.html', {'posts':all_announcement})
 
 
 @login_required

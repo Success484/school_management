@@ -9,6 +9,7 @@
 {% url 'teacher_details_page' as teacher_details_page%}
 {% url 'Choose_class_to_mark' as Choose_class_to_mark %}
 {%url 'scheme_of_work_class' as scheme_of_work_class%}
+{%url 'view_teacher_notification' as view_teacher_notification%}
 
 
     <!-- SIDEBAR -->
@@ -45,7 +46,13 @@
             <li class="{%if request.path == annoucements%}active{%else%}{%endif%}">
                 <a href="{{annoucements}}">
                     <i class='bx bxs-volume-full' ></i>
-                    <span class="text">Announcements</span>
+                    <span class="text">Admin Announcements</span>
+                </a>
+            </li>
+            <li class="{%if request.path == view_teacher_notification%}active{%else%}{%endif%}">
+                <a href="{{view_teacher_notification}}">
+                    <i class='bx bxs-volume-full' ></i>
+                    <span class="text">Teacher Announcements</span>
                 </a>
             </li>
             <li class="{%if request.path == Choose_class_to_mark%}active{%else%}{%endif%}">

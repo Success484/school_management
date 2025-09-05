@@ -1,0 +1,28 @@
+{% extends 'dashboards/all_teacher_pages/base.html' %}
+{% load static %}
+{% block section %}
+
+<div class="m-3 text-black rounded-lg">
+    <p class="text-center p-5 mb-3 rounded-lg font-medium text-gray-600" style="background-color: #F9F9F9;">Create Annoucement</p>
+
+    <div class="flex justify-center">
+        <form action="" method="post">
+            {%csrf_token%}
+            <div class="mb-4">
+                <p class="font-medium text-gray-700 mb-1">{{form.subject.label_tag}}</p>
+                {{form.subject}}
+            </div>
+            <div class="my-6">
+                <p class="font-medium text-gray-700 mb-1">{{form.classes.label_tag}}</p>
+                {{form.classes}}
+            </div>
+            <div class="mb-4">
+                <p class="font-medium text-gray-700 mb-1">{{form.description.label_tag}}</p>
+                {{form.description}}
+            </div>
+            <button type="submit" class="bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-300"><i class="fa-solid fa-plus"></i><span class="pl-1">Create Annoucement</span></button>
+        </form>
+    </div>
+</div>
+
+{%endblock section%}

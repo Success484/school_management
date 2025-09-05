@@ -27,5 +27,10 @@ urlpatterns = [
     path('dashboard/choose/schemeofwork/classes/', views.scheme_of_work_class, name='scheme_of_work_class'),
     path('dashboard/choose/schemeofwork/classes/<int:class_id>/', views.create_class_scheme_of_work, name='create_class_scheme_of_work'),
     path('dashboard/choose/schemeofwork/classes/<int:class_id>/update/<int:scheme_id>/', views.update_class_scheme_of_work, name='update_class_scheme_of_work'),
-    path('dashboard/choose/schemeofwork/classes/<int:class_id>/delete/<int:scheme_id>/', views.delete_scheme_of_work, name='delete_scheme_of_work'),   
+    path('dashboard/choose/schemeofwork/classes/<int:class_id>/delete/<int:scheme_id>/', views.delete_scheme_of_work, name='delete_scheme_of_work'), 
+    path('dashboard/teacher/create/class/notification/', views.student_notification_view, name='student_notification_view'),
+    path('dashboard/teacher/view/class/notification/', views.view_teacher_notification, name='view_teacher_notification'),
+    path('dashboard/teacher/edit-notify/<int:post_id>/', views.edit_teacher_annoucement, name='edit_teacher_annoucement'),
+    path('dashboard/teacher/delete/<int:post_id>/', views.delete_teacher_annoucement, name='delete_teacher_annoucement'),
+
 ]

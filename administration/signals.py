@@ -1,10 +1,10 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from pages.models import Notification, GradeNotification
+from pages.models import Notification, GradeNotification, ClassNotification
 from .models import Annoucement
 from teacher.models import StudentGradeModel
-from administration.models import StudentNotification, TeacherNotification, Teacher, Student
+from administration.models import StudentNotification, TeacherNotification, Teacher, Student, TeacherAnnouncement
 from django.contrib.auth.models import Group
 
 User = get_user_model()
@@ -85,3 +85,15 @@ def add_student(sender, instance, created, **kwargs):
                 user=admin,
                 message=message
             )
+
+
+@receiver(m2m_changed, sender=TeacherAnnouncement.classes.through)
+def create_student_notification(sender, instance, action, **kwargs):
+    if action == "post_add":
+        for class_obj in instance.classes.all():
+            students = class_obj.students.all()
+            for student in students:
+                ClassNotification.objects.create(
+                    user=student.user,
+                    message=f"Class Announcement: {instance.subject}"
+                )
